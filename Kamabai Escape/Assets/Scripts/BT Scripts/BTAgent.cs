@@ -15,13 +15,14 @@ public class BTAgent : MonoBehaviour
 
     WaitForSeconds waitForSeconds;
     Vector3 rememberedLocation;
+    public float distanceToTarget;
 
     // Start is called before the first frame update
     public virtual void Start()
     {
         agent = this.GetComponent<NavMeshAgent>();
         tree = new BehaviourTree();
-        waitForSeconds = new WaitForSeconds(Random.Range(0.1f, 1f));
+        waitForSeconds = new WaitForSeconds(Random.Range(0.1f, 0.12f));
         StartCoroutine("Behave");
     }
 
@@ -62,6 +63,7 @@ public class BTAgent : MonoBehaviour
         if (state == ActionState.IDLE)
         {
             rememberedLocation = this.transform.position + (transform.position - location).normalized * distance;
+
         }
             return GoToLocation(rememberedLocation);
         
@@ -79,16 +81,16 @@ public class BTAgent : MonoBehaviour
 
     public Node.Status GoToLocation(Vector3 destination)
     {
-        float distanceToTarget = Vector3.Distance(destination, this.transform.position);
+        distanceToTarget = Vector3.Distance(destination, this.transform.position);
         if (state == ActionState.IDLE)
         {
             agent.SetDestination(destination);
             state = ActionState.WORKING;
         }
-        else if (Vector3.Distance(agent.pathEndPosition, destination) >= 2)
+        else if (Vector3.Distance(agent.pathEndPosition, destination) >= 0.4f)
         {
             state = ActionState.IDLE;
-            return Node.Status.FAILURE;
+            return Node.Status.RUNNING;
         }
         else if (distanceToTarget < 2)
         {

@@ -11,6 +11,7 @@ public class Sequence : Node
 
     public override Status Process()
     {
+        Debug.Log("Sequence: " + name + " " + currentChild);
         Status childstatus = children[currentChild].Process();
         if (childstatus == Status.RUNNING) return Status.RUNNING;
         if (childstatus == Status.FAILURE)
