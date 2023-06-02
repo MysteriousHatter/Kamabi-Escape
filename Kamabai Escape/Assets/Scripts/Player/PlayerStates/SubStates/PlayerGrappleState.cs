@@ -9,6 +9,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine.Windows;
 using System;
+using UnityEngine.InputSystem;
 
 public class PlayerGrappleState : PlayerAbilityState
 {
@@ -20,8 +21,8 @@ public class PlayerGrappleState : PlayerAbilityState
     private float lastGrappleTime;
     private float swingHeight = 0f;
 
-    float rotationY = 180f;
-    float rotationX = 180f;
+    float rotationY;
+    float rotationX;
     private Vector3 grappleDirectionInput;
     private Vector3 targetPos;
     private RaycastHit hit;
@@ -65,6 +66,8 @@ public class PlayerGrappleState : PlayerAbilityState
     public override void Enter()
     {
         base.Enter();
+        rotationY = 180f;
+        rotationX = 0f;
 
         lineStartPos = player.playerHand.transform.position;
 
@@ -72,13 +75,17 @@ public class PlayerGrappleState : PlayerAbilityState
         player.InputHandler.UseHoldingGrapple();
 
         isHolding = true;
-        grappleDirection = Vector3.forward * core.Movement.FacingDirection.y;
+        grappleDirection = core.Movement.FacingDirection;
+        Time.timeScale = playerData.holdTimeScale;
+        startTime = Time.unscaledTime;
+
+        grappleDirection = Quaternion.Euler(0f, core.Movement.FacingDirection.y, 0f) * Vector3.forward;
 
         player.GrappleDirectionIndicator.gameObject.SetActive(true);
 
-
         // Calculate the angle between the arrow and the up vector
         float angle = Vector3.SignedAngle(Vector3.up, grappleDirection, Vector3.up);
+
         player.GrappleDirectionIndicator.localRotation = Quaternion.Euler(0f, angle - playerData.angleOffset, 0f);
         Debug.Log("The direction of the angle: " + angle);
     }
@@ -98,9 +105,13 @@ public class PlayerGrappleState : PlayerAbilityState
             GrappleRotation();
             Debug.DrawRay(player.GrappleDirectionIndicator.transform.position, -player.GrappleDirectionIndicator.transform.forward * 20f, Color.red);
             Debug.Log("Is Grapple InputStop " + grappleInputStop);
+            Debug.Log("The current time " + Time.timeScale);
             if (grappleInputStop)
             {
                 isHolding = false;
+                Time.timeScale = 1f;
+                startTime = Time.time;
+                Debug.Log("The current time " + Time.timeScale);
                 if (Physics.Raycast(player.GrappleDirectionIndicator.transform.position, -player.GrappleDirectionIndicator.transform.forward, out hit, playerData.distance, playerData.mask))
                 {
 
@@ -236,6 +247,9 @@ public class PlayerGrappleState : PlayerAbilityState
 
     public override void Exit()
     {
+        player.GrappleDirectionIndicator.localRotation = Quaternion.Euler(0, 0, 0);
+        ResetCancelGrapple();
+        player.InputHandler.SwitchActionMaps();
         base.Exit();
     }
 
@@ -273,6 +287,19 @@ public class PlayerGrappleState : PlayerAbilityState
                 grappleType = GrappleTypes.noGrapple;
                 stateMachine.ChangeState(player.JumpState);
             }
+            else if(player.InputHandler.cancelInput)
+            {
+                player.joint.connectedBody = null;
+                player.joint.enableCollision = false;
+                player.joint.enablePreprocessing = false;
+                player.line.enabled = false;
+                this.player.joint.spring = 0f;
+                this.player.joint.damper = 0f;
+                this.player.joint.massScale = 0f;
+                isAbilityDone = true;
+                lastGrappleTime = Time.time;
+                grappleType = GrappleTypes.noGrapple;
+            }
 
         }
         else if(grappleType.Equals(GrappleTypes.swingReelInorOut))
@@ -285,27 +312,60 @@ public class PlayerGrappleState : PlayerAbilityState
 
     }
 
+        private bool isInitialRotation = true;
     private void GrappleRotation()
     {
-        float inputY = player.InputHandler.GrappleRotationX;
-        float inputX = player.InputHandler.GrappleRotationY;
+        Debug.Log("The current inputY " + rotationX);
+        float inputY = -player.InputHandler.NormInputX;
+        float inputX = -player.InputHandler.NormInputZ;
         Debug.Log("The current inputY " + inputY);
+        Debug.Log("The current inputX " + inputX);
+        Debug.Log("The current rotation " + player.GrappleDirectionIndicator.localRotation);
 
         if (Mathf.Abs(inputX) > 0.1f || Mathf.Abs(inputY) > 0.1f)
         {
             rotationY -= inputY * playerData.sensitivityY * Time.deltaTime;
             rotationX -= inputX * playerData.sensitivityX * Time.deltaTime;
-            Debug.Log("The current rotationY " + rotationY);
+
             rotationY = Mathf.Clamp(rotationY, playerData.minimumY, playerData.maximumY);
             rotationX = Mathf.Clamp(rotationX, playerData.minimumX, playerData.maximumX);
+
             Quaternion grappleRotationY = Quaternion.Euler(0f, rotationY, 0f);
             Quaternion grappleRotationX = Quaternion.Euler(rotationX, 0f, 0f);
-            Quaternion newRotation = grappleRotationY * grappleRotationX;
-            Debug.Log("The current arrow rotation " + newRotation);
-            player.GrappleDirectionIndicator.DOLocalRotate(newRotation.eulerAngles, 0.0001f);
-        }
+            Quaternion targetRotation = grappleRotationY * grappleRotationX;
 
+            Quaternion currentRotation = player.GrappleDirectionIndicator.localRotation;
+
+            // Calculate the clamped rotation
+            Quaternion clampedRotation = ClampRotation(targetRotation, currentRotation, playerData.maximumAngle);
+
+            Quaternion newRotation = Quaternion.Slerp(currentRotation, clampedRotation, playerData.rotationSpeed * Time.deltaTime);
+            player.GrappleDirectionIndicator.localRotation = newRotation;
+        }
     }
+
+    private Quaternion ClampRotation(Quaternion targetRotation, Quaternion currentRotation, float maxAngle)
+    {
+        // Calculate the angle between the target rotation and current rotation
+        Quaternion deltaRotation = Quaternion.Inverse(currentRotation) * targetRotation;
+
+        // Convert the delta rotation to Euler angles
+        Vector3 deltaEulerAngles = deltaRotation.eulerAngles;
+
+        // Clamp the delta rotation angles
+        float clampedAngleX = Mathf.Clamp(deltaEulerAngles.x, -maxAngle, maxAngle);
+        float clampedAngleY = Mathf.Clamp(deltaEulerAngles.y, -maxAngle, maxAngle);
+        Debug.Log("The clmaped angle " + clampedAngleX);
+
+
+        Quaternion clampedDeltaRotation = Quaternion.Euler(clampedAngleX, clampedAngleY, 0);
+
+        // Calculate the clamped target rotation
+        Quaternion clampedTargetRotation = currentRotation * clampedDeltaRotation;
+
+        return clampedTargetRotation;
+    }
+
 
     private void DrawLine()
     {
@@ -360,7 +420,7 @@ public class PlayerGrappleState : PlayerAbilityState
         player.line.SetPosition(1, curentEndpointPosition);
 
         Debug.Log("The current point position " + curentEndpointPosition.magnitude);
-        if (curentEndpointPosition == player.playerHand.transform.position)
+        if (curentEndpointPosition == player.playerHand.transform.position || player.InputHandler.cancelInput)
         {
             player.joint.connectedBody = null;
             player.joint.enableCollision = false;
@@ -386,7 +446,7 @@ public class PlayerGrappleState : PlayerAbilityState
             // Reduce the joint distance over time
             if (grappleType.Equals(GrappleTypes.reelInorOut) || grappleType.Equals(GrappleTypes.swingReelInorOut))
             {
-                if(player.InputHandler.qbuttonIsPressed) 
+                if(player.InputHandler.ebuttonIsPressed) 
                 {
                     Vector3 directionToPoint = hit.point - player.transform.position;
                     player.RB.AddForce(directionToPoint.normalized * playerData.forwardThrustForce * Time.deltaTime);
@@ -396,12 +456,12 @@ public class PlayerGrappleState : PlayerAbilityState
                     player.joint.maxDistance = distanceFromPoint * 0.8f;
                     player.joint.minDistance = distanceFromPoint * 0.25f;
                 }
-                else if(player.InputHandler.ebuttonIsPressed)
+                else if(player.InputHandler.qbuttonIsPressed)
                 {
                     float extendedDistanceFromPoint = Vector3.Distance(player.transform.position, hit.point) + playerData.extendCableSpeed;
 
                     player.joint.maxDistance = extendedDistanceFromPoint * 0.8f;
-                    player.joint.minDistance = extendedDistanceFromPoint * 0.25f;
+                    player.joint.minDistance = extendedDistanceFromPoint * 0.15f;
                 }
 
             }
@@ -418,7 +478,7 @@ public class PlayerGrappleState : PlayerAbilityState
 
 
         }
-        if (player.joint.maxDistance <= 1f)
+        if (player.joint.maxDistance <= 1f || player.InputHandler.cancelInput)
         {
             // Stop grappling if we've reached the grapple point
             player.joint.connectedBody = null;
@@ -482,7 +542,7 @@ public class PlayerGrappleState : PlayerAbilityState
         curentEndpointPosition = Vector3.MoveTowards(curentEndpointPosition, player.playerHand.transform.position, Time.deltaTime * 1.1f);
         player.line.SetPosition(1, curentEndpointPosition);
         Debug.Log(Vector3.Distance(player.playerHand.transform.position, player.joint.connectedBody.transform.position));
-        if (Vector3.Distance(player.playerHand.transform.position, player.joint.connectedBody.transform.position) <= 1f)
+        if (Vector3.Distance(player.playerHand.transform.position, player.joint.connectedBody.transform.position) <= 1f || player.InputHandler.cancelInput)
         {
             // Stop grappling if we've reached the grapple point
             player.joint.connectedBody = null;
@@ -505,4 +565,6 @@ public class PlayerGrappleState : PlayerAbilityState
     }
 
     public void ResetCanGrapple() => canGrapple = true;
+
+    private void ResetCancelGrapple() => player.InputHandler.cancelInput = false;
 }

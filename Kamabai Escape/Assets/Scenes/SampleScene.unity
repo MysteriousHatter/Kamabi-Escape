@@ -859,51 +859,15 @@ MonoBehaviour:
     m_ActionId: ee8c4c69-67eb-4e6d-b014-3691699bc132
     m_ActionName: Gameplay/Grab[/Keyboard/l]
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1036935850}
-        m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
-        m_MethodName: OnGrappleInputStarted
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: ef27d5a1-39c8-43ba-874b-7c89c7bb6e6f
     m_ActionName: Gameplay/Grapple Button[/Keyboard/p]
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1036935850}
-        m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
-        m_MethodName: OnGrappleDirectionInput
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: 6eeb2c0b-f602-4311-bf17-aac072f9eb7b
     m_ActionName: Gameplay/New action
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1036935850}
-        m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
-        m_MethodName: ReelInReelOut
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: 842c3cf6-69fb-4050-9a37-64f15a9dda67
     m_ActionName: Grapple Gameplay/ReelInReelOut[/Keyboard/q,/Keyboard/e]
   - m_PersistentCalls:
@@ -942,6 +906,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: fb47bafe-5b9e-4212-a96b-d1dd13e2a6bb
     m_ActionName: Gameplay/GrappleDirection-Vertical[/Keyboard/s,/Keyboard/w]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1036935850}
+        m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
+        m_MethodName: OnCancelGrappleInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: eae989ca-d11a-40e7-8645-080caa85b013
+    m_ActionName: Grapple Gameplay/Cancel[/Keyboard/l]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: Gameplay
@@ -1151,7 +1131,7 @@ GameObject:
   - component: {fileID: 1523263678}
   m_Layer: 0
   m_Name: Cube (1)
-  m_TagString: Swing-Reel
+  m_TagString: Platform-Reel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

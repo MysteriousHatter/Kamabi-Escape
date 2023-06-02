@@ -39,6 +39,9 @@ public class PlayerData : ScriptableObject
     public float grappleCooldown = 0.5f;
     public float angleOffset = 90f;
     public float swingHeight = 6f;
+    public float rotationSpeed = 40f;
+    public float maximumAngle = 270f;
+    public float holdTimeScale = 0.25f;
 
 
 }
