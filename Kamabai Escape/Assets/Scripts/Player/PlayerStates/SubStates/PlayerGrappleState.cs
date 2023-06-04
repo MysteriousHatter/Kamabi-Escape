@@ -57,6 +57,7 @@ public class PlayerGrappleState : PlayerAbilityState
     private float distanceAnimation;
     private float counter;
     bool finishedDrawing = false;
+    Vector3 curentEndpointPosition;
 
     public PlayerGrappleState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     {
@@ -68,6 +69,7 @@ public class PlayerGrappleState : PlayerAbilityState
         base.Enter();
         rotationY = 180f;
         rotationX = 0f;
+        hit = new RaycastHit();
 
         lineStartPos = player.playerHand.transform.position;
 
@@ -101,16 +103,16 @@ public class PlayerGrappleState : PlayerAbilityState
         if (isHolding)
         {
             ////// Move this code to Update In GrappleState script;
+            player.changeColorScale.GetComponent<PostProcessTest>().enabled = true;
             grappleInputStop = player.InputHandler.GrappleInputStop;
             GrappleRotation();
-            Debug.DrawRay(player.GrappleDirectionIndicator.transform.position, -player.GrappleDirectionIndicator.transform.forward * 20f, Color.red);
-            Debug.Log("Is Grapple InputStop " + grappleInputStop);
-            Debug.Log("The current time " + Time.timeScale);
+            DetectingAGrappleObject();
             if (grappleInputStop)
             {
                 isHolding = false;
                 Time.timeScale = 1f;
                 startTime = Time.time;
+                player.changeColorScale.GetComponent<PostProcessTest>().enabled = false;
                 Debug.Log("The current time " + Time.timeScale);
                 if (Physics.Raycast(player.GrappleDirectionIndicator.transform.position, -player.GrappleDirectionIndicator.transform.forward, out hit, playerData.distance, playerData.mask))
                 {
@@ -132,7 +134,7 @@ public class PlayerGrappleState : PlayerAbilityState
                     {
                         CalculateEnemyDistance(targetObject);
                     }
-                    else if(targetObject.CompareTag("Swing"))
+                    else if (targetObject.CompareTag("Swing"))
                     {
                         CalculateSwingDistance(targetObject);
                     }
@@ -156,6 +158,18 @@ public class PlayerGrappleState : PlayerAbilityState
         }
     }
 
+    private void DetectingAGrappleObject()
+    {
+        Vector3 rayDirection = -player.GrappleDirectionIndicator.transform.forward;
+        Vector3 rayEndPosition = player.GrappleDirectionIndicator.transform.position + rayDirection * playerData.distance;
+
+        Debug.DrawRay(player.GrappleDirectionIndicator.transform.position, rayDirection * playerData.distance, Color.red);
+        player.lineShadow.SetPosition(0, player.GrappleDirectionIndicator.transform.position);
+        player.lineShadow.SetPosition(1, rayEndPosition);
+        Debug.Log("Is Grapple InputStop " + grappleInputStop);
+        Debug.Log("The current time " + Time.timeScale);
+    }
+
     private void CalculateSwingDistance(GameObject targetObject)
     {
         this.player.joint.spring = 4.5f;
@@ -171,7 +185,7 @@ public class PlayerGrappleState : PlayerAbilityState
         playerData.minDistance = Vector3.Distance(player.playerHand.transform.position, player.joint.transform.position);
         currentLength = Vector3.Distance(player.joint.transform.position, player.joint.connectedAnchor);
         player.joint.maxDistance = playerData.maxDistance;
-        swingHeight = player.joint.maxDistance / 2f;
+        swingHeight = player.joint.maxDistance / 0.004f;
 
         distanceAnimation = Vector3.Distance(player.joint.transform.position, player.joint.connectedAnchor);
     }
@@ -207,7 +221,7 @@ public class PlayerGrappleState : PlayerAbilityState
         player.joint.enablePreprocessing = true;
         player.line.enabled = true;
 
-        player.joint.autoConfigureConnectedAnchor = false;
+        player.joint.autoConfigureConnectedAnchor = true;
 
         player.joint.connectedBody = targetObject.GetComponent<Rigidbody>();
         player.joint.connectedAnchor = targetObject.transform.InverseTransformPoint(hit.point);
@@ -231,11 +245,11 @@ public class PlayerGrappleState : PlayerAbilityState
         player.joint.enablePreprocessing = true;
         player.line.enabled = true;
 
-        player.joint.autoConfigureConnectedAnchor = false;
+        player.joint.autoConfigureConnectedAnchor = true;
 
         player.joint.connectedBody = targetObject.GetComponent<Rigidbody>();
         player.joint.connectedAnchor = targetObject.transform.InverseTransformPoint(hit.point);
-
+        curentEndpointPosition = player.joint.connectedBody.position;
         //Vector3 targetPos = hit.point - player.playerHand.transform.position;
         playerData.maxDistance = Vector3.Distance(player.playerHand.transform.position, hit.point);
         playerData.minDistance = 2.0f; //Our desired distance
@@ -249,6 +263,9 @@ public class PlayerGrappleState : PlayerAbilityState
     {
         player.GrappleDirectionIndicator.localRotation = Quaternion.Euler(0, 0, 0);
         ResetCancelGrapple();
+        player.line.SetPosition(0, Vector3.zero);
+        player.line.SetPosition(1,Vector3.zero);
+        player.OnDestroy();
         player.InputHandler.SwitchActionMaps();
         base.Exit();
     }
@@ -307,12 +324,38 @@ public class PlayerGrappleState : PlayerAbilityState
             if (player.InputHandler.NormInputZ > 0) { player.RB.AddForce(Vector3.forward * playerData.SwingThrustForce * Time.deltaTime); }
             else if (player.InputHandler.NormInputX > 0) { player.RB.AddForce(Vector3.right * playerData.SwingThrustForce * Time.deltaTime); }
             else if (player.InputHandler.NormInputX < 0) { player.RB.AddForce(-Vector3.right * playerData.SwingThrustForce * Time.deltaTime); }
+
+            if (jumpInput)
+            {
+                player.joint.connectedBody = null;
+                player.joint.enableCollision = false;
+                player.joint.enablePreprocessing = false;
+                player.line.enabled = false;
+                this.player.joint.spring = 0f;
+                this.player.joint.damper = 0f;
+                this.player.joint.massScale = 0f;
+                isAbilityDone = true;
+                lastGrappleTime = Time.time;
+                grappleType = GrappleTypes.noGrapple;
+                stateMachine.ChangeState(player.JumpState);
+            }
+            else if (player.InputHandler.cancelInput)
+            {
+                player.joint.connectedBody = null;
+                player.joint.enableCollision = false;
+                player.joint.enablePreprocessing = false;
+                player.line.enabled = false;
+                this.player.joint.spring = 0f;
+                this.player.joint.damper = 0f;
+                this.player.joint.massScale = 0f;
+                isAbilityDone = true;
+                lastGrappleTime = Time.time;
+                grappleType = GrappleTypes.noGrapple;
+            }
         }
 
 
     }
-
-        private bool isInitialRotation = true;
     private void GrappleRotation()
     {
         Debug.Log("The current inputY " + rotationX);
@@ -414,13 +457,12 @@ public class PlayerGrappleState : PlayerAbilityState
 
 
         ////// Update the line's end position to the new player position
-        Vector3 curentEndpointPosition = player.line.GetPosition(1);
 
-        curentEndpointPosition = Vector3.MoveTowards(curentEndpointPosition, player.playerHand.transform.position, Time.deltaTime * 2f);
+        curentEndpointPosition = Vector3.Lerp(curentEndpointPosition, player.playerHand.transform.position, Time.deltaTime * 20f);
+        player.line.SetPosition(0, player.playerHand.transform.position);
         player.line.SetPosition(1, curentEndpointPosition);
-
-        Debug.Log("The current point position " + curentEndpointPosition.magnitude);
-        if (curentEndpointPosition == player.playerHand.transform.position || player.InputHandler.cancelInput)
+        Debug.Log("The current point position " + curentEndpointPosition.magnitude + "and the player " + player.playerHand.transform.position.magnitude);
+        if ((int)curentEndpointPosition.magnitude == (int)player.playerHand.transform.position.magnitude || player.InputHandler.cancelInput)
         {
             player.joint.connectedBody = null;
             player.joint.enableCollision = false;
@@ -533,13 +575,14 @@ public class PlayerGrappleState : PlayerAbilityState
 
             // Adjust the joint's linear limit to move the object closer to the player
             player.joint.maxDistance -= distanceDelta * Time.deltaTime;
-            distanceToMove = Mathf.Min(distanceDelta, Time.deltaTime * 2.0f); // Limit the distance moved per frame
+            distanceToMove = Mathf.Min(distanceDelta, Time.deltaTime * 4.0f); // Limit the distance moved per frame
             player.joint.connectedBody.transform.position += direction * distanceToMove;
 
         }
-        Vector3 curentEndpointPosition = player.line.GetPosition(1);
+         curentEndpointPosition = player.joint.connectedBody.position;
 
-        curentEndpointPosition = Vector3.MoveTowards(curentEndpointPosition, player.playerHand.transform.position, Time.deltaTime * 1.1f);
+        curentEndpointPosition = Vector3.MoveTowards(curentEndpointPosition, player.playerHand.transform.position, Time.deltaTime * 1.2f);
+        player.line.SetPosition(0, player.playerHand.transform.position);
         player.line.SetPosition(1, curentEndpointPosition);
         Debug.Log(Vector3.Distance(player.playerHand.transform.position, player.joint.connectedBody.transform.position));
         if (Vector3.Distance(player.playerHand.transform.position, player.joint.connectedBody.transform.position) <= 1f || player.InputHandler.cancelInput)
@@ -548,6 +591,7 @@ public class PlayerGrappleState : PlayerAbilityState
             player.joint.connectedBody = null;
             player.joint.enableCollision = false;
             player.joint.enablePreprocessing = false;
+            player.joint.connectedAnchor = Vector3.zero;
             player.line.enabled = false;
             this.player.joint.spring = 0f;
             this.player.joint.damper = 0f;

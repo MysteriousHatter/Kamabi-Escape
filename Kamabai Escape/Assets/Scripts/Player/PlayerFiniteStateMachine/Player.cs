@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -36,6 +37,8 @@ public class Player : MonoBehaviour
     private Vector3 workspace;
     [SerializeField] public GameObject playerHand;
     [SerializeField] public LineRenderer line;
+    [SerializeField] public LineRenderer lineShadow;
+    public GameObject changeColorScale;
     #endregion
 
     #region Unity Callback Functions
@@ -88,6 +91,11 @@ public class Player : MonoBehaviour
         workspace.Set(1, height, 1);
 
         transform.localScale = workspace;
+    }
+
+    public void OnDestroy()
+    {
+        if (joint.IsDestroyed()) { Destroy(joint.GetComponent<SpringJoint>()); }
     }
     #endregion
 }

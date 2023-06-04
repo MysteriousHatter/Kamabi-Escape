@@ -13,17 +13,17 @@ MonoBehaviour:
   m_Name: playerData
   m_EditorClassIdentifier: Assembly-CSharp::PlayerData
   movementVelocity: 5
-  jumpVelocity: 15
+  jumpVelocity: 9
   amountOfJumps: 1
   coyoteTime: 0.2
   variableJumpHeightMultiplier: 0.5
   distance: 20
   mask:
     serializedVersion: 2
-    m_Bits: 63
+    m_Bits: 191
   grappleSpeed: 2
-  minDistance: 1.3598342
-  maxDistance: 7.177631
+  minDistance: 2
+  maxDistance: 7.624364
   lengthStep: 0.1
   scrollSensitivity: 1
   animationDuration: 3
@@ -33,7 +33,7 @@ MonoBehaviour:
   sensitivityX: 900
   minimumX: -40
   maximumX: 90
-  extendCableSpeed: 2
+  extendCableSpeed: 4
   forwardThrustForce: 600
   SwingThrustForce: 110
   maxRotation: 360

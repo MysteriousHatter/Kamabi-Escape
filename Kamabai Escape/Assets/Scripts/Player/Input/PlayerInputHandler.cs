@@ -68,6 +68,7 @@ public class PlayerInputHandler : MonoBehaviour
         InputSystem.Update();
         Debug.Log("The current action map " + playerInput.currentActionMap);
         CheckJumpInputHoldTime();
+        
     }
 
     public void OnMoveInput(InputAction.CallbackContext context)

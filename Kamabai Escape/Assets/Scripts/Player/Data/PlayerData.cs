@@ -44,4 +44,5 @@ public class PlayerData : ScriptableObject
     public float holdTimeScale = 0.25f;
 
 
+
 }
