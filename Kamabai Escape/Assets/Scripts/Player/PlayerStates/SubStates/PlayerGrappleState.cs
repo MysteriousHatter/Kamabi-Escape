@@ -116,7 +116,7 @@ public class PlayerGrappleState : PlayerAbilityState
                 Debug.Log("The current time " + Time.timeScale);
                 if (Physics.Raycast(player.GrappleDirectionIndicator.transform.position, -player.GrappleDirectionIndicator.transform.forward, out hit, playerData.distance, playerData.mask))
                 {
-
+                    Debug.Log("Detecting the item");
                     GameObject targetObject = hit.collider.gameObject;
                     this.player.joint = this.player.gameObject.AddComponent<SpringJoint>();
                     this.player.joint.autoConfigureConnectedAnchor = false;
@@ -168,6 +168,10 @@ public class PlayerGrappleState : PlayerAbilityState
         player.lineShadow.SetPosition(1, rayEndPosition);
         Debug.Log("Is Grapple InputStop " + grappleInputStop);
         Debug.Log("The current time " + Time.timeScale);
+        if (Physics.Raycast(player.GrappleDirectionIndicator.transform.position, -player.GrappleDirectionIndicator.transform.forward, out hit, playerData.distance, playerData.mask))
+        {
+            hit.rigidbody.gameObject.layer = 8;
+        }
     }
 
     private void CalculateSwingDistance(GameObject targetObject)
