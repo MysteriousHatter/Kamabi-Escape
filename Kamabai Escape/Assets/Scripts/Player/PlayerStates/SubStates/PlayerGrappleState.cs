@@ -34,6 +34,8 @@ public class PlayerGrappleState : PlayerAbilityState
     float currentStartRotation = 0f;
 
     Quaternion targetRotation;
+    GameObject previousObject;
+    bool hittingGrapplePoint = false;
 
 
     private enum GrappleTypes
@@ -114,6 +116,7 @@ public class PlayerGrappleState : PlayerAbilityState
                 startTime = Time.time;
                 player.changeColorScale.GetComponent<PostProcessTest>().enabled = false;
                 Debug.Log("The current time " + Time.timeScale);
+                player.InputHandler.SwitchActionMapToGrapple();
                 if (Physics.Raycast(player.GrappleDirectionIndicator.transform.position, -player.GrappleDirectionIndicator.transform.forward, out hit, playerData.distance, playerData.mask))
                 {
                     Debug.Log("Detecting the item");
@@ -170,7 +173,23 @@ public class PlayerGrappleState : PlayerAbilityState
         Debug.Log("The current time " + Time.timeScale);
         if (Physics.Raycast(player.GrappleDirectionIndicator.transform.position, -player.GrappleDirectionIndicator.transform.forward, out hit, playerData.distance, playerData.mask))
         {
-            hit.rigidbody.gameObject.layer = 8;
+            if (hit.collider.gameObject.layer == 7)
+            {
+                hit.collider.gameObject.GetComponent<Renderer>().material.SetFloat("_Blend", 0f);
+                hit.collider.gameObject.GetComponent<Renderer>().material.SetFloat("_Glossiness", 0f);
+                hit.collider.gameObject.GetComponent<Renderer>().material.SetFloat("_Metallic", 0f);
+                previousObject = hit.collider.gameObject;
+                hittingGrapplePoint = true;
+            }
+            else { hittingGrapplePoint = false; }
+
+        }
+        else if(hittingGrapplePoint == true)
+        {
+            hittingGrapplePoint = false;
+            previousObject.GetComponent<Renderer>().material.SetFloat("_Blend", 1f);
+            previousObject.GetComponent<Renderer>().material.SetFloat("_Glossiness", 0.831f);
+            previousObject.GetComponent<Renderer>().material.SetFloat("_Metallic", 0.543f);
         }
     }
 
@@ -492,7 +511,7 @@ public class PlayerGrappleState : PlayerAbilityState
             // Reduce the joint distance over time
             if (grappleType.Equals(GrappleTypes.reelInorOut) || grappleType.Equals(GrappleTypes.swingReelInorOut))
             {
-                if(player.InputHandler.ebuttonIsPressed) 
+                if(player.InputHandler.ReelInput < 0) 
                 {
                     Vector3 directionToPoint = hit.point - player.transform.position;
                     player.RB.AddForce(directionToPoint.normalized * playerData.forwardThrustForce * Time.deltaTime);
@@ -502,7 +521,7 @@ public class PlayerGrappleState : PlayerAbilityState
                     player.joint.maxDistance = distanceFromPoint * 0.8f;
                     player.joint.minDistance = distanceFromPoint * 0.25f;
                 }
-                else if(player.InputHandler.qbuttonIsPressed)
+                else if(player.InputHandler.ReelInput > 0)
                 {
                     float extendedDistanceFromPoint = Vector3.Distance(player.transform.position, hit.point) + playerData.extendCableSpeed;
 
@@ -524,7 +543,7 @@ public class PlayerGrappleState : PlayerAbilityState
 
 
         }
-        if (player.joint.maxDistance <= 1f || player.InputHandler.cancelInput)
+        if (player.joint.maxDistance <= 3f || player.InputHandler.cancelInput)
         {
             // Stop grappling if we've reached the grapple point
             player.joint.connectedBody = null;

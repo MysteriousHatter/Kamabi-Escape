@@ -51,6 +51,7 @@ Shader "Unlit/Greyscale"
                 //fixed4 redOnly = fixed4(col.y, col.x, col.z, col.w);
                 float intensity = col.x * 0.299 + col.y * 0.587 + col.z * 0.114;
                 fixed4 bandw = fixed4(intensity, intensity, intensity, col.w);
+                bandw = lerp(col, bandw, col.a);
                 // apply fog
                 //UNITY_APPLY_FOG(i.fogCoord, col);
                 return bandw;

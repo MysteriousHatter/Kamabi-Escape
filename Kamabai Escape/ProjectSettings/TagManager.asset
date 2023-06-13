@@ -10,6 +10,8 @@ TagManager:
   - Enemy
   - Swing
   - Swing-Reel
+  - HookPoint-Manual
+  - HookPoint-Automatic
   layers:
   - Default
   - TransparentFX

@@ -30,7 +30,6 @@ public class PostProcessTest : MonoBehaviour
     {
 
         Graphics.Blit(source, destination, m_Material);
-        //Camera.set
 
     }
 
