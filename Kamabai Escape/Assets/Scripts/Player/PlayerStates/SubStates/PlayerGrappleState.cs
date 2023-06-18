@@ -36,6 +36,7 @@ public class PlayerGrappleState : PlayerAbilityState
     Quaternion targetRotation;
     GameObject previousObject;
     bool hittingGrapplePoint = false;
+    Vector3 Direction = Vector3.zero;
 
 
     private enum GrappleTypes
@@ -295,56 +296,10 @@ public class PlayerGrappleState : PlayerAbilityState
 
     private void SwingControls()
     {
-        if(grappleType.Equals(GrappleTypes.swingingOnObject))
-        {
-            ZippingToPoint();
-            if (player.joint.maxDistance <= swingHeight)
-                {
-                    // Stop grappling if we've reached the grapple point
-                    this.player.joint.spring = 1f;
-                    this.player.joint.damper = 3f;
-                    this.player.joint.massScale = 2f;
-
-                    if (player.InputHandler.NormInputZ > 0) { player.RB.AddForce(Vector3.forward * playerData.SwingThrustForce * Time.deltaTime); }
-                    else if (player.InputHandler.NormInputX > 0) { player.RB.AddForce(Vector3.right * playerData.SwingThrustForce * Time.deltaTime); }
-                    else if (player.InputHandler.NormInputX < 0) { player.RB.AddForce(-Vector3.right * playerData.SwingThrustForce * Time.deltaTime); }
-                }
-
-            player.line.SetPosition(0, player.playerHand.transform.position);
-            player.line.SetPosition(1, hit.point);
-
-            if (jumpInput)
-            {
-                player.joint.connectedBody = null;
-                player.joint.enableCollision = false;
-                player.joint.enablePreprocessing = false;
-                player.line.enabled = false;
-                this.player.joint.spring = 0f;
-                this.player.joint.damper = 0f;
-                this.player.joint.massScale = 0f;
-                isAbilityDone = true;
-                lastGrappleTime = Time.time;
-                grappleType = GrappleTypes.noGrapple;
-                stateMachine.ChangeState(player.JumpState);
-            }
-            else if(player.InputHandler.cancelInput)
-            {
-                player.joint.connectedBody = null;
-                player.joint.enableCollision = false;
-                player.joint.enablePreprocessing = false;
-                player.line.enabled = false;
-                this.player.joint.spring = 0f;
-                this.player.joint.damper = 0f;
-                this.player.joint.massScale = 0f;
-                isAbilityDone = true;
-                lastGrappleTime = Time.time;
-                grappleType = GrappleTypes.noGrapple;
-            }
-
-        }
-        else if(grappleType.Equals(GrappleTypes.swingReelInorOut))
+        if(grappleType.Equals(GrappleTypes.swingReelInorOut))
         {
             if (player.InputHandler.NormInputZ > 0) { player.RB.AddForce(Vector3.forward * playerData.SwingThrustForce * Time.deltaTime); }
+            else if (player.InputHandler.NormInputZ < 0) { player.RB.AddForce(-Vector3.forward * playerData.SwingThrustForce * Time.deltaTime); }
             else if (player.InputHandler.NormInputX > 0) { player.RB.AddForce(Vector3.right * playerData.SwingThrustForce * Time.deltaTime); }
             else if (player.InputHandler.NormInputX < 0) { player.RB.AddForce(-Vector3.right * playerData.SwingThrustForce * Time.deltaTime); }
 
@@ -360,7 +315,9 @@ public class PlayerGrappleState : PlayerAbilityState
                 isAbilityDone = true;
                 lastGrappleTime = Time.time;
                 grappleType = GrappleTypes.noGrapple;
-                stateMachine.ChangeState(player.JumpState);
+                Vector3 releaseForceDirection = player.RB.velocity.normalized; // Use the current velocity direction as the release direction
+                player.RB.AddForce(releaseForceDirection * playerData.releaseForceMagnitude, ForceMode.Impulse);
+                stateMachine.ChangeState(player.InAirState);
             }
             else if (player.InputHandler.cancelInput)
             {
@@ -376,7 +333,6 @@ public class PlayerGrappleState : PlayerAbilityState
                 grappleType = GrappleTypes.noGrapple;
             }
         }
-
 
     }
     private void GrappleRotation()

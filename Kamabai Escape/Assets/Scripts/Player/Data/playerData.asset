@@ -23,7 +23,7 @@ MonoBehaviour:
     m_Bits: 191
   grappleSpeed: 2
   minDistance: 1.0805202
-  maxDistance: 13.780367
+  maxDistance: 10.628159
   lengthStep: 0.1
   scrollSensitivity: 1
   animationDuration: 3
@@ -35,7 +35,7 @@ MonoBehaviour:
   maximumX: 90
   extendCableSpeed: 4
   forwardThrustForce: 600
-  SwingThrustForce: 110
+  SwingThrustForce: 180
   maxRotation: 360
   grappleCooldown: 0.1
   angleOffset: -90
