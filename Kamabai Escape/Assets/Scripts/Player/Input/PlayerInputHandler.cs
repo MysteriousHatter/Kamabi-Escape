@@ -1,13 +1,15 @@
-﻿using UnityEditorInternal;
+﻿using System;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 using UnityEngine.UIElements;
-using static UnityEditor.Timeline.TimelinePlaybackControls;
+using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerInputHandler : MonoBehaviour
 {
-    private PlayerInput playerInput;
+    //private PlayerInput playerInput;
+    private Player player;
     [SerializeField] private InputActionReference grappleButtonReference;
     [SerializeField] private InputActionReference verticalAction;
     [SerializeField] private InputActionReference grappleDirectionalButtonReferenceH;
@@ -20,7 +22,7 @@ public class PlayerInputHandler : MonoBehaviour
     public float reelInandOut { get; private set; }
     public float NormInputX { get; private set; }
     public float NormInputZ { get; private set; }
-
+    public float ReelInput { get; private set; }
     public float GrappleRotationX { get; private set; }
     public float GrappleRotationY { get; private set; }
     public bool JumpInput { get; private set; }
@@ -29,9 +31,12 @@ public class PlayerInputHandler : MonoBehaviour
     public bool JumpInputStop { get; private set; }
     public bool GrabInput { get; private set; }
     public bool isHoldingGrappleButton { get; private set; }
+    public bool isTappingGrappleButton { get; private set; }
     public bool GrappleInputStop { get; set; }
     public bool qbuttonIsPressed { get; set; }
     public bool ebuttonIsPressed { get; set; }
+
+    public bool cancelInput { get; set; }
 
 
 
@@ -44,13 +49,24 @@ public class PlayerInputHandler : MonoBehaviour
 
     private float holdTime;
 
+    private bool interactionStarted = false;
+    private float interactionTime;
 
+    private void OnEnable()
+    {
+        grappleButtonReference.action.Enable();
+    }
+
+    private void OnDisable()
+    {
+        grappleButtonReference.action.Disable();
+    }
 
     private void Start()
     {
-        playerInput = GetComponent<PlayerInput>();
-        grappleButtonReference.action.performed += OnGrappleInputPerformed;
-        grappleButtonReference.action.canceled += OnGrappleInputCanceled;
+        //player.playerInput = GetComponent<PlayerInput>();
+        player = GetComponent<Player>();
+        grappleButtonReference.action.started += OnGrappleInputPerformed;
         grappleDirectionalButtonReferenceH.action.performed += OnGrappleDirectionInputHorizontal;
         grappleDirectionalButtonReferenceH.action.canceled += OnGrappleDirectionInputCanceledHorizontal;
         grappleDirectionalButtonReferenceV.action.performed += OnGrappleDirectionInputVertical;
@@ -64,8 +80,10 @@ public class PlayerInputHandler : MonoBehaviour
     private void Update()
     {
         InputSystem.Update();
-
+       
+        Debug.Log("The current input map" + player.playerInput.currentActionMap);
         CheckJumpInputHoldTime();
+        
     }
 
     public void OnMoveInput(InputAction.CallbackContext context)
@@ -105,6 +123,14 @@ public class PlayerInputHandler : MonoBehaviour
         }
     }
 
+    public void OnCancelGrappleInput(InputAction.CallbackContext context)
+    {
+        if(context.started) 
+        {
+            cancelInput = true; 
+        }
+    }
+
     public void OnGrappleDirectionInputHorizontal(InputAction.CallbackContext context)
     {
         RawGrappleDirectionInput = context.ReadValue<float>();
@@ -121,32 +147,58 @@ public class PlayerInputHandler : MonoBehaviour
         //DashDirectionInput = Vector2Int.RoundToInt(RawDashDirectionInput.normalized);
     }
 
+
     public void OnGrappleInputPerformed(InputAction.CallbackContext context)
     {
-        if (context.interaction is TapInteraction) { Debug.Log("We are tapping for grapple"); }
-        else if (context.interaction is HoldInteraction) 
-        { 
-            Debug.Log("We are holding");
-            isHoldingGrappleButton = true;
-            GrappleInputStop = false;
+        switch(context.phase)
+        {
+            case InputActionPhase.Started:
+                if (context.interaction is SlowTapInteraction)
+                {
+                    Debug.Log("We are Charging");
+                    isHoldingGrappleButton = true;
+                    isTappingGrappleButton = false;
+                    GrappleInputStop = false;
+                    player.inputType = Player.GrappleInputs.HoldButton;
+                }
+ 
+                break;
+            case InputActionPhase.Performed:
+                if (context.interaction is SlowTapInteraction)
+                {
+                    Debug.Log("We are show charged fire");
+                    isHoldingGrappleButton = false;
+                    isTappingGrappleButton = false;
+                    GrappleInputStop = true;
+                }
+                break;
+            case InputActionPhase.Canceled:
+                grappleButtonReference.action.canceled += OnGrappleInitiated;
+                break;
         }
+        //rappleInputStop = false;
         //if (context.interaction is TapInteraction) { Debug.Log("We are tapping for grapple"); }
     }
 
-    public void OnGrappleInputCanceled(InputAction.CallbackContext context)
+    public void OnGrappleInitiated(InputAction.CallbackContext context)
     {
           Debug.Log("We are not holding");
-          //isHoldingGrappleButton = false;
+          isHoldingGrappleButton = false;
+          isTappingGrappleButton = false;
           GrappleInputStop = true;
-          playerInput.actions.FindActionMap("Grapple Gameplay").Enable();
-          verticalAction.action.performed += ReelInReelOutPerformed;
-          verticalAction.action.canceled += ReelInReelOutCanceled;
+         //Debug.Log("We are not holding " + playerInput.currentActionMap);
+         //verticalAction.action.performed += ReelInReelOutPerformed;
+         //verticalAction.action.canceled += ReelInReelOutCanceled;
 
     }
 
     public void UseGrappleInput() => GrappleInput = false;
     public void UseHoldingGrapple() => isHoldingGrappleButton = false;
+
+    public void UseTappingGrapple() => isTappingGrappleButton = false;
     public void UseJumpInput() => JumpInput = false;
+    public void SwitchActionMaps() => player.playerInput.SwitchCurrentActionMap("Gameplay");
+    public void SwitchActionMapToGrapple() => player.playerInput.SwitchCurrentActionMap("Grapple Gameplay");
 
     private void CheckJumpInputHoldTime()
     {
@@ -158,25 +210,12 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void ReelInReelOutPerformed(InputAction.CallbackContext context)
     {
+        RawMovementInput = context.ReadValue<Vector2>();
+        Debug.Log("Move with Context " + RawMovementInput);
 
-        if(context.ReadValue<float>() > 0)
-        {
-            if(context.control == Keyboard.current.qKey)
-            {
-                qbuttonIsPressed = true;
-            }
-            else if(context.control == Keyboard.current.eKey)
-            {
-                ebuttonIsPressed = true;
-            }
-        }
+        ReelInput = RawMovementInput.y;
     }
 
-    public void ReelInReelOutCanceled(InputAction.CallbackContext context)
-    {
-        qbuttonIsPressed = false;
-        ebuttonIsPressed = false;
-    }
 
     //private void ReelInReelOutCanceled(InputAction.CallbackContext context) => reelInandOut = 0;
     private void OnGrappleDirectionInputCanceledHorizontal(InputAction.CallbackContext context) => GrappleRotationX = 0;

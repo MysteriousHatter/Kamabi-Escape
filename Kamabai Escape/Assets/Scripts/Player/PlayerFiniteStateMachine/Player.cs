@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 
 public class Player : MonoBehaviour
@@ -13,6 +15,12 @@ public class Player : MonoBehaviour
     public PlayerJumpState JumpState { get; private set; }
     public PlayerInAirState InAirState { get; private set; }
     public PlayerLandState LandState { get; private set; }
+    public PlayerHomingGrapple HomingState { get; private set; }
+
+
+
+
+    public PlayerInput playerInput { get; set; }
     public Transform GrappleDirectionIndicator { get; private set; }
 
     public SphereCollider MovementCollider { get; private set; }
@@ -29,6 +37,14 @@ public class Player : MonoBehaviour
     public Rigidbody RB { get; private set; }
     public SpringJoint joint {get;  set;}
     public SpringJoint swingJoint { get; set;}
+    public enum GrappleInputs
+    {
+        TapButton,
+        HoldButton,
+        NoInput
+    }
+
+    public GrappleInputs inputType { get; set; }
 
     #endregion
 
@@ -36,6 +52,8 @@ public class Player : MonoBehaviour
     private Vector3 workspace;
     [SerializeField] public GameObject playerHand;
     [SerializeField] public LineRenderer line;
+    [SerializeField] public LineRenderer lineShadow;
+    public GameObject changeColorScale;
     #endregion
 
     #region Unity Callback Functions
@@ -51,16 +69,19 @@ public class Player : MonoBehaviour
         InAirState = new PlayerInAirState(this, StateMachine, playerData, "inAir");
         LandState = new PlayerLandState(this, StateMachine, playerData, "land");
         GrappleDirectionalState = new PlayerGrappleState(this, StateMachine, playerData, "Grapple");
+        HomingState = new PlayerHomingGrapple(this, StateMachine, playerData, "Homing");
         
     }
 
     private void Start()
     {
+        playerInput = GetComponent<PlayerInput>();
         InputHandler = GetComponent<PlayerInputHandler>();
         RB = GetComponent<Rigidbody>();
         //joint = GetComponent<ConfigurableJoint>();
         GrappleDirectionIndicator = transform.Find("GrappleDirectionIndicator");
         MovementCollider = GetComponent<SphereCollider>();
+        inputType = GrappleInputs.NoInput;
         StateMachine.Initialize(IdleState);
         //line.SetPosition(0, playerHand.transform.position);
         //line.SetPosition(1, playerHand.transform.position);
@@ -71,6 +92,7 @@ public class Player : MonoBehaviour
         Core.LogicUpdate();
         StateMachine.CurrentState.LogicUpdate();
         Debug.Log("the current state machine " + StateMachine.CurrentState);
+        Debug.Log("The current action map " + playerInput.currentActionMap.name);
     }
 
     private void FixedUpdate()
@@ -88,6 +110,11 @@ public class Player : MonoBehaviour
         workspace.Set(1, height, 1);
 
         transform.localScale = workspace;
+    }
+
+    public void OnDestroy()
+    {
+        if (joint.IsDestroyed()) { Destroy(joint.GetComponent<SpringJoint>()); }
     }
     #endregion
 }

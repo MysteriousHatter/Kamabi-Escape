@@ -11,9 +11,11 @@ public class PlayerInAirState : PlayerState
     private bool jumpInputStop;
     private bool grabInput;
 
+
     //Checks
     private bool isGrounded;
-    private bool isTouchingWall;
+    private bool HoldingGrappleInput;
+    private bool tappingGrappleInput;
 
     private bool coyoteTime;
     private bool wallJumpCoyoteTime;
@@ -35,6 +37,7 @@ public class PlayerInAirState : PlayerState
     public override void Enter()
     {
         base.Enter();
+        player.GrappleDirectionalState.ResetCanGrapple();
     }
 
     public override void Exit()
@@ -54,6 +57,8 @@ public class PlayerInAirState : PlayerState
         jumpInput = player.InputHandler.JumpInput;
         jumpInputStop = player.InputHandler.JumpInputStop;
         grabInput = player.InputHandler.GrabInput;
+        HoldingGrappleInput = player.InputHandler.isHoldingGrappleButton;
+        tappingGrappleInput = player.InputHandler.isTappingGrappleButton;
 
         CheckJumpMultiplier();
 
@@ -65,6 +70,14 @@ public class PlayerInAirState : PlayerState
         {
             stateMachine.ChangeState(player.JumpState);
         }
+        else if (player.GrappleDirectionalState.CheckIfCanGrapple() && HoldingGrappleInput)
+        {
+            stateMachine.ChangeState(player.GrappleDirectionalState);
+        }
+        //else if (player.GrappleDirectionalState.CheckIfCanGrapple() && tappingGrappleInput)
+        //{
+        //    stateMachine.ChangeState(player.HomingState);
+        //}
         else
         {
            //core.Movement.CheckIfShouldFlip(xInput);

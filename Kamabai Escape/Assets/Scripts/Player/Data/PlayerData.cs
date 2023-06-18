@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [CreateAssetMenu(fileName ="newPlayerData", menuName ="Data/Player Data/Base Data")]
 public class PlayerData : ScriptableObject
@@ -39,6 +40,14 @@ public class PlayerData : ScriptableObject
     public float grappleCooldown = 0.5f;
     public float angleOffset = 90f;
     public float swingHeight = 6f;
+    public float rotationSpeed = 40f;
+    public float maximumAngle = 270f;
+    public float holdTimeScale = 0.25f;
+
+    [Header("Homing Grapple")]
+    public float homingRadius = 5f;
+    public GameObject reticlePrefab;
+
 
 
 }

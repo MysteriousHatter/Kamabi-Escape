@@ -10,6 +10,8 @@ TagManager:
   - Enemy
   - Swing
   - Swing-Reel
+  - HookPoint-Manual
+  - HookPoint-Automatic
   layers:
   - Default
   - TransparentFX
@@ -18,8 +20,8 @@ TagManager:
   - Water
   - UI
   - Ground
-  - 
-  - 
+  - Grapple Points
+  - Grapple Points-Color
   - 
   - 
   - 

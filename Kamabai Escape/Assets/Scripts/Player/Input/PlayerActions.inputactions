@@ -1,5 +1,5 @@
 {
-    "name": "Player",
+    "name": "PlayerActions",
     "maps": [
         {
             "name": "Gameplay",
@@ -38,7 +38,7 @@
                     "id": "ef27d5a1-39c8-43ba-874b-7c89c7bb6e6f",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Tap(duration=0.2),SlowTap(duration=0.9,pressPoint=0.7)",
                     "initialStateCheck": false
                 },
                 {
@@ -175,7 +175,7 @@
                     "name": "",
                     "id": "1e640071-e468-4764-ad30-823af9326c98",
                     "path": "<Keyboard>/p",
-                    "interactions": "Hold(duration=0.4,pressPoint=1),Tap(duration=0.2)",
+                    "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "Grapple Button",
@@ -289,12 +289,12 @@
             "actions": [
                 {
                     "name": "ReelInReelOut",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "842c3cf6-69fb-4050-9a37-64f15a9dda67",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Vector3",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Movement",
@@ -313,30 +313,50 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Cancel",
+                    "type": "Button",
+                    "id": "eae989ca-d11a-40e7-8645-080caa85b013",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
                 {
-                    "name": "",
-                    "id": "8ae9f5e5-3f50-465e-a258-257f335e99a0",
-                    "path": "<Keyboard>/q",
+                    "name": "QE",
+                    "id": "dc8f06fd-3e1d-4a2b-9cef-1dc3ce8414c1",
+                    "path": "2DVector",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard",
+                    "groups": "",
                     "action": "ReelInReelOut",
-                    "isComposite": false,
+                    "isComposite": true,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "6a330148-ddca-44ab-aca3-dfa039a9f4e0",
+                    "name": "up",
+                    "id": "d92efd9f-7eb0-4434-8bc3-115b4f3e5c11",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ReelInReelOut",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "6945da63-507e-4033-a69b-923e59afe9d4",
                     "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard",
+                    "groups": "",
                     "action": "ReelInReelOut",
                     "isComposite": false,
-                    "isPartOfComposite": false
+                    "isPartOfComposite": true
                 },
                 {
                     "name": "",
@@ -423,6 +443,28 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8b7e35b2-17b1-416f-8b59-1fc17b7afd07",
+                    "path": "<Keyboard>/l",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b0bfa309-df3d-4258-b700-ec0360644b07",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Cancel",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
