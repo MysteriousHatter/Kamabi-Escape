@@ -38,6 +38,8 @@ public class PlayerGrappleState : PlayerAbilityState
     bool hittingGrapplePoint = false;
     Vector3 Direction = Vector3.zero;
 
+    private GameObject movingPlatform;
+
 
     private enum GrappleTypes
     {
@@ -160,6 +162,7 @@ public class PlayerGrappleState : PlayerAbilityState
 
             }
         }
+
     }
 
     private void DetectingAGrappleObject()
@@ -216,9 +219,10 @@ public class PlayerGrappleState : PlayerAbilityState
 
     private void CalculatePlatformDistance(GameObject targetObject)
     {
-        this.player.joint.spring = 4.5f;
-        this.player.joint.damper = 7f;
+        this.player.joint.spring = 50f;
+        this.player.joint.damper = 20f;
         this.player.joint.massScale = 4.5f;
+        movingPlatform = targetObject;
         Debug.Log("Are we hitting something");
         if (targetObject.CompareTag("Platform-Reel")) { grappleType = GrappleTypes.reelInorOut; }
         else if (targetObject.CompareTag("Platform")) { grappleType = GrappleTypes.pullingToPoint; }
@@ -494,7 +498,7 @@ public class PlayerGrappleState : PlayerAbilityState
 
             ////// Update the line's end position to the new player position
             player.line.SetPosition(0, player.playerHand.transform.position);
-            player.line.SetPosition(1, hit.point);
+            player.line.SetPosition(1, movingPlatform.transform.position);
 
 
 

@@ -12,6 +12,7 @@ TagManager:
   - Swing-Reel
   - HookPoint-Manual
   - HookPoint-Automatic
+  - Hazard
   layers:
   - Default
   - TransparentFX
