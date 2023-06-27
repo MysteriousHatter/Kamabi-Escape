@@ -10,8 +10,13 @@ public class LevelManager : MonoBehaviour
     
     public static LevelManager Instance { get; private set; }
 
+    string scoreKey;
     public int currentLevel;
-    public bool[] isSceneUnlocked;
+    public int highestLevel;
+
+    public int[] highScores; //the high score for each level, where the value is the score and the index is the level.
+    //the length of this array should be the number of levels in the game
+    
 
     private void Awake()
     {
@@ -29,6 +34,7 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        highestLevel = 1;
         currentLevel = 1;
     }
 
@@ -38,21 +44,38 @@ public class LevelManager : MonoBehaviour
         
     }
 
-    //We track whether a scene is unlocked through an array of bools.
-    //The index of the array corresponds to the index of the scene
-    public void UnlockScene(int index)
+    public void SaveData(int score, int level)
     {
-        isSceneUnlocked[index] = true;
+        scoreKey = "Score" + currentLevel;
+        PlayerPrefs.SetInt(scoreKey, score);
+        PlayerPrefs.SetInt("CurrentLevel", level);
+        PlayerPrefs.SetInt("HighestLevel", highestLevel);
+        PlayerPrefs.Save();
     }
-    public void LockScene(int index)
+
+    public void LoadData()
     {
-        isSceneUnlocked[index] = false;
+        for (int i = 0; i < highScores.Length; i++)
+        {
+            scoreKey = "Score" + i + 1;
+            highScores[i] = PlayerPrefs.GetInt(scoreKey);
+        }
+        currentLevel = PlayerPrefs.GetInt("CurrentLevel", 1);
+        highestLevel = PlayerPrefs.GetInt("HighestLevel", 1);
+    }
+
+    public bool isLevelUnlocked(int level)
+    {
+        //the player will have access to the level after their highest level and all lower levels.
+        if (level > highestLevel + 1) return false;
+
+        return true;
     }
 
     public void LoadScene(int value)
     {
         //if scene is unlocked, load scene and update current scene int
-        if(isSceneUnlocked[value])
+        if(isLevelUnlocked(value))
         {
             currentLevel = value;
             SceneManager.LoadScene(value);
@@ -62,9 +85,14 @@ public class LevelManager : MonoBehaviour
     public void LoadCurrentLevel()
     {
         //if scene is unlocked, load scene and update current scene int
-        if (isSceneUnlocked[currentLevel])
+        if (isLevelUnlocked(currentLevel))
         {
             SceneManager.LoadScene(currentLevel);
+        }
+
+        if(currentLevel > highestLevel)
+        {
+            highestLevel = currentLevel;
         }
     }
 }
