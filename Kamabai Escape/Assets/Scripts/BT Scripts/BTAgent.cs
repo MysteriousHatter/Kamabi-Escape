@@ -30,9 +30,10 @@ public class BTAgent : MonoBehaviour
     {
         Vector3 directionToTarget = target - this.transform.position;
         float angle = Vector3.Angle(directionToTarget, this.transform.forward);
-        
+
         //First condtion checks if the robber is right in front of the cop 
         //Second condtion checks if the robber is at a close distance between the cop 
+        Debug.Log("Compare the directionToTarget " + directionToTarget.magnitude + "With the distance " + distance);
         if(angle <= maxAngle || directionToTarget.magnitude <= distance) //You can also have a condition where the robber can able to look in the direction of the cop, but not be able to detect him or see him
         {
             RaycastHit hitInfo;

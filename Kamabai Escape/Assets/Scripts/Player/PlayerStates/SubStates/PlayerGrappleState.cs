@@ -39,6 +39,7 @@ public class PlayerGrappleState : PlayerAbilityState
     Vector3 Direction = Vector3.zero;
 
     private GameObject movingPlatform;
+    private GameObject enemy;
 
 
     private enum GrappleTypes
@@ -138,6 +139,9 @@ public class PlayerGrappleState : PlayerAbilityState
                     }
                     else if (targetObject.CompareTag("Enemy"))
                     {
+                        targetObject.GetComponent<Guard>().isStunned = true;
+                        player.transform.SetParent(null);
+                        targetObject.GetComponent<Guard>().theKid = null;
                         CalculateEnemyDistance(targetObject);
                     }
                     else if (targetObject.CompareTag("Swing"))
@@ -425,6 +429,7 @@ public class PlayerGrappleState : PlayerAbilityState
     private void GrappleEnemy()
     {
         /// Method for callling the method in our enemyAI script
+
         player.joint.maxDistance = player.joint.maxDistance - ((Time.deltaTime * 5) * playerData.grappleSpeed);
 
         Vector3 playerPos = player.playerHand.transform.position;
