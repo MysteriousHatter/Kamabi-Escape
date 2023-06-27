@@ -1,9 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Layouts;
 using UnityEngine.Rendering;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class Player : MonoBehaviour
 {
@@ -17,6 +21,10 @@ public class Player : MonoBehaviour
     public PlayerLandState LandState { get; private set; }
     public PlayerHomingGrapple HomingState { get; private set; }
 
+    public PlayerCapturedState capturedState { get; private set; }
+    public GameObject enemyPrefab { get; set; }
+
+    public event Action HitKid;
 
 
 
@@ -37,6 +45,8 @@ public class Player : MonoBehaviour
     public Rigidbody RB { get; private set; }
     public SpringJoint joint {get;  set;}
     public SpringJoint swingJoint { get; set;}
+
+    public UnityEvent capturedEvent;
     public enum GrappleInputs
     {
         TapButton,
@@ -54,6 +64,8 @@ public class Player : MonoBehaviour
     [SerializeField] public LineRenderer line;
     [SerializeField] public LineRenderer lineShadow;
     public GameObject changeColorScale;
+    public GameObject UICapturedBox;
+    public Vector3 offset;
     #endregion
 
     #region Unity Callback Functions
@@ -68,9 +80,12 @@ public class Player : MonoBehaviour
         JumpState = new PlayerJumpState(this, StateMachine, playerData, "inAir");
         InAirState = new PlayerInAirState(this, StateMachine, playerData, "inAir");
         LandState = new PlayerLandState(this, StateMachine, playerData, "land");
+        capturedState = new PlayerCapturedState(this, StateMachine, playerData, "captured");
         GrappleDirectionalState = new PlayerGrappleState(this, StateMachine, playerData, "Grapple");
-        HomingState = new PlayerHomingGrapple(this, StateMachine, playerData, "Homing");
-        
+        UICapturedBox = GameObject.Find("CapturedUIBox");
+        //TODO We will make this it's own method
+        playerData.maxNumberofPresses = playerData.maxNumberOfPressesPlaceholder;
+
     }
 
     private void Start()
@@ -78,11 +93,24 @@ public class Player : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         InputHandler = GetComponent<PlayerInputHandler>();
         RB = GetComponent<Rigidbody>();
+        UICapturedBox.SetActive(false);
         //joint = GetComponent<ConfigurableJoint>();
         GrappleDirectionIndicator = transform.Find("GrappleDirectionIndicator");
         MovementCollider = GetComponent<SphereCollider>();
         inputType = GrappleInputs.NoInput;
         StateMachine.Initialize(IdleState);
+        if(changeColorScale == null)
+        {
+            changeColorScale = GameObject.FindGameObjectWithTag("MainCamera");
+        }
+        if(line == null) 
+        {
+            line = LineRenderer.FindObjectOfType<LineRenderer>();
+        }
+        if(capturedEvent == null) { capturedEvent = new UnityEvent(); }
+
+        capturedEvent.AddListener(PlayerIsCaptured);
+
         //line.SetPosition(0, playerHand.transform.position);
         //line.SetPosition(1, playerHand.transform.position);
     }
@@ -91,8 +119,14 @@ public class Player : MonoBehaviour
     {
         Core.LogicUpdate();
         StateMachine.CurrentState.LogicUpdate();
+        UICapturedBox.transform.rotation = Quaternion.identity;
         Debug.Log("the current state machine " + StateMachine.CurrentState);
         Debug.Log("The current action map " + playerInput.currentActionMap.name);
+    }
+
+    private void LateUpdate()
+    {
+        UICapturedBox.transform.position = this.transform.position + offset;
     }
 
     private void FixedUpdate()
@@ -115,6 +149,18 @@ public class Player : MonoBehaviour
     public void OnDestroy()
     {
         if (joint.IsDestroyed()) { Destroy(joint.GetComponent<SpringJoint>()); }
+    }
+
+    public void PlayerIsCaptured()
+    {
+       StateMachine.ChangeState(capturedState);
+       UICapturedBox.SetActive(true);
+    }
+
+    public void PlayerDeath()
+    {
+        UICapturedBox.SetActive(false);
+        this.gameObject.SetActive(false);
     }
     #endregion
 }

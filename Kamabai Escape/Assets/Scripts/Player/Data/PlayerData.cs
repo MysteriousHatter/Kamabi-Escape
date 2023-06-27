@@ -49,6 +49,12 @@ public class PlayerData : ScriptableObject
     public float homingRadius = 5f;
     public GameObject reticlePrefab;
 
+    [Header("Captured State")]
+    public int maxNumberofPresses = 10;
+    public int increaseNumberOfPresses = 5;
+    public int maxNumberOfPressesPlaceholder = 10;
+    public int maxNumberofPressesLimit = 40;
+
 
 
 }

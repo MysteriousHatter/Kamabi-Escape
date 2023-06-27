@@ -10,28 +10,39 @@ public class Guard : BTAgent
     public float speed = 15f;
     public List<GameObject> patrolPointsList;
     Transform targetPostion;
-    //private float waitTime = 5f;
+
+    public Player theKid { get; set; }
+    [SerializeField] private GameObject pickUpPrefab;
+    //private float waitTime = 5f
     //private float waitCounter = 8f;
     //private bool isWaiting = true;
     //We'll change to a getter or setter
-    [SerializeField] private bool isStunned = false;
+    public bool isStunned {  get; set; }
     Transform waypointPoint;
-    public GameObject theKid;
+   // public GameObject theKid;
     GameObject pickup;
     public float maxAngle = 45;
     public float maxDistance = 20f;
     public float chasingDistance = 10f;
     public float stunMeter = 20f;
+    private float stunMeterMin = 40;
     private float stuneMeterPlaceHolder;
+    [SerializeField] private float stunMeterDecrement = 5f;
     public float decreaseRate = 1f;
     public float decreaseMultiplier = 0.5f;
     public GameObject droppingPoint;
     private int currentWaypointIndex = 0;
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        isStunned = false;
+    }
     public override void Start()
     {
         waypointPoint = this.transform;
         base.Start();
+        theKid = FindObjectOfType<Player>();
         stuneMeterPlaceHolder = stunMeter;
         Sequence patrolHouse = new Sequence("Patrolling the house");
         PSelector patrolPoints = new PSelector("Patrol Next Points");
@@ -96,6 +107,7 @@ public class Guard : BTAgent
         if(stunned == Node.Status.SUCCESS)
         {
             Debug.Log("We are stunned");
+            pickup = null;
             StartCoroutine(decreasingStun());
         }
         return stunned;
@@ -119,52 +131,47 @@ public class Guard : BTAgent
     IEnumerator decreasingStun()
     {
         stunMeter -= (decreaseRate * decreaseMultiplier) * Time.deltaTime;
+        pickup = null;
         Debug.Log("Current stun meter: " + stunMeter);
         yield return new WaitForSeconds(stunMeter);
         Debug.Log("We are done decreasing are stun");
-        stunMeter = stuneMeterPlaceHolder;
+        stunMeter = stuneMeterPlaceHolder - stunMeterDecrement;
+        if (stunMeter <= 0)
+        {
+            stunMeter = stunMeterMin;
+        }
         isStunned = false;
+        theKid = FindObjectOfType<Player>();
     }
 
     public Node.Status CanSeeKid()
     {
-        Node.Status criminalStatus = CaneSee(theKid.transform.position, theKid.tag, maxDistance, maxAngle);
-        return criminalStatus; 
+        if (theKid != null)
+        {
+            Node.Status criminalStatus = CaneSee(theKid.transform.position, theKid.tag, maxDistance, maxAngle);
+            Debug.Log("Can see the kid " + criminalStatus);
+            return criminalStatus;
+        }
+        return Node.Status.FAILURE;
     }
 
     public Node.Status ChaseTheKid()
     {
-        GameObject player = theKid;
+        GameObject player = theKid.gameObject;
         Node.Status chaseTheCriminal = Chase(player.transform.position, chasingDistance);
         Debug.Log("Distance to target" + distanceToTarget);
-        if(distanceToTarget < 2)
+        if(!isStunned && distanceToTarget < 2)
         {
-            Debug.Log("Pick up the target");
-            player.transform.parent = this.gameObject.transform;
+            Debug.Log("We are picking up the kid");
             pickup = player;
+            pickup.GetComponent<Player>().enemyPrefab = this.gameObject;
+            pickup.transform.SetParent(pickUpPrefab.gameObject.transform);
+            pickup.transform.localPosition = Vector3.zero;
+            pickup.transform.localRotation = Quaternion.identity;
+            pickup.GetComponent<Rigidbody>().isKinematic = true;
+            pickup.GetComponent<Collider>().enabled = false;
+            pickup.GetComponent<Player>().capturedEvent.Invoke();
         }
-        // float distanceToTarget = Vector3.Distance(player.transform.position, this.transform.position);
-        //Debug.Log("The current distance " + distanceToTarget);
-
-        //if (Vector3.Distance(agent.pathEndPosition, player.transform.position) >= 2)
-        //{
-        //    state = ActionState.IDLE;
-        //    return Node.Status.FAILURE;
-        //}
-        //else if (distanceToTarget < 2)
-        //{
-        //    state = ActionState.IDLE;
-        //    player.transform.parent = this.gameObject.transform;
-        //    pickup = player;
-        //    return Node.Status.SUCCESS;
-
-        //}
-        //if (chaseTheCriminal == Node.Status.SUCCESS)
-        //{
-        //    player.transform.parent = this.gameObject.transform;
-        //    pickup = player;
-
-        //}
         return chaseTheCriminal;
     }
 
@@ -177,8 +184,12 @@ public class Guard : BTAgent
             if(pickup != null)
             {
                 Vector3 dropPosition = droppingPoint.transform.position + new Vector3(0f, 0f, 10f);
-                pickup.transform.position = dropPosition;
-                pickup.SetActive(false);
+               pickup.transform.position = dropPosition;
+                // pickup.SetActive(false);
+                theKid.PlayerDeath();
+                pickup.transform.SetParent(null);
+                pickup.GetComponent<Rigidbody>().isKinematic = false;
+                pickup.GetComponent<Collider>().enabled = true;
                 pickup = null;
             }
         }

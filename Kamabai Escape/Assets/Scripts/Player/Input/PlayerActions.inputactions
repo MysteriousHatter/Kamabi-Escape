@@ -469,6 +469,45 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Captured Gameplay",
+            "id": "a51ee0a3-5722-444d-8e23-3271f409dfb0",
+            "actions": [
+                {
+                    "name": "Escape",
+                    "type": "Value",
+                    "id": "cc7b3879-e484-4756-b3ba-f9b0bb724e85",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a40aa00a-81f3-4e9a-9cd4-cdcda6d34c79",
+                    "path": "<Keyboard>/space",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Escape",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b722a694-6359-47c9-aaff-b0d1dfa74aa7",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Escape",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

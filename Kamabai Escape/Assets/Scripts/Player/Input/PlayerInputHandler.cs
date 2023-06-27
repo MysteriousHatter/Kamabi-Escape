@@ -38,6 +38,8 @@ public class PlayerInputHandler : MonoBehaviour
 
     public bool cancelInput { get; set; }
 
+    public int pressCounter { get; private set; }
+
 
 
     [SerializeField]
@@ -46,11 +48,6 @@ public class PlayerInputHandler : MonoBehaviour
 
     [SerializeField] private float holdDuration = 2f;
     [SerializeField] private float tapDuration = 0.1f;
-
-    private float holdTime;
-
-    private bool interactionStarted = false;
-    private float interactionTime;
 
     private void OnEnable()
     {
@@ -71,6 +68,7 @@ public class PlayerInputHandler : MonoBehaviour
         grappleDirectionalButtonReferenceH.action.canceled += OnGrappleDirectionInputCanceledHorizontal;
         grappleDirectionalButtonReferenceV.action.performed += OnGrappleDirectionInputVertical;
         grappleDirectionalButtonReferenceV.action.canceled += OnGrappleDirectionInputCanceledVertical;
+        pressCounter = 0;
         //grappleButtonReference.action.performed +=
 
 
@@ -120,6 +118,18 @@ public class PlayerInputHandler : MonoBehaviour
         if (context.canceled)
         {
             GrabInput = false;
+        }
+    }
+
+    public void OnEscapeInput(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if (context.interaction is TapInteraction)
+            {
+                Debug.Log("We are tapping the escape button");
+                pressCounter++;
+            }
         }
     }
 
@@ -199,6 +209,11 @@ public class PlayerInputHandler : MonoBehaviour
     public void UseJumpInput() => JumpInput = false;
     public void SwitchActionMaps() => player.playerInput.SwitchCurrentActionMap("Gameplay");
     public void SwitchActionMapToGrapple() => player.playerInput.SwitchCurrentActionMap("Grapple Gameplay");
+    public void SwitchActionMapToCaptured() => player.playerInput.SwitchCurrentActionMap("Captured Gameplay");
+
+    public int getCurrentPressCounter() => pressCounter;
+
+    public void resetPressCounter() => pressCounter = 0;
 
     private void CheckJumpInputHoldTime()
     {
