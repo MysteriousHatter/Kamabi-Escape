@@ -13,6 +13,8 @@ public class MenuButton : MonoBehaviour
     //if this is a level select button which level should it load
     public int levelIndex;
 
+    public LevelManager levelManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +22,10 @@ public class MenuButton : MonoBehaviour
         {
             mainMenuManager = GameObject.FindWithTag("MainMenuManager").GetComponent<MainMenuManager>();
         }
+
+        levelManager = GameObject.FindWithTag("LevelManager").GetComponent<LevelManager>();
     }
+
 
     // Update is called once per frame
     void Update()
@@ -45,8 +50,8 @@ public class MenuButton : MonoBehaviour
                 TutorialButtonEvent();
                 break;
 
-            case ButtonType.Level:
-                LevelButtonEvent();
+            case ButtonType.LevelWindow:
+                LevelWindowButtonEvent();
                 break;
 
             case ButtonType.Play:
@@ -55,6 +60,10 @@ public class MenuButton : MonoBehaviour
 
             case ButtonType.Settings:
                 SettingsButtonEvent();
+                break;
+
+            case ButtonType.LevelSelect:
+                LevelSelectButtonEvent(levelIndex);
                 break;
         }
     }
@@ -71,13 +80,17 @@ public class MenuButton : MonoBehaviour
     {
         mainMenuManager.ShowMenuWindow(1);
     }
-    private void LevelButtonEvent()
+    private void LevelWindowButtonEvent()
     {
         mainMenuManager.ShowMenuWindow(2);
     }
+    private void LevelSelectButtonEvent(int value)
+    {
+        levelManager.LoadScene(value);
+    }
     private void PlayButtonEvent()
     {
-        LevelManager.Instance.LoadCurrentLevel();
+        levelManager.LoadCurrentLevel();
     }
     private void SettingsButtonEvent()
     {

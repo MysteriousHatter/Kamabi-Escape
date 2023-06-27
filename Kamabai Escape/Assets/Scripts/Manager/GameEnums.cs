@@ -6,6 +6,7 @@ public enum ButtonType
     Tutorial,
     Settings,
     Credits,
-    Level,
+    LevelWindow,
     Exit,
+    LevelSelect,
 }
