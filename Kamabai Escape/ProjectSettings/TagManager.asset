@@ -13,6 +13,7 @@ TagManager:
   - HookPoint-Manual
   - HookPoint-Automatic
   - Hazard
+  - MainMenuManager
   layers:
   - Default
   - TransparentFX
