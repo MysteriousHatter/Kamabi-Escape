@@ -106,11 +106,11 @@ public class BTAgent : MonoBehaviour
         Node.Status s = GoToLocation(door.transform.position);
         if (s == Node.Status.SUCCESS)
         {
-            if (!door.GetComponent<Lock>().isLocked)
-            {
-                door.GetComponent<NavMeshObstacle>().enabled = false;
-                return Node.Status.SUCCESS;
-            }
+            //if (!door.GetComponent<Lock>().isLocked)
+            //{
+            //    door.GetComponent<NavMeshObstacle>().enabled = false;
+            //    return Node.Status.SUCCESS;
+            //}
             return Node.Status.FAILURE;
         }
         else
