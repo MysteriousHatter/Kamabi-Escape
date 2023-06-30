@@ -30,6 +30,7 @@ public class PlayerInputHandler : MonoBehaviour
     public bool GrappleInput { get; private set; }
     public bool JumpInputStop { get; private set; }
     public bool GrabInput { get; private set; }
+    public bool CameraInput { get; private set; }
     public bool isHoldingGrappleButton { get; private set; }
     public bool isTappingGrappleButton { get; private set; }
     public bool GrappleInputStop { get; set; }
@@ -64,10 +65,10 @@ public class PlayerInputHandler : MonoBehaviour
         //player.playerInput = GetComponent<PlayerInput>();
         player = GetComponent<Player>();
         grappleButtonReference.action.started += OnGrappleInputPerformed;
-        grappleDirectionalButtonReferenceH.action.performed += OnGrappleDirectionInputHorizontal;
-        grappleDirectionalButtonReferenceH.action.canceled += OnGrappleDirectionInputCanceledHorizontal;
-        grappleDirectionalButtonReferenceV.action.performed += OnGrappleDirectionInputVertical;
-        grappleDirectionalButtonReferenceV.action.canceled += OnGrappleDirectionInputCanceledVertical;
+        //grappleDirectionalButtonReferenceH.action.performed += OnGrappleDirectionInputHorizontal;
+        //grappleDirectionalButtonReferenceH.action.canceled += OnGrappleDirectionInputCanceledHorizontal;
+        //grappleDirectionalButtonReferenceV.action.performed += OnGrappleDirectionInputVertical;
+        //grappleDirectionalButtonReferenceV.action.canceled += OnGrappleDirectionInputCanceledVertical;
         pressCounter = 0;
         //grappleButtonReference.action.performed +=
 
@@ -118,6 +119,14 @@ public class PlayerInputHandler : MonoBehaviour
         if (context.canceled)
         {
             GrabInput = false;
+        }
+    }
+
+    public void ChangeCameraAngle(InputAction.CallbackContext context)
+    {
+        if(context.started) 
+        {
+            CameraInput = true;
         }
     }
 
@@ -207,6 +216,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void UseTappingGrapple() => isTappingGrappleButton = false;
     public void UseJumpInput() => JumpInput = false;
+    public void UseCameraInput() => CameraInput = false;
     public void SwitchActionMaps() => player.playerInput.SwitchCurrentActionMap("Gameplay");
     public void SwitchActionMapToGrapple() => player.playerInput.SwitchCurrentActionMap("Grapple Gameplay");
     public void SwitchActionMapToCaptured() => player.playerInput.SwitchCurrentActionMap("Captured Gameplay");

@@ -48,6 +48,8 @@ Shader "Custom/ObjectGreyscale"
             o.Smoothness = _Glossiness;
             o.Alpha = _Blend;
         }
+
+
         ENDCG
     }
     FallBack "Diffuse"

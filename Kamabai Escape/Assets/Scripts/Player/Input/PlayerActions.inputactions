@@ -9,7 +9,7 @@
                     "name": "Movement",
                     "type": "Value",
                     "id": "09b57423-a270-4c30-bd70-cc34b7ca47a9",
-                    "expectedControlType": "Vector3",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -42,22 +42,13 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "GrappleDirection-Horizontal",
+                    "name": "ZoomInandOut",
                     "type": "Button",
-                    "id": "6eeb2c0b-f602-4311-bf17-aac072f9eb7b",
+                    "id": "fcba11b1-dc71-472b-9851-327d38f26866",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "GrappleDirection-Vertical",
-                    "type": "Button",
-                    "id": "fb47bafe-5b9e-4212-a96b-d1dd13e2a6bb",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
+                    "interactions": "Press(behavior=1)",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -195,91 +186,25 @@
                 },
                 {
                     "name": "",
-                    "id": "29712479-d80a-45c5-8e99-9a27c0444f5c",
-                    "path": "<Gamepad>/leftStick",
+                    "id": "b4889951-7bfc-4525-b2d2-03a97ea3d214",
+                    "path": "<DualShockGamepad>/rightStickPress",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "GrappleDirection-Horizontal",
+                    "action": "ZoomInandOut",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "Horizontal Direction",
-                    "id": "9fbc72a9-ef84-4bfd-9170-71e892a00581",
-                    "path": "1DAxis",
-                    "interactions": "Hold",
-                    "processors": "",
-                    "groups": "",
-                    "action": "GrappleDirection-Horizontal",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "negative",
-                    "id": "db38f599-cd39-4873-a02c-b49599f78abd",
-                    "path": "<Keyboard>/a",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "GrappleDirection-Horizontal",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "positive",
-                    "id": "b9649214-c142-4121-b3be-c6e9a6d4f0d0",
-                    "path": "<Keyboard>/d",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "GrappleDirection-Horizontal",
-                    "isComposite": false,
-                    "isPartOfComposite": true
                 },
                 {
                     "name": "",
-                    "id": "3a55179b-add4-4318-bd84-1b0202583697",
-                    "path": "<Gamepad>/leftStick",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "GrappleDirection-Vertical",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "Vertical Direction",
-                    "id": "4f488e14-a1b9-49c2-bb97-6536f78d6a1a",
-                    "path": "1DAxis",
-                    "interactions": "Hold",
-                    "processors": "",
-                    "groups": "",
-                    "action": "GrappleDirection-Vertical",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "negative",
-                    "id": "b332f9f2-f41d-42fd-8f8d-92f9555c30d9",
-                    "path": "<Keyboard>/s",
+                    "id": "f0dff5c7-32b7-432c-801a-ca8cd5d0c950",
+                    "path": "<Mouse>/middleButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "GrappleDirection-Vertical",
+                    "action": "ZoomInandOut",
                     "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "positive",
-                    "id": "e7c6fe2e-cf96-4e68-9a80-0532bdf3d9ce",
-                    "path": "<Keyboard>/w",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "GrappleDirection-Vertical",
-                    "isComposite": false,
-                    "isPartOfComposite": true
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -300,7 +225,7 @@
                     "name": "Movement",
                     "type": "Value",
                     "id": "b0a77d11-8ed7-4200-b112-a49cfaa9412d",
-                    "expectedControlType": "Vector3",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -342,7 +267,7 @@
                     "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard",
                     "action": "ReelInReelOut",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -353,7 +278,40 @@
                     "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
+                    "groups": "Keyboard",
+                    "action": "ReelInReelOut",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "L1/R1",
+                    "id": "cb782a93-5e18-4a29-9363-761695c1a3b6",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
                     "groups": "",
+                    "action": "ReelInReelOut",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "b97e054e-cbd9-48cb-a536-56033e7c2856",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "ReelInReelOut",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "b7c03cb0-4006-4848-bf4d-2fd2a77d3a9d",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
                     "action": "ReelInReelOut",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -500,7 +458,7 @@
                     "name": "",
                     "id": "b722a694-6359-47c9-aaff-b0d1dfa74aa7",
                     "path": "<Gamepad>/buttonSouth",
-                    "interactions": "",
+                    "interactions": "Tap",
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Escape",

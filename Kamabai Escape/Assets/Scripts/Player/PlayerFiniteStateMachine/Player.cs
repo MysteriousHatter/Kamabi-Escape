@@ -93,7 +93,7 @@ public class Player : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         InputHandler = GetComponent<PlayerInputHandler>();
         RB = GetComponent<Rigidbody>();
-        UICapturedBox.SetActive(false);
+        if (UICapturedBox != null) { UICapturedBox.SetActive(false); }
         //joint = GetComponent<ConfigurableJoint>();
         GrappleDirectionIndicator = transform.Find("GrappleDirectionIndicator");
         MovementCollider = GetComponent<SphereCollider>();
@@ -119,14 +119,14 @@ public class Player : MonoBehaviour
     {
         Core.LogicUpdate();
         StateMachine.CurrentState.LogicUpdate();
-        UICapturedBox.transform.rotation = Quaternion.identity;
+        if (UICapturedBox != null) { UICapturedBox.transform.rotation = Quaternion.identity; }
         Debug.Log("the current state machine " + StateMachine.CurrentState);
         Debug.Log("The current action map " + playerInput.currentActionMap.name);
     }
 
     private void LateUpdate()
     {
-        UICapturedBox.transform.position = this.transform.position + offset;
+        if (UICapturedBox != null) { UICapturedBox.transform.position = this.transform.position + offset; }
     }
 
     private void FixedUpdate()
