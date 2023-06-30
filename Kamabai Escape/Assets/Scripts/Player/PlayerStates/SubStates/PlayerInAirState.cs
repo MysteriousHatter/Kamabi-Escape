@@ -74,17 +74,11 @@ public class PlayerInAirState : PlayerState
         {
             stateMachine.ChangeState(player.GrappleDirectionalState);
         }
-        //else if (player.GrappleDirectionalState.CheckIfCanGrapple() && tappingGrappleInput)
-        //{
-        //    stateMachine.ChangeState(player.HomingState);
-        //}
         else
         {
-           //core.Movement.CheckIfShouldFlip(xInput);
-           core.Movement.SetVelocityXandZ(playerData.movementVelocity * xInput, playerData.movementVelocity * zInput);
-
-            //player.Anim.SetFloat("yVelocity", core.Movement.CurrentVelocity.y);
-            //player.Anim.SetFloat("xVelocity", Mathf.Abs(core.Movement.CurrentVelocity.x));
+            // Checks if the user should rotate in the air
+            if(xInput != 0 || zInput != 0) core.Movement.CheckIfShouldFlipAir();
+            core.Movement.SetVelocityXandZ(playerData.movementVelocity * xInput, playerData.movementVelocity * zInput);
         }
 
     }

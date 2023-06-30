@@ -13,6 +13,9 @@ public class Movement : CoreComponent
     public Vector3 CurrentVelocity { get; private set; }
 
     private Vector3 workspace;
+    Quaternion initialRotation;
+    Quaternion toRotation;
+
 
     public float rotationSpeed = 900f;
 
@@ -23,6 +26,7 @@ public class Movement : CoreComponent
         RB = GetComponentInParent<Rigidbody>();
 
         FacingDirection = RB.velocity;
+        initialRotation = RB.transform.rotation;
         CanSetVelocity = true;
     }
 
@@ -90,10 +94,26 @@ public class Movement : CoreComponent
         }
     }
 
+    public void CheckIfShouldFlipAir()
+    {
+        if (FacingDirection != Vector3.zero)
+        {
+            FlipAir();
+        }
+    }
+
     public void Flip()
     {
         Quaternion toRotation = Quaternion.LookRotation(FacingDirection, Vector3.up);
         RB.transform.rotation = Quaternion.RotateTowards(RB.transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
+    }
+
+    public void FlipAir()
+    {
+        Quaternion toRotation = Quaternion.LookRotation(FacingDirection, Vector3.up);
+        toRotation.eulerAngles = new Vector3(0f, toRotation.eulerAngles.y, 0f);
+        RB.transform.rotation = Quaternion.RotateTowards(RB.transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
+
     }
 
     #endregion
