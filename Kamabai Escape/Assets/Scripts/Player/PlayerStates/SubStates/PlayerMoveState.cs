@@ -28,9 +28,14 @@ public class PlayerMoveState : PlayerGroundedState
         base.LogicUpdate();
 
         core.Movement.CheckIfShouldFlip();
+        var forward = Camera.main.transform.forward;
+        var right = Camera.main.transform.right;
+
+        var movementDirection = forward * yInput + right * xInput;
+        movementDirection.Normalize();
 
         Debug.Log("The X Velocity total " + playerData.movementVelocity * xInput);
-        core.Movement.SetVelocityXandZ(playerData.movementVelocity * xInput, playerData.movementVelocity * yInput);
+        core.Movement.SetVelocityXandZ(playerData.movementVelocity * movementDirection.x, playerData.movementVelocity * movementDirection.z);
         //core.Movement.SetVelocityX(playerData.movementVelocity * xInput);
         //core.Movement.SetVelocityZ(playerData.movementVelocity * yInput);
 

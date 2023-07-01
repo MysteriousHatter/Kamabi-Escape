@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using UnityEngine;
 
 public class Spike : MonoBehaviour
 {
     public float popInterval = 2f; // Time interval between spike pop-ins and pop-outs
     public float popDuration = 0.5f; // Duration of the spike pop-in and pop-out animations
     public AnimationCurve popCurve; // Animation curve for the spike pop-in and pop-out animations
+    public Vector3 shootDirection = Vector3.up; // Direction in which the spikes shoot out
 
     private bool isPoppedOut = false;
     private Vector3 poppedOutPosition;
@@ -17,7 +17,7 @@ public class Spike : MonoBehaviour
     private void Start()
     {
         poppedOutPosition = transform.position;
-        poppedInPosition = transform.position - Vector3.up * transform.localScale.y;
+        poppedInPosition = transform.position - shootDirection * transform.localScale.y;
 
         InvokeRepeating("ToggleSpikeState", popInterval, popInterval);
     }
@@ -55,10 +55,8 @@ public class Spike : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        // the following two lines calculate if the other object is in front or behind the player
-        // ensures that the other object is a hazard
-        var playerTag = other.gameObject.tag;
-        if (playerTag == "Player" || playerTag == "Drill")
+        // Check if the other object is a hazard
+        if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Drill"))
         {
             Debug.Log("Hit Hazard");
         }

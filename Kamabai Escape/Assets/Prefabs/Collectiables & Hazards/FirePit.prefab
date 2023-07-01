@@ -66,7 +66,7 @@ Transform:
   - {fileID: 5131234044447207968}
   - {fileID: 2200184654062465594}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6215529601247136026
 MeshFilter:

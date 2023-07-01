@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Windows;
 
 public class PlayerInAirState : PlayerState
 {
@@ -59,6 +60,11 @@ public class PlayerInAirState : PlayerState
         grabInput = player.InputHandler.GrabInput;
         HoldingGrappleInput = player.InputHandler.isHoldingGrappleButton;
         tappingGrappleInput = player.InputHandler.isTappingGrappleButton;
+        // Checks if the user should rotate in the air
+        var forward = Camera.main.transform.forward;
+        var right = Camera.main.transform.right;
+        var movementDirection = forward * zInput + right * xInput;
+        movementDirection.Normalize();
 
         CheckJumpMultiplier();
 
@@ -76,9 +82,11 @@ public class PlayerInAirState : PlayerState
         }
         else
         {
-            // Checks if the user should rotate in the air
-            if(xInput != 0 || zInput != 0) core.Movement.CheckIfShouldFlipAir();
-            core.Movement.SetVelocityXandZ(playerData.movementVelocity * xInput, playerData.movementVelocity * zInput);
+
+
+
+            if (xInput != 0 || zInput != 0) core.Movement.CheckIfShouldFlipAir();
+            core.Movement.SetVelocityXandZ(playerData.movementVelocity * movementDirection.x, playerData.movementVelocity * movementDirection.z);
         }
 
     }
