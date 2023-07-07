@@ -25,6 +25,7 @@ public class Camera_Controls : MonoBehaviour
     {
         if( _playerInputHandler != null )
         {
+            
             ZoomInAndOut();
         }
     }
@@ -33,7 +34,8 @@ public class Camera_Controls : MonoBehaviour
     {
         if(_playerInputHandler.CameraInput)
         {
-            if( zoomIn ) 
+            Debug.Log("Click for camera input");
+            if ( zoomIn ) 
             {
                 _virtualCamera.m_Lens.FieldOfView += zoomSpeed;
                 zoomOut = true;

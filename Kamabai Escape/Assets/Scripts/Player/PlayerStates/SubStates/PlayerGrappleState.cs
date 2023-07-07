@@ -131,6 +131,7 @@ public class PlayerGrappleState : PlayerAbilityState
                     player.GrappleDirectionIndicator.gameObject.SetActive(false);
                     if (targetObject.CompareTag("Platform") || targetObject.CompareTag("Platform-Reel") || targetObject.CompareTag("Swing-Reel"))
                     {
+                        Debug.Log("This is an automatic platform");
                         CalculatePlatformDistance(targetObject);
                     }
                     else if (targetObject.CompareTag("Collectiable"))
@@ -181,6 +182,7 @@ public class PlayerGrappleState : PlayerAbilityState
         Debug.Log("The current time " + Time.timeScale);
         if (Physics.Raycast(player.GrappleDirectionIndicator.transform.position, -player.GrappleDirectionIndicator.transform.forward, out hit, playerData.distance, playerData.mask))
         {
+            Debug.Log("The current gameObject " + hit.collider.name);
             if (hit.collider.gameObject.layer == 7)
             {
                 hit.collider.gameObject.GetComponent<Renderer>().material.SetFloat("_Blend", 0f);
@@ -478,17 +480,17 @@ public class PlayerGrappleState : PlayerAbilityState
             {
                 if(player.InputHandler.ReelInput < 0) 
                 {
-                    Vector3 directionToPoint = hit.point - player.transform.position;
+                    Vector3 directionToPoint = movingPlatform.transform.position - player.transform.position;
                     player.RB.AddForce(directionToPoint.normalized * playerData.forwardThrustForce * Time.deltaTime);
 
-                    float distanceFromPoint = Vector3.Distance(player.transform.position, hit.point);
+                    float distanceFromPoint = Vector3.Distance(player.transform.position, movingPlatform.transform.position);
 
                     player.joint.maxDistance = distanceFromPoint * 0.8f;
                     player.joint.minDistance = distanceFromPoint * 0.25f;
                 }
                 else if(player.InputHandler.ReelInput > 0)
                 {
-                    float extendedDistanceFromPoint = Vector3.Distance(player.transform.position, hit.point) + playerData.extendCableSpeed;
+                    float extendedDistanceFromPoint = Vector3.Distance(player.transform.position, movingPlatform.transform.position) + playerData.extendCableSpeed;
 
                     player.joint.maxDistance = extendedDistanceFromPoint * 0.8f;
                     player.joint.minDistance = extendedDistanceFromPoint * 0.15f;
@@ -562,9 +564,14 @@ public class PlayerGrappleState : PlayerAbilityState
             float distanceDelta = currentLength - playerData.minDistance;
 
             // Adjust the joint's linear limit to move the object closer to the player
+            Debug.Log("Pull the object");
             player.joint.maxDistance -= distanceDelta * Time.deltaTime;
             distanceToMove = Mathf.Min(distanceDelta, Time.deltaTime * 4.0f); // Limit the distance moved per frame
-            player.joint.connectedBody.transform.position += direction * distanceToMove;
+
+            // Move the connected body towards the player, only changing X and Z coordinates
+            Vector3 newPosition = player.joint.connectedBody.transform.position + direction * distanceToMove;
+            newPosition.y = player.joint.connectedBody.transform.position.y; // Keep Y coordinate constant
+            player.joint.connectedBody.transform.position = newPosition;
 
         }
          curentEndpointPosition = player.joint.connectedBody.position;
@@ -573,7 +580,7 @@ public class PlayerGrappleState : PlayerAbilityState
         player.line.SetPosition(0, player.playerHand.transform.position);
         player.line.SetPosition(1, curentEndpointPosition);
         Debug.Log(Vector3.Distance(player.playerHand.transform.position, player.joint.connectedBody.transform.position));
-        if (Vector3.Distance(player.playerHand.transform.position, player.joint.connectedBody.transform.position) <= 1f || player.InputHandler.cancelInput)
+        if (Vector3.Distance(player.playerHand.transform.position, player.joint.connectedBody.transform.position) <= 4f || player.InputHandler.cancelInput)
         {
             // Stop grappling if we've reached the grapple point
             player.joint.connectedBody = null;

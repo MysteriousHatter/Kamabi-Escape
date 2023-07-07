@@ -38,7 +38,9 @@ public class CameraTriggerVolume : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            if (CameraSwitcher.ActiveCamera != m_Camera) { CameraSwitcher.SwitchCamera(m_Camera); }
+            m_Camera.gameObject.SetActive(true);
+            //if (CameraSwitcher.ActiveCamera != m_Camera) 
+            CameraSwitcher.SwitchCamera(m_Camera); 
         }
     }
 }

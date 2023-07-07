@@ -19,13 +19,23 @@ public static class CameraSwitcher
         camera.Priority = 10;
         ActiveCamera = camera;
 
-        foreach(CinemachineVirtualCamera c in cameras) 
+        List<CinemachineVirtualCamera> camerasToDeactivate = new List<CinemachineVirtualCamera>();
+
+        foreach (CinemachineVirtualCamera c in cameras)
         {
-            if(c != camera && c.Priority != 0)
+            if (c != camera && c.Priority != 0)
             {
                 c.Priority = 0;
+                camerasToDeactivate.Add(c);
             }
         }
+
+        foreach (CinemachineVirtualCamera c in camerasToDeactivate)
+        {
+            c.gameObject.SetActive(false); // Deactivate old cameras
+        }
+
+        camera.gameObject.SetActive(true); // Activate new camera
     }
 
 

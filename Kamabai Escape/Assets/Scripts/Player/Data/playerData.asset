@@ -12,21 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65ca48738a7a0264884c833183f68271, type: 3}
   m_Name: playerData
   m_EditorClassIdentifier: Assembly-CSharp::PlayerData
-  movementVelocity: 5
-  jumpVelocity: 9
+  movementVelocity: 8
+  jumpVelocity: 8
   amountOfJumps: 1
-  coyoteTime: 0.2
+  coyoteTime: 0.99
   variableJumpHeightMultiplier: 0.5
-  distance: 20
+  distance: 30
   mask:
     serializedVersion: 2
-    m_Bits: 191
+    m_Bits: 136
   grappleSpeed: 2
-  minDistance: 2
-  maxDistance: 3.0787275
+  minDistance: 1.0805284
+  maxDistance: 15.048032
   lengthStep: 0.1
   scrollSensitivity: 1
-  animationDuration: 3
+  animationDuration: 0.1
   sensitivityY: 900
   minimumY: 90
   maximumY: 270
@@ -46,7 +46,7 @@ MonoBehaviour:
   releaseForceMagnitude: 10
   homingRadius: 10
   reticlePrefab: {fileID: 0}
-  maxNumberofPresses: 25
+  maxNumberofPresses: 10
   increaseNumberOfPresses: 5
   maxNumberOfPressesPlaceholder: 10
   maxNumberofPressesLimit: 40
