@@ -547,6 +547,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Collectiable (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 2669586731421407530, guid: 5da4fe706fd388641842b6d17d4d11ce, type: 3}
+      propertyPath: m_TagString
+      value: Grab-Platform
+      objectReference: {fileID: 0}
     - target: {fileID: 3951914495664638355, guid: 5da4fe706fd388641842b6d17d4d11ce, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -2260,6 +2264,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Collectiable
       objectReference: {fileID: 0}
+    - target: {fileID: 2669586731421407530, guid: 5da4fe706fd388641842b6d17d4d11ce, type: 3}
+      propertyPath: m_TagString
+      value: Grab-Platform
+      objectReference: {fileID: 0}
     - target: {fileID: 3951914495664638355, guid: 5da4fe706fd388641842b6d17d4d11ce, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -3115,6 +3123,10 @@ PrefabInstance:
     - target: {fileID: 2669586731421407530, guid: 5da4fe706fd388641842b6d17d4d11ce, type: 3}
       propertyPath: m_Name
       value: Collectiable (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2669586731421407530, guid: 5da4fe706fd388641842b6d17d4d11ce, type: 3}
+      propertyPath: m_TagString
+      value: Grab-Platform
       objectReference: {fileID: 0}
     - target: {fileID: 3951914495664638355, guid: 5da4fe706fd388641842b6d17d4d11ce, type: 3}
       propertyPath: m_RootOrder
@@ -6333,6 +6345,10 @@ PrefabInstance:
     - target: {fileID: 2669586731421407530, guid: 5da4fe706fd388641842b6d17d4d11ce, type: 3}
       propertyPath: m_Name
       value: Collectiable (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2669586731421407530, guid: 5da4fe706fd388641842b6d17d4d11ce, type: 3}
+      propertyPath: m_TagString
+      value: Grab-Platform
       objectReference: {fileID: 0}
     - target: {fileID: 3951914495664638355, guid: 5da4fe706fd388641842b6d17d4d11ce, type: 3}
       propertyPath: m_RootOrder

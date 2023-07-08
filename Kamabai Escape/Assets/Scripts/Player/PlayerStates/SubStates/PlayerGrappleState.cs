@@ -37,6 +37,7 @@ public class PlayerGrappleState : PlayerAbilityState
     GameObject previousObject;
     bool hittingGrapplePoint = false;
     Vector3 Direction = Vector3.zero;
+    private Vector3 initialPositionOffset;
 
     private GameObject movingPlatform;
     private GameObject enemy;
@@ -134,7 +135,7 @@ public class PlayerGrappleState : PlayerAbilityState
                         Debug.Log("This is an automatic platform");
                         CalculatePlatformDistance(targetObject);
                     }
-                    else if (targetObject.CompareTag("Collectiable"))
+                    else if (targetObject.CompareTag("Collectiable") || targetObject.CompareTag("Grab-Platform"))
                     {
                         CalculateCollectiableDistance(targetObject);
                     }
@@ -225,22 +226,26 @@ public class PlayerGrappleState : PlayerAbilityState
 
     private void CalculatePlatformDistance(GameObject targetObject)
     {
-        this.player.joint.spring = 50f;
-        this.player.joint.damper = 20f;
-        this.player.joint.massScale = 4.5f;
+        this.player.joint.spring = 9000f;
+        this.player.joint.damper = 8000f;
+        this.player.joint.massScale = 500f;
         movingPlatform = targetObject;
+        if(movingPlatform.GetComponent<MovingPlatform>() != null) { movingPlatform.GetComponent<MovingPlatform>().hitByGrapple = true; }
+
         Debug.Log("Are we hitting something");
         if (targetObject.CompareTag("Platform-Reel")) { grappleType = GrappleTypes.reelInorOut; }
         else if (targetObject.CompareTag("Platform")) { grappleType = GrappleTypes.pullingToPoint; }
         else if (targetObject.CompareTag("Swing-Reel")) { grappleType = GrappleTypes.swingReelInorOut; }
 
-        player.joint.connectedBody = targetObject.GetComponent<Rigidbody>();
-        player.joint.connectedAnchor = targetObject.transform.InverseTransformPoint(hit.point);
+        if(targetObject.GetComponent<Oscillator>() != null) { targetObject.GetComponent<Oscillator>().canMove = false; }
+
+        player.joint.connectedBody = movingPlatform.GetComponent<Rigidbody>();
+        player.joint.connectedAnchor = movingPlatform.transform.InverseTransformPoint(hit.point);
 
         playerData.maxDistance = Vector3.Distance(player.playerHand.transform.position, hit.point);
         playerData.minDistance = Vector3.Distance(player.playerHand.transform.position, player.joint.transform.position);
         currentLength = Vector3.Distance(player.joint.transform.position, player.joint.connectedAnchor);
-        player.joint.maxDistance = playerData.maxDistance;
+        player.joint.maxDistance = playerData.maxDistance - 2f;
 
         distanceAnimation = Vector3.Distance(player.joint.transform.position, player.joint.connectedAnchor);
     }
@@ -510,7 +515,7 @@ public class PlayerGrappleState : PlayerAbilityState
 
 
         }
-        if (player.joint.maxDistance <= 3f || player.InputHandler.cancelInput)
+        if (player.InputHandler.cancelInput || jumpInput)
         {
             // Stop grappling if we've reached the grapple point
             player.joint.connectedBody = null;
@@ -523,6 +528,24 @@ public class PlayerGrappleState : PlayerAbilityState
             isAbilityDone = true;
             lastGrappleTime = Time.time;
             grappleType = GrappleTypes.noGrapple;
+        }
+        else if(grappleType.Equals(GrappleTypes.pullingToPoint)) 
+        {
+            if(Vector3.Distance(player.playerHand.transform.position, player.joint.connectedBody.transform.position) <= 2f || player.InputHandler.cancelInput || jumpInput)
+            {
+                // Stop grappling if we've reached the grapple point
+                if (player.joint.connectedBody.GetComponent<Oscillator>() != null) { player.joint.connectedBody.GetComponent<Oscillator>().canMove = true; }
+                player.joint.connectedBody = null;
+                player.joint.enableCollision = false;
+                player.joint.enablePreprocessing = false;
+                player.line.enabled = false;
+                this.player.joint.spring = 0f;
+                this.player.joint.damper = 0f;
+                this.player.joint.massScale = 0f;
+                isAbilityDone = true;
+                lastGrappleTime = Time.time;
+                grappleType = GrappleTypes.noGrapple;
+            }
         }
     }
 
@@ -548,6 +571,7 @@ public class PlayerGrappleState : PlayerAbilityState
         this.player.transform.position += displacement;
 
         Vector3.Lerp(this.player.transform.forward, targetPos, 20f);
+
     }
 
     private void PullObject()
@@ -555,6 +579,7 @@ public class PlayerGrappleState : PlayerAbilityState
         float distanceToMove = 0f;
         if (player.joint.connectedAnchor != null)
         {
+            if (player.joint.connectedBody.gameObject.CompareTag("Collectiable")) { player.joint.connectedBody.useGravity = false; }
             // Reduce the joint distance over time
             Vector3 playerPos = player.playerHand.transform.position;
             Vector3 grapplePos = player.joint.connectedBody.transform.position;
@@ -583,6 +608,7 @@ public class PlayerGrappleState : PlayerAbilityState
         if (Vector3.Distance(player.playerHand.transform.position, player.joint.connectedBody.transform.position) <= 4f || player.InputHandler.cancelInput)
         {
             // Stop grappling if we've reached the grapple point
+            if (player.joint.connectedBody.gameObject.CompareTag("Collectiable")) { player.joint.connectedBody.useGravity = true; }
             player.joint.connectedBody = null;
             player.joint.enableCollision = false;
             player.joint.enablePreprocessing = false;

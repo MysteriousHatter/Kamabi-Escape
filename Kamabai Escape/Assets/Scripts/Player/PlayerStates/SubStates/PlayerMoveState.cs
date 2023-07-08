@@ -28,15 +28,13 @@ public class PlayerMoveState : PlayerGroundedState
         base.LogicUpdate();
 
         core.Movement.CheckIfShouldFlip();
+
+        Vector3 cameraForward = Camera.main.transform.forward;
         Vector3 cameraRight = Camera.main.transform.right;
         Vector3 cameraUp = Camera.main.transform.up;
 
-        Vector3 rightRelativeMovement = cameraRight * xInput;
-        Vector3 upRelativeMovement = cameraUp * yInput ;
-
-        Vector3 movementDirection = rightRelativeMovement + upRelativeMovement;
+        Vector3 movementDirection = (cameraForward * yInput) + (cameraRight * xInput);
         movementDirection.Normalize();
-
         Vector3 horizontalMovement = Vector3.ProjectOnPlane(movementDirection, cameraUp).normalized;
         Vector3 verticalMovement = Vector3.ProjectOnPlane(movementDirection, cameraRight).normalized;
 
@@ -44,7 +42,7 @@ public class PlayerMoveState : PlayerGroundedState
         finalMovementDirection.Normalize();
 
         Debug.Log("The X Velocity total " + playerData.movementVelocity * finalMovementDirection.x);
-        core.Movement.SetVelocityXandZ(playerData.movementVelocity  * finalMovementDirection.x, playerData.movementVelocity * finalMovementDirection.z * 2f);
+        core.Movement.SetVelocityXandZ(playerData.movementVelocity  * finalMovementDirection.x, playerData.movementVelocity * finalMovementDirection.z);
         //core.Movement.SetVelocityX(playerData.movementVelocity * xInput);
         //core.Movement.SetVelocityZ(playerData.movementVelocity * yInput);
 

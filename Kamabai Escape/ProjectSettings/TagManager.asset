@@ -15,6 +15,7 @@ TagManager:
   - Hazard
   - MainMenuManager
   - LevelManager
+  - Grab-Platform
   layers:
   - Default
   - TransparentFX

@@ -61,10 +61,10 @@ public class PlayerInAirState : PlayerState
         HoldingGrappleInput = player.InputHandler.isHoldingGrappleButton;
         tappingGrappleInput = player.InputHandler.isTappingGrappleButton;
         // Checks if the user should rotate in the air
-        var forward = Camera.main.transform.forward;
-        var right = Camera.main.transform.right;
-        var movementDirection = forward * zInput + right * xInput;
-        movementDirection.Normalize();
+        //var forward = Camera.main.transform.forward;
+        //var right = Camera.main.transform.right;
+        //var movementDirection = forward * zInput + right * xInput;
+        //movementDirection.Normalize();
 
         CheckJumpMultiplier();
 
@@ -84,9 +84,9 @@ public class PlayerInAirState : PlayerState
         {
 
 
-
+            // Checks if the user should rotate in the air
             if (xInput != 0 || zInput != 0) core.Movement.CheckIfShouldFlipAir();
-            core.Movement.SetVelocityXandZ(playerData.movementVelocity * movementDirection.x, playerData.movementVelocity * movementDirection.z);
+            core.Movement.SetVelocityXandZ(playerData.movementVelocity * xInput, playerData.movementVelocity * zInput);
         }
 
     }

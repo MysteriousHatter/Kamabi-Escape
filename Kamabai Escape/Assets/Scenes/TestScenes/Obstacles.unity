@@ -679,7 +679,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.2925386, y: -0, z: -0, w: 0.9562537}
-  m_LocalPosition: {x: -9.26646, y: 18.526823, z: -29.366953}
+  m_LocalPosition: {x: -0.5598823, y: 27.466825, z: 0.7830473}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -753,6 +753,7 @@ GameObject:
   - component: {fileID: 1036935849}
   - component: {fileID: 1036935850}
   - component: {fileID: 1036935851}
+  - component: {fileID: 1036935853}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -839,7 +840,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1036935843}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.79, y: 2.99, z: -6.35}
+  m_LocalPosition: {x: 0.63, y: 11.93, z: 23.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -950,10 +951,6 @@ MonoBehaviour:
     m_ActionId: ef27d5a1-39c8-43ba-874b-7c89c7bb6e6f
     m_ActionName: Gameplay/Grapple Button[/Keyboard/p]
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 6eeb2c0b-f602-4311-bf17-aac072f9eb7b
-    m_ActionName: Gameplay/New action
-  - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1036935850}
         m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
@@ -1002,10 +999,6 @@ MonoBehaviour:
     m_ActionId: 9ea64bc6-b5ec-4fa5-b9f0-a105243d9d8d
     m_ActionName: Grapple Gameplay/Jump[/Keyboard/space]
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: fb47bafe-5b9e-4212-a96b-d1dd13e2a6bb
-    m_ActionName: Gameplay/GrappleDirection-Vertical[/Keyboard/s,/Keyboard/w]
-  - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1036935850}
         m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
@@ -1021,6 +1014,14 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: eae989ca-d11a-40e7-8645-080caa85b013
     m_ActionName: Grapple Gameplay/Cancel[/Keyboard/l]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: fcba11b1-dc71-472b-9851-327d38f26866
+    m_ActionName: Gameplay/ZoomInandOut[/Mouse/middleButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: cc7b3879-e484-4756-b3ba-f9b0bb724e85
+    m_ActionName: Captured Gameplay/Escape[/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: Gameplay
@@ -1094,6 +1095,18 @@ MonoBehaviour:
   changeColorScale: {fileID: 963194225}
   UICapturedBox: {fileID: 0}
   offset: {x: 0, y: 0, z: 0}
+--- !u!114 &1036935853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036935843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90f78e711e738c74bb974fbc38c38c65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1191349323
 GameObject:
   m_ObjectHideFlags: 0
@@ -1593,7 +1606,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1651515765}
   m_LocalRotation: {x: 0.2925386, y: 0, z: 0, w: 0.9562537}
-  m_LocalPosition: {x: -9.26646, y: 18.526823, z: -29.366953}
+  m_LocalPosition: {x: -0.5598823, y: 27.466825, z: 0.7830473}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
