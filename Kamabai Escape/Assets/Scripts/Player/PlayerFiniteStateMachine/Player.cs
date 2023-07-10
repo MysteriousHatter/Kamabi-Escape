@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     public PlayerIdleState IdleState { get; private set; }
     public PlayerMoveState MoveState { get; private set; }
     public PlayerJumpState JumpState { get; private set; }
+    public Animator Anim { get; private set; }
     public PlayerInAirState InAirState { get; private set; }
     public PlayerLandState LandState { get; private set; }
     public PlayerHomingGrapple HomingState { get; private set; }
@@ -77,11 +78,11 @@ public class Player : MonoBehaviour
 
         IdleState = new PlayerIdleState(this, StateMachine, playerData, "idle");
         MoveState = new PlayerMoveState(this, StateMachine, playerData, "move");
-        JumpState = new PlayerJumpState(this, StateMachine, playerData, "inAir");
+        JumpState = new PlayerJumpState(this, StateMachine, playerData, "jump");
         InAirState = new PlayerInAirState(this, StateMachine, playerData, "inAir");
         LandState = new PlayerLandState(this, StateMachine, playerData, "land");
         capturedState = new PlayerCapturedState(this, StateMachine, playerData, "captured");
-        GrappleDirectionalState = new PlayerGrappleState(this, StateMachine, playerData, "Grapple");
+        GrappleDirectionalState = new PlayerGrappleState(this, StateMachine, playerData, "grapple");
         UICapturedBox = GameObject.Find("CapturedUIBox");
         //TODO We will make this it's own method
         playerData.maxNumberofPresses = playerData.maxNumberOfPressesPlaceholder;
@@ -90,8 +91,10 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        
         playerInput = GetComponent<PlayerInput>();
         InputHandler = GetComponent<PlayerInputHandler>();
+        Anim = GetComponent<Animator>();
         RB = GetComponent<Rigidbody>();
         if (UICapturedBox != null) { UICapturedBox.SetActive(false); }
         //joint = GetComponent<ConfigurableJoint>();
@@ -159,8 +162,20 @@ public class Player : MonoBehaviour
 
     public void PlayerDeath()
     {
-        UICapturedBox.SetActive(false);
+        // UICapturedBox.SetActive(false);
+        StartCoroutine(DeathAnimation());
+        
+    }
+
+    private IEnumerator DeathAnimation()
+    {
+        Anim.SetBool("death", true);
+        yield return new WaitForSeconds(3f);
         this.gameObject.SetActive(false);
     }
+
+    private void AnimationTrigger() => StateMachine.CurrentState.AnimationTrigger();
+
+    private void AnimtionFinishTrigger() => StateMachine.CurrentState.AnimationFinishTrigger();
     #endregion
 }

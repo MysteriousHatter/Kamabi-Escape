@@ -39,6 +39,7 @@ public class PlayerAbilityState : PlayerState
         {
             if (isGrounded && core.Movement.CurrentVelocity.y < 0.01f)
             {
+                Debug.Log("We are grounded");
                 stateMachine.ChangeState(player.IdleState);
             }
             else

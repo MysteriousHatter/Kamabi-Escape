@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65ca48738a7a0264884c833183f68271, type: 3}
   m_Name: playerData
   m_EditorClassIdentifier: Assembly-CSharp::PlayerData
-  movementVelocity: 10
+  movementVelocity: 5
   jumpVelocity: 6
   amountOfJumps: 1
   coyoteTime: 0.99

@@ -49,7 +49,7 @@ public class PlayerMoveState : PlayerGroundedState
 
         if (!isExitingState)
         {
-            if (xInput == 0 || yInput == 0)
+            if (xInput == 0 && yInput == 0)
             {
                 stateMachine.ChangeState(player.IdleState);
             }

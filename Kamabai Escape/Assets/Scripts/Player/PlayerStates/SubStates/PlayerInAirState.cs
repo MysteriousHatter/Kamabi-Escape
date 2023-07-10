@@ -70,6 +70,7 @@ public class PlayerInAirState : PlayerState
 
         if (isGrounded && core.Movement.CurrentVelocity.y < 0.01f)
         {
+            Debug.Log("We have landed");
             stateMachine.ChangeState(player.LandState);
         }
         else if (jumpInput && player.JumpState.CanJump())

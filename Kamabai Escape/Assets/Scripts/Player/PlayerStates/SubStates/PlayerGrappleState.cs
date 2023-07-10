@@ -38,6 +38,7 @@ public class PlayerGrappleState : PlayerAbilityState
     bool hittingGrapplePoint = false;
     Vector3 Direction = Vector3.zero;
     private Vector3 initialPositionOffset;
+    private string animBoolName;
 
     private GameObject movingPlatform;
     private GameObject enemy;
@@ -68,7 +69,7 @@ public class PlayerGrappleState : PlayerAbilityState
 
     public PlayerGrappleState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     {
-        
+        this.animBoolName = animBoolName;
     }
 
     public override void Enter()
@@ -132,6 +133,7 @@ public class PlayerGrappleState : PlayerAbilityState
                     player.GrappleDirectionIndicator.gameObject.SetActive(false);
                     if (targetObject.CompareTag("Platform") || targetObject.CompareTag("Platform-Reel") || targetObject.CompareTag("Swing-Reel"))
                     {
+                     
                         Debug.Log("This is an automatic platform");
                         CalculatePlatformDistance(targetObject);
                     }
@@ -305,6 +307,7 @@ public class PlayerGrappleState : PlayerAbilityState
         player.line.SetPosition(0, Vector3.zero);
         player.line.SetPosition(1,Vector3.zero);
         player.OnDestroy();
+        player.Anim.SetBool(animBoolName, false);
         player.InputHandler.SwitchActionMaps();
         base.Exit();
     }
@@ -483,7 +486,10 @@ public class PlayerGrappleState : PlayerAbilityState
             // Reduce the joint distance over time
             if (grappleType.Equals(GrappleTypes.reelInorOut) || grappleType.Equals(GrappleTypes.swingReelInorOut))
             {
-                if(player.InputHandler.ReelInput < 0) 
+                player.Anim.SetBool(animBoolName, false);
+                animBoolName = "swing";
+                player.Anim.SetBool(animBoolName, true);
+                if (player.InputHandler.ReelInput < 0) 
                 {
                     Vector3 directionToPoint = movingPlatform.transform.position - player.transform.position;
                     player.RB.AddForce(directionToPoint.normalized * playerData.forwardThrustForce * Time.deltaTime);
