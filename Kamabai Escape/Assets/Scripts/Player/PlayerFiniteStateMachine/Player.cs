@@ -82,7 +82,7 @@ public class Player : MonoBehaviour
         InAirState = new PlayerInAirState(this, StateMachine, playerData, "inAir");
         LandState = new PlayerLandState(this, StateMachine, playerData, "land");
         capturedState = new PlayerCapturedState(this, StateMachine, playerData, "captured");
-        GrappleDirectionalState = new PlayerGrappleState(this, StateMachine, playerData, "grapple");
+        GrappleDirectionalState = new PlayerGrappleState(this, StateMachine, playerData);
         UICapturedBox = GameObject.Find("CapturedUIBox");
         //TODO We will make this it's own method
         playerData.maxNumberofPresses = playerData.maxNumberOfPressesPlaceholder;

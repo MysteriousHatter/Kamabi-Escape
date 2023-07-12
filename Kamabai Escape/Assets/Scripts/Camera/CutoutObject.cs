@@ -38,8 +38,8 @@ public class CutoutObject : MonoBehaviour
                 if (material != null)
                 {
                     material.SetVector("_Cutout_Position", cutoutPos);
-                    material.SetFloat("_Cutout_Size", 0.09f);
-                    material.SetFloat("_Falloff_Size", 0.02f);
+                    material.SetFloat("_Cutout_Size", 2f);
+                    material.SetFloat("_Falloff_Size", 2f);
                     previousObject = hit.collider.gameObject;
                     weHitACutout = true;
                 }

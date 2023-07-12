@@ -41,6 +41,7 @@ public class PlayerGrappleState : PlayerAbilityState
     private string animBoolName;
 
     private GameObject movingPlatform;
+    private Transform childComponent;
     private GameObject enemy;
 
 
@@ -67,9 +68,9 @@ public class PlayerGrappleState : PlayerAbilityState
     bool finishedDrawing = false;
     Vector3 curentEndpointPosition;
 
-    public PlayerGrappleState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
+    public PlayerGrappleState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName = null) : base(player, stateMachine, playerData, animBoolName)
     {
-        this.animBoolName = animBoolName;
+        this.animBoolName = "grapple";
     }
 
     public override void Enter()
@@ -97,6 +98,7 @@ public class PlayerGrappleState : PlayerAbilityState
         float angle = Vector3.SignedAngle(Vector3.up, grappleDirection, Vector3.up);
 
         player.GrappleDirectionIndicator.localRotation = Quaternion.Euler(0f, angle - playerData.angleOffset, 0f);
+        player.Anim.SetBool(animBoolName, true);
         Debug.Log("The direction of the angle: " + angle);
     }
 
@@ -228,9 +230,9 @@ public class PlayerGrappleState : PlayerAbilityState
 
     private void CalculatePlatformDistance(GameObject targetObject)
     {
-        this.player.joint.spring = 9000f;
-        this.player.joint.damper = 8000f;
-        this.player.joint.massScale = 500f;
+        this.player.joint.spring = 30f;
+        this.player.joint.damper = 20f;
+        this.player.joint.massScale = 30f;
         movingPlatform = targetObject;
         if(movingPlatform.GetComponent<MovingPlatform>() != null) { movingPlatform.GetComponent<MovingPlatform>().hitByGrapple = true; }
 
@@ -241,10 +243,12 @@ public class PlayerGrappleState : PlayerAbilityState
 
         if(targetObject.GetComponent<Oscillator>() != null) { targetObject.GetComponent<Oscillator>().canMove = false; }
 
-        player.joint.connectedBody = movingPlatform.GetComponent<Rigidbody>();
-        player.joint.connectedAnchor = movingPlatform.transform.InverseTransformPoint(hit.point);
 
-        playerData.maxDistance = Vector3.Distance(player.playerHand.transform.position, hit.point);
+
+        player.joint.connectedBody = movingPlatform.GetComponent<Rigidbody>();
+        player.joint.connectedAnchor = movingPlatform.transform.InverseTransformPoint(movingPlatform.transform.position);
+
+        playerData.maxDistance = Vector3.Distance(player.playerHand.transform.position, movingPlatform.transform.position);
         playerData.minDistance = Vector3.Distance(player.playerHand.transform.position, player.joint.transform.position);
         currentLength = Vector3.Distance(player.joint.transform.position, player.joint.connectedAnchor);
         player.joint.maxDistance = playerData.maxDistance - 2f;
@@ -304,10 +308,12 @@ public class PlayerGrappleState : PlayerAbilityState
     {
         player.GrappleDirectionIndicator.localRotation = Quaternion.Euler(0, 0, 0);
         ResetCancelGrapple();
+        player.RB.drag = 0f;
         player.line.SetPosition(0, Vector3.zero);
         player.line.SetPosition(1,Vector3.zero);
         player.OnDestroy();
         player.Anim.SetBool(animBoolName, false);
+        animBoolName = null;
         player.InputHandler.SwitchActionMaps();
         base.Exit();
     }
@@ -318,8 +324,8 @@ public class PlayerGrappleState : PlayerAbilityState
         {
             if (player.InputHandler.NormInputZ > 0) { player.RB.AddForce(Vector3.forward * playerData.SwingThrustForce * Time.deltaTime); }
             else if (player.InputHandler.NormInputZ < 0) { player.RB.AddForce(-Vector3.forward * playerData.SwingThrustForce * Time.deltaTime); }
-            else if (player.InputHandler.NormInputX > 0) { player.RB.AddForce(Vector3.right * playerData.SwingThrustForce * Time.deltaTime); }
-            else if (player.InputHandler.NormInputX < 0) { player.RB.AddForce(-Vector3.right * playerData.SwingThrustForce * Time.deltaTime); }
+            else if (player.InputHandler.NormInputX > 0) { player.RB.AddForce(Vector3.right * playerData.SwingThrustForce * Time.deltaTime); Debug.Log("Swinging Horizontally"); }
+            else if (player.InputHandler.NormInputX < 0) { player.RB.AddForce(-Vector3.right * playerData.SwingThrustForce * Time.deltaTime);}
 
             if (jumpInput)
             {
@@ -340,6 +346,7 @@ public class PlayerGrappleState : PlayerAbilityState
             else if (player.InputHandler.cancelInput)
             {
                 player.joint.connectedBody = null;
+                player.RB.drag = 0f;
                 player.joint.enableCollision = false;
                 player.joint.enablePreprocessing = false;
                 player.line.enabled = false;
@@ -374,6 +381,7 @@ public class PlayerGrappleState : PlayerAbilityState
             Quaternion grappleRotationX = Quaternion.Euler(rotationX, 0f, 0f);
             Quaternion targetRotation = grappleRotationY * grappleRotationX;
 
+
             Quaternion currentRotation = player.GrappleDirectionIndicator.localRotation;
 
             // Calculate the clamped rotation
@@ -384,27 +392,26 @@ public class PlayerGrappleState : PlayerAbilityState
         }
     }
 
-    private Quaternion ClampRotation(Quaternion targetRotation, Quaternion currentRotation, float maxAngle)
-    {
-        // Calculate the angle between the target rotation and current rotation
-        Quaternion deltaRotation = Quaternion.Inverse(currentRotation) * targetRotation;
+private Quaternion ClampRotation(Quaternion targetRotation, Quaternion currentRotation, float maxAngle)
+{
+    // Calculate the angle between the target rotation and current rotation
+    Quaternion deltaRotation = Quaternion.Inverse(currentRotation) * targetRotation;
 
-        // Convert the delta rotation to Euler angles
-        Vector3 deltaEulerAngles = deltaRotation.eulerAngles;
+    // Convert the delta rotation to Euler angles
+    Vector3 deltaEulerAngles = deltaRotation.eulerAngles;
 
-        // Clamp the delta rotation angles
-        float clampedAngleX = Mathf.Clamp(deltaEulerAngles.x, -maxAngle, maxAngle);
-        float clampedAngleY = Mathf.Clamp(deltaEulerAngles.y, -maxAngle, maxAngle);
-        Debug.Log("The clmaped angle " + clampedAngleX);
+    // Clamp the delta rotation angles
+    float clampedAngleX = Mathf.Clamp(deltaEulerAngles.x, -maxAngle, maxAngle);
+    float clampedAngleY = Mathf.Clamp(deltaEulerAngles.y, -maxAngle, maxAngle);
+    float clampedAngleZ = Mathf.Clamp(deltaEulerAngles.z, -maxAngle, maxAngle);
 
+    Quaternion clampedDeltaRotation = Quaternion.Euler(clampedAngleX, clampedAngleY, clampedAngleZ);
 
-        Quaternion clampedDeltaRotation = Quaternion.Euler(clampedAngleX, clampedAngleY, 0);
+    // Calculate the clamped target rotation
+    Quaternion clampedTargetRotation = currentRotation * clampedDeltaRotation;
 
-        // Calculate the clamped target rotation
-        Quaternion clampedTargetRotation = currentRotation * clampedDeltaRotation;
-
-        return clampedTargetRotation;
-    }
+    return clampedTargetRotation;
+}
 
 
     private void DrawLine()
@@ -486,11 +493,14 @@ public class PlayerGrappleState : PlayerAbilityState
             // Reduce the joint distance over time
             if (grappleType.Equals(GrappleTypes.reelInorOut) || grappleType.Equals(GrappleTypes.swingReelInorOut))
             {
+                Debug.Log("The current animation " + animBoolName);
                 player.Anim.SetBool(animBoolName, false);
                 animBoolName = "swing";
+                Debug.Log("New animation name " +  animBoolName);
                 player.Anim.SetBool(animBoolName, true);
                 if (player.InputHandler.ReelInput < 0) 
                 {
+                    //player.RB.drag = 0f;
                     Vector3 directionToPoint = movingPlatform.transform.position - player.transform.position;
                     player.RB.AddForce(directionToPoint.normalized * playerData.forwardThrustForce * Time.deltaTime);
 
@@ -501,10 +511,16 @@ public class PlayerGrappleState : PlayerAbilityState
                 }
                 else if(player.InputHandler.ReelInput > 0)
                 {
+                    //player.RB.drag = 0f;
                     float extendedDistanceFromPoint = Vector3.Distance(player.transform.position, movingPlatform.transform.position) + playerData.extendCableSpeed;
 
                     player.joint.maxDistance = extendedDistanceFromPoint * 0.8f;
                     player.joint.minDistance = extendedDistanceFromPoint * 0.15f;
+                }
+                else
+                {
+                    Debug.Log("We are not reeling");
+                    //player.RB.drag = 30f;
                 }
 
             }
@@ -537,7 +553,7 @@ public class PlayerGrappleState : PlayerAbilityState
         }
         else if(grappleType.Equals(GrappleTypes.pullingToPoint)) 
         {
-            if(Vector3.Distance(player.playerHand.transform.position, player.joint.connectedBody.transform.position) <= 2f || player.InputHandler.cancelInput || jumpInput)
+            if(Vector3.Distance(player.playerHand.transform.position, player.joint.connectedBody.transform.position) <= 10f || player.InputHandler.cancelInput || jumpInput)
             {
                 // Stop grappling if we've reached the grapple point
                 if (player.joint.connectedBody.GetComponent<Oscillator>() != null) { player.joint.connectedBody.GetComponent<Oscillator>().canMove = true; }
