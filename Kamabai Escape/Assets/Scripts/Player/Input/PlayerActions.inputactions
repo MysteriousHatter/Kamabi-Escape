@@ -165,7 +165,7 @@
                 {
                     "name": "",
                     "id": "1e640071-e468-4764-ad30-823af9326c98",
-                    "path": "<Keyboard>/p",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
@@ -407,7 +407,7 @@
                 {
                     "name": "",
                     "id": "8b7e35b2-17b1-416f-8b59-1fc17b7afd07",
-                    "path": "<Keyboard>/l",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",

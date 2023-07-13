@@ -86,6 +86,7 @@ public class PlayerGrappleState : PlayerAbilityState
         player.InputHandler.UseHoldingGrapple();
 
         isHolding = true;
+        player.InputHandler.isHolding = isHolding;
         grappleDirection = core.Movement.FacingDirection;
         Time.timeScale = playerData.holdTimeScale;
         startTime = Time.unscaledTime;
@@ -120,6 +121,7 @@ public class PlayerGrappleState : PlayerAbilityState
             if (grappleInputStop)
             {
                 isHolding = false;
+                player.InputHandler.isHolding = isHolding;
                 Time.timeScale = 1f;
                 startTime = Time.time;
                 player.changeColorScale.GetComponent<PostProcessTest>().enabled = false;

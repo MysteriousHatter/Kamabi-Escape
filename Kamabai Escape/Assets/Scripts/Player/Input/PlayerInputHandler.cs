@@ -41,6 +41,8 @@ public class PlayerInputHandler : MonoBehaviour
 
     public int pressCounter { get; private set; }
 
+    public bool isHolding { get; set; }
+
 
 
     [SerializeField]
