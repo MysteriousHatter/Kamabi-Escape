@@ -1162,17 +1162,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &294216903 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2454858484302543836, guid: 57f22d5b07ce1484aa61b4516996c7eb, type: 3}
-  m_PrefabInstance: {fileID: 1447416855}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7641726e322e6244e9f3c8975354ac13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &297743311
 GameObject:
   m_ObjectHideFlags: 0
@@ -6004,45 +5993,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1723871562135186963, guid: 57f22d5b07ce1484aa61b4516996c7eb, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1966098114697671438, guid: 57f22d5b07ce1484aa61b4516996c7eb, type: 3}
       propertyPath: m_Name
       value: Player (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 2366214894102051634, guid: 57f22d5b07ce1484aa61b4516996c7eb, type: 3}
-      propertyPath: m_Constraints
-      value: 112
-      objectReference: {fileID: 0}
-    - target: {fileID: 5463530338050110923, guid: 57f22d5b07ce1484aa61b4516996c7eb, type: 3}
-      propertyPath: m_ActionEvents.Array.data[11].m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5463530338050110923, guid: 57f22d5b07ce1484aa61b4516996c7eb, type: 3}
-      propertyPath: m_ActionEvents.Array.data[11].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5463530338050110923, guid: 57f22d5b07ce1484aa61b4516996c7eb, type: 3}
-      propertyPath: m_ActionEvents.Array.data[11].m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 294216903}
-    - target: {fileID: 5463530338050110923, guid: 57f22d5b07ce1484aa61b4516996c7eb, type: 3}
-      propertyPath: m_ActionEvents.Array.data[11].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5463530338050110923, guid: 57f22d5b07ce1484aa61b4516996c7eb, type: 3}
-      propertyPath: m_ActionEvents.Array.data[11].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ChangeCameraAngle
-      objectReference: {fileID: 0}
-    - target: {fileID: 5463530338050110923, guid: 57f22d5b07ce1484aa61b4516996c7eb, type: 3}
-      propertyPath: m_ActionEvents.Array.data[11].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: PlayerInputHandler, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 5463530338050110923, guid: 57f22d5b07ce1484aa61b4516996c7eb, type: 3}
-      propertyPath: m_ActionEvents.Array.data[11].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
