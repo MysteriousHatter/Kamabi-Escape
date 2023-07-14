@@ -25,6 +25,7 @@ public class ModifyGameObjectsWithTag : MonoBehaviour
         }
         else
         {
+           
             ChangBack();
         }
     }
@@ -33,7 +34,7 @@ public class ModifyGameObjectsWithTag : MonoBehaviour
     {
         // Find all GameObjects with the layers included in the targetLayer
         GameObject[] gameObjects = FindGameObjectsWithLayerMask(greyScaleLayer);
-
+        this.gameObject.GetComponent<PostProcessTest>().doneScanning = false;
         // Apply modifications to each GameObject
         foreach (GameObject gameObject in gameObjects)
         {
@@ -50,42 +51,46 @@ public class ModifyGameObjectsWithTag : MonoBehaviour
 
     void ChangeMaterials()
     {
-        // Find all GameObjects with the layers included in the targetLayer
-        GameObject[] gameObjects = FindGameObjectsWithLayerMask(greyScaleLayer);
-
-        // Apply modifications to each GameObject
-        foreach (GameObject gameObject in gameObjects)
+        if (!this.gameObject.GetComponent<PostProcessTest>().doneScanning)
         {
-            // Get the tag of the GameObject
-            string tag = gameObject.tag;
+            // Find all GameObjects with the layers included in the targetLayer
+            GameObject[] gameObjects = FindGameObjectsWithLayerMask(greyScaleLayer);
 
-            // Use switch statements to assign materials based on tags
-            switch (tag)
+            // Apply modifications to each GameObject
+            foreach (GameObject gameObject in gameObjects)
             {
-                case "Grab-Platform":
-                    gameObject.GetComponent<Renderer>().material = newMaterial[0];
-                    break;
-                case "Collectiable":
-                    gameObject.GetComponent<Renderer>().material = newMaterial[0];
-                    break;
-                case "Platform":
-                    gameObject.GetComponent<Renderer>().material = newMaterial[1];
-                    break;
-                case "Swing-Reel":
-                    gameObject.GetComponent<Renderer>().material = newMaterial[2];
-                    break;
-                // Add more cases for additional tags and materials if needed
-                default:
-                    // Default case, in case no matching tag is found
-                    // You can choose to skip or handle these GameObjects differently
-                    break;
-            }
+                // Get the tag of the GameObject
+                string tag = gameObject.tag;
 
-            gameObject.GetComponent<Renderer>().material.SetFloat("_Blend", 1f);
-            gameObject.GetComponent<Renderer>().material.SetFloat("_Glossiness", 0.831f);
-            gameObject.GetComponent<Renderer>().material.SetFloat("_Metallic", 0.543f);
+                // Use switch statements to assign materials based on tags
+                switch (tag)
+                {
+                    case "Grab-Platform":
+                        gameObject.GetComponent<Renderer>().material = newMaterial[0];
+                        break;
+                    case "Collectiable":
+                        gameObject.GetComponent<Renderer>().material = newMaterial[0];
+                        break;
+                    case "Platform":
+                        gameObject.GetComponent<Renderer>().material = newMaterial[1];
+                        break;
+                    case "Swing-Reel":
+                        gameObject.GetComponent<Renderer>().material = newMaterial[2];
+                        break;
+                    // Add more cases for additional tags and materials if needed
+                    default:
+                        // Default case, in case no matching tag is found
+                        // You can choose to skip or handle these GameObjects differently
+                        break;
+                }
+
+                gameObject.GetComponent<Renderer>().material.SetFloat("_Blend", 1f);
+                gameObject.GetComponent<Renderer>().material.SetFloat("_Glossiness", 0.831f);
+                gameObject.GetComponent<Renderer>().material.SetFloat("_Metallic", 0.543f);
+            }
         }
 
+        this.gameObject.GetComponent<PostProcessTest>().doneScanning = true;
 
     }
 
@@ -110,6 +115,7 @@ public class ModifyGameObjectsWithTag : MonoBehaviour
 
         // Convert the list to an array
         GameObject[] objectsArray = objectsWithLayer.ToArray();
+        
 
         return objectsArray;
     }

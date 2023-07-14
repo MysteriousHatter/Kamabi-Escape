@@ -46,6 +46,7 @@ public class Player : MonoBehaviour
     public Rigidbody RB { get; private set; }
     public SpringJoint joint {get;  set;}
     public SpringJoint swingJoint { get; set;}
+    public bool isHolding { get; set; }
 
     public UnityEvent capturedEvent;
     public enum GrappleInputs

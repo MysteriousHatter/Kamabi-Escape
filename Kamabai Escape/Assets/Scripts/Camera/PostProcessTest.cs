@@ -10,10 +10,12 @@ public class PostProcessTest : MonoBehaviour
     public Camera camera;
 
     private Material m_Material;
+    public bool doneScanning = false;
 
     void Start()
     {
         m_Material = new Material(shader);
+        doneScanning = false;
     }
 
     private void OnRenderImage(RenderTexture source, RenderTexture destination)

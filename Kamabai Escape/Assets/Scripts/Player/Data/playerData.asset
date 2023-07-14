@@ -22,8 +22,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 136
   grappleSpeed: 2
-  minDistance: 2.4417605
-  maxDistance: 11.412852
+  minDistance: 2.7738962
+  maxDistance: 20.264406
   lengthStep: 0.1
   scrollSensitivity: 1
   animationDuration: 0.1
@@ -33,8 +33,8 @@ MonoBehaviour:
   sensitivityX: 900
   minimumX: -16
   maximumX: 80
-  extendCableSpeed: 20
-  forwardThrustForce: 611.9
+  extendCableSpeed: 4
+  forwardThrustForce: 900
   SwingThrustForce: 90
   maxRotation: 360
   grappleCooldown: 0.1
@@ -43,7 +43,8 @@ MonoBehaviour:
   rotationSpeed: 10
   maximumAngle: 270
   holdTimeScale: 0.11
-  releaseForceMagnitude: 2
+  releaseForceMagnitude: 20
+  pullSpeed: 8
   homingRadius: 10
   reticlePrefab: {fileID: 0}
   maxNumberofPresses: 10

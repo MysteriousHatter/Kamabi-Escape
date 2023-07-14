@@ -10,6 +10,7 @@ using DG.Tweening;
 using UnityEngine.Windows;
 using System;
 using UnityEngine.InputSystem;
+using Cinemachine;
 
 public class PlayerGrappleState : PlayerAbilityState
 {
@@ -81,12 +82,13 @@ public class PlayerGrappleState : PlayerAbilityState
         hit = new RaycastHit();
 
         lineStartPos = player.playerHand.transform.position;
+        
 
         canGrapple = false;
         player.InputHandler.UseHoldingGrapple();
+        player.InputHandler.isSwinging = false;
 
         isHolding = true;
-        player.InputHandler.isHolding = isHolding;
         grappleDirection = core.Movement.FacingDirection;
         Time.timeScale = playerData.holdTimeScale;
         startTime = Time.unscaledTime;
@@ -121,7 +123,6 @@ public class PlayerGrappleState : PlayerAbilityState
             if (grappleInputStop)
             {
                 isHolding = false;
-                player.InputHandler.isHolding = isHolding;
                 Time.timeScale = 1f;
                 startTime = Time.time;
                 player.changeColorScale.GetComponent<PostProcessTest>().enabled = false;
@@ -315,6 +316,7 @@ public class PlayerGrappleState : PlayerAbilityState
         player.line.SetPosition(1,Vector3.zero);
         player.OnDestroy();
         player.Anim.SetBool(animBoolName, false);
+        player.InputHandler.isSwinging = false;
         animBoolName = null;
         player.InputHandler.SwitchActionMaps();
         base.Exit();
@@ -495,6 +497,7 @@ private Quaternion ClampRotation(Quaternion targetRotation, Quaternion currentRo
             // Reduce the joint distance over time
             if (grappleType.Equals(GrappleTypes.reelInorOut) || grappleType.Equals(GrappleTypes.swingReelInorOut))
             {
+                player.InputHandler.isSwinging = true;
                 Debug.Log("The current animation " + animBoolName);
                 player.Anim.SetBool(animBoolName, false);
                 animBoolName = "swing";
@@ -505,15 +508,16 @@ private Quaternion ClampRotation(Quaternion targetRotation, Quaternion currentRo
                     //player.RB.drag = 0f;
                     Vector3 directionToPoint = movingPlatform.transform.position - player.transform.position;
                     player.RB.AddForce(directionToPoint.normalized * playerData.forwardThrustForce * Time.deltaTime);
+                    if(grappleType.Equals(GrappleTypes.reelInorOut)) { player.RB.drag = 6f; }
 
-                    float distanceFromPoint = Vector3.Distance(player.transform.position, movingPlatform.transform.position);
+                        float distanceFromPoint = Vector3.Distance(player.transform.position, movingPlatform.transform.position);
 
                     player.joint.maxDistance = distanceFromPoint * 0.8f;
                     player.joint.minDistance = distanceFromPoint * 0.25f;
                 }
                 else if(player.InputHandler.ReelInput > 0)
                 {
-                    //player.RB.drag = 0f;
+                    //if (grappleType.Equals(GrappleTypes.reelInorOut)) { player.RB.drag = 6f; }
                     float extendedDistanceFromPoint = Vector3.Distance(player.transform.position, movingPlatform.transform.position) + playerData.extendCableSpeed;
 
                     player.joint.maxDistance = extendedDistanceFromPoint * 0.8f;
@@ -522,7 +526,7 @@ private Quaternion ClampRotation(Quaternion targetRotation, Quaternion currentRo
                 else
                 {
                     Debug.Log("We are not reeling");
-                    //player.RB.drag = 30f;
+                    player.RB.drag = 0f;
                 }
 
             }
@@ -555,7 +559,7 @@ private Quaternion ClampRotation(Quaternion targetRotation, Quaternion currentRo
         }
         else if(grappleType.Equals(GrappleTypes.pullingToPoint)) 
         {
-            if(Vector3.Distance(player.playerHand.transform.position, player.joint.connectedBody.transform.position) <= 10f || player.InputHandler.cancelInput || jumpInput)
+            if(Vector3.Distance(player.playerHand.transform.position, player.joint.connectedBody.transform.position) <= player.joint.connectedAnchor.magnitude + 3 || player.InputHandler.cancelInput || jumpInput)
             {
                 // Stop grappling if we've reached the grapple point
                 if (player.joint.connectedBody.GetComponent<Oscillator>() != null) { player.joint.connectedBody.GetComponent<Oscillator>().canMove = true; }
@@ -615,7 +619,7 @@ private Quaternion ClampRotation(Quaternion targetRotation, Quaternion currentRo
             // Adjust the joint's linear limit to move the object closer to the player
             Debug.Log("Pull the object");
             player.joint.maxDistance -= distanceDelta * Time.deltaTime;
-            distanceToMove = Mathf.Min(distanceDelta, Time.deltaTime * 4.0f); // Limit the distance moved per frame
+            distanceToMove = Mathf.Min(distanceDelta, Time.deltaTime * playerData.pullSpeed); // Limit the distance moved per frame
 
             // Move the connected body towards the player, only changing X and Z coordinates
             Vector3 newPosition = player.joint.connectedBody.transform.position + direction * distanceToMove;
