@@ -20,6 +20,7 @@ public class Hazard : MonoBehaviour
         if (playerTag == "Player" || playerTag == "Drill")
         { 
             Debug.Log("Hit Hazard");
+            other.gameObject.GetComponent<Player>().PlayerDeath();  
         }
     }
 }
