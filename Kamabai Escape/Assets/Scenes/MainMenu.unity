@@ -2406,7 +2406,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentLevel: 0
-  isSceneUnlocked: 0101
+  highestLevel: 0
+  currentScore: 0
+  highScores: 0000000000000000000000000000000000000000
 --- !u!4 &2026235397
 Transform:
   m_ObjectHideFlags: 0
