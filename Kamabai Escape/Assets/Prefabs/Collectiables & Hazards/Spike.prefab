@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3658986387856897475}
   m_Layer: 0
   m_Name: Capsule (2)
-  m_TagString: Hazard
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 610697087933917132}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.291, y: 0.93, z: 0.34}
-  m_LocalScale: {x: 0.05, y: 1, z: 0.1}
+  m_LocalScale: {x: 0.2, y: 1, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5907873311190304484}
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a6f67d0fc4e68a6428f3dc2b9e222d15, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -147,7 +147,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  shootDirection: {x: 0, y: 1, z: 0}
 --- !u!54 &3658986387856897475
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -191,7 +190,7 @@ GameObject:
   - component: {fileID: 5479778382006479618}
   m_Layer: 0
   m_Name: Capsule (5)
-  m_TagString: Hazard
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -205,7 +204,7 @@ Transform:
   m_GameObject: {fileID: 2627419620247612553}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.265, y: 0.93, z: 0.034}
-  m_LocalScale: {x: 0.05, y: 1, z: 0.1}
+  m_LocalScale: {x: 0.2, y: 1, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5907873311190304484}
@@ -239,7 +238,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a6f67d0fc4e68a6428f3dc2b9e222d15, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -322,7 +321,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  shootDirection: {x: 0, y: 1, z: 0}
 --- !u!54 &5479778382006479618
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -366,7 +364,7 @@ GameObject:
   - component: {fileID: 7095702496449009487}
   m_Layer: 0
   m_Name: Capsule
-  m_TagString: Hazard
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -380,7 +378,7 @@ Transform:
   m_GameObject: {fileID: 2678398551684536556}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.93, z: 0.34}
-  m_LocalScale: {x: 0.05, y: 1, z: 0.1}
+  m_LocalScale: {x: 0.2, y: 1, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5907873311190304484}
@@ -414,7 +412,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a6f67d0fc4e68a6428f3dc2b9e222d15, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -497,7 +495,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  shootDirection: {x: 0, y: 1, z: 0}
 --- !u!54 &7095702496449009487
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -541,7 +538,7 @@ GameObject:
   - component: {fileID: 6049520665652742220}
   m_Layer: 0
   m_Name: Capsule (3)
-  m_TagString: Hazard
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -555,7 +552,7 @@ Transform:
   m_GameObject: {fileID: 3623161283026380039}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.291, y: 0.93, z: 0.034}
-  m_LocalScale: {x: 0.05, y: 1, z: 0.1}
+  m_LocalScale: {x: 0.2, y: 1, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5907873311190304484}
@@ -589,7 +586,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a6f67d0fc4e68a6428f3dc2b9e222d15, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -672,7 +669,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  shootDirection: {x: 0, y: 1, z: 0}
 --- !u!54 &6049520665652742220
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -830,7 +826,7 @@ GameObject:
   - component: {fileID: 1387300371792126399}
   m_Layer: 0
   m_Name: Capsule (8)
-  m_TagString: Hazard
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -844,7 +840,7 @@ Transform:
   m_GameObject: {fileID: 4956395355309201416}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.296, y: 0.93, z: -0.306}
-  m_LocalScale: {x: 0.05, y: 1, z: 0.1}
+  m_LocalScale: {x: 0.2, y: 1, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5907873311190304484}
@@ -878,7 +874,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a6f67d0fc4e68a6428f3dc2b9e222d15, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -961,7 +957,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  shootDirection: {x: 0, y: 1, z: 0}
 --- !u!54 &1387300371792126399
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1005,7 +1000,7 @@ GameObject:
   - component: {fileID: 1380841794320361697}
   m_Layer: 0
   m_Name: Capsule (6)
-  m_TagString: Hazard
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1019,7 +1014,7 @@ Transform:
   m_GameObject: {fileID: 5875764173275002355}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.009, y: 0.93, z: -0.313}
-  m_LocalScale: {x: 0.05, y: 1, z: 0.1}
+  m_LocalScale: {x: 0.2, y: 1, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5907873311190304484}
@@ -1053,7 +1048,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a6f67d0fc4e68a6428f3dc2b9e222d15, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1136,7 +1131,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  shootDirection: {x: 0, y: 1, z: 0}
 --- !u!54 &1380841794320361697
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1180,7 +1174,7 @@ GameObject:
   - component: {fileID: 7635618183000201112}
   m_Layer: 0
   m_Name: Capsule (4)
-  m_TagString: Hazard
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1194,7 +1188,7 @@ Transform:
   m_GameObject: {fileID: 7733288140562956756}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.006, y: 0.93, z: 0.034}
-  m_LocalScale: {x: 0.05, y: 1, z: 0.1}
+  m_LocalScale: {x: 0.2, y: 1, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5907873311190304484}
@@ -1228,7 +1222,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a6f67d0fc4e68a6428f3dc2b9e222d15, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1311,7 +1305,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  shootDirection: {x: 0, y: 1, z: 0}
 --- !u!54 &7635618183000201112
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1355,7 +1348,7 @@ GameObject:
   - component: {fileID: 4979600457218697203}
   m_Layer: 0
   m_Name: Capsule (1)
-  m_TagString: Hazard
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1369,7 +1362,7 @@ Transform:
   m_GameObject: {fileID: 9012994212698726616}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.302, y: 0.93, z: 0.34}
-  m_LocalScale: {x: 0.05, y: 1, z: 0.1}
+  m_LocalScale: {x: 0.2, y: 1, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5907873311190304484}
@@ -1403,7 +1396,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a6f67d0fc4e68a6428f3dc2b9e222d15, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1486,7 +1479,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  shootDirection: {x: 0, y: 1, z: 0}
 --- !u!54 &4979600457218697203
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1530,7 +1522,7 @@ GameObject:
   - component: {fileID: 7922388667817367619}
   m_Layer: 0
   m_Name: Capsule (7)
-  m_TagString: Hazard
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1544,7 +1536,7 @@ Transform:
   m_GameObject: {fileID: 9153526929669620800}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.325, y: 0.93, z: -0.313}
-  m_LocalScale: {x: 0.05, y: 1, z: 0.1}
+  m_LocalScale: {x: 0.2, y: 1, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5907873311190304484}
@@ -1578,7 +1570,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a6f67d0fc4e68a6428f3dc2b9e222d15, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1661,7 +1653,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  shootDirection: {x: 0, y: 1, z: 0}
 --- !u!54 &7922388667817367619
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -10,19 +10,26 @@ public class PostProcessTest : MonoBehaviour
     public Camera camera;
 
     private Material m_Material;
-    public bool doneScanning = false;
 
     void Start()
     {
         m_Material = new Material(shader);
-        doneScanning = false;
+        //m_Material.SetColor("_Color", colorTreatment); // Set the desired color treatment
+        //camera.SetReplacementShader(shader, "");
+        //var renderer = FindObjectsOfType<Renderer>();
+        //for (int i = 0; i < renderer.Length; i++)
+        //{
+        //    for (int j = 0; j < renderer[i].sharedMaterials.Length; j++)
+        //    {
+        //        renderer[i].materials[j].SetFloat("_Blend", 1f);
+        //    }
+        //}
     }
 
     private void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
 
         Graphics.Blit(source, destination, m_Material);
-
 
     }
 
