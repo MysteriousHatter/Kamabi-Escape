@@ -2,11 +2,11 @@ Shader "Unlit/Greyscale"
 {
     Properties
     {
-        _MainTex("Texture", 2D) = "white" {}
+        _MainTex ("Texture", 2D) = "white" {}
     }
-        SubShader
+    SubShader
     {
-        Tags { "RenderType" = "Opaque" }
+        Tags { "RenderType"="Opaque" }
         LOD 100
 
         Pass
@@ -35,7 +35,7 @@ Shader "Unlit/Greyscale"
             sampler2D _MainTex;
             float4 _MainTex_ST;
 
-            v2f vert(appdata v)
+            v2f vert (appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
@@ -47,10 +47,13 @@ Shader "Unlit/Greyscale"
             fixed4 frag(v2f i) : SV_Target
             {
                 // sample the texture
-                fixed4 col = tex2D(_MainTex, i.uv);
-                float intensity = col.r * 0.299 + col.g * 0.587 + col.b * 0.114;
-                fixed4 bandw = fixed4(intensity, intensity, intensity, col.a);
+                fixed4 col = tex2D(_MainTex, i.uv); //fixed4(0,0,0,0);
+                //fixed4 redOnly = fixed4(col.y, col.x, col.z, col.w);
+                float intensity = col.x * 0.299 + col.y * 0.587 + col.z * 0.114;
+                fixed4 bandw = fixed4(intensity, intensity, intensity, col.w);
                 bandw = lerp(col, bandw, col.a);
+                // apply fog
+                //UNITY_APPLY_FOG(i.fogCoord, col);
                 return bandw;
             }
             ENDCG

@@ -8,11 +8,6 @@ public class PlayerLandState : PlayerGroundedState
     {
     }
 
-    public override void AnimationFinishTrigger()
-    {
-        base.AnimationFinishTrigger();
-    }
-
     public override void LogicUpdate()
     {
         base.LogicUpdate();
