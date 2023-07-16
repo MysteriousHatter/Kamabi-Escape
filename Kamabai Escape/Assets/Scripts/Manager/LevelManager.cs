@@ -13,6 +13,8 @@ public class LevelManager : MonoBehaviour
     string scoreKey;
     public int currentLevel;
     public int highestLevel;
+    public int currentScore;
+    
 
     public int[] highScores; //the high score for each level, where the value is the score and the index is the level.
     //the length of this array should be the number of levels in the game
@@ -44,8 +46,26 @@ public class LevelManager : MonoBehaviour
         
     }
 
+    public void ChangeScore(int value)
+    {
+        currentScore = currentScore + value;
+    }
+
+    public void SaveData()
+    {
+        //set the high score for the current level
+        highScores[currentLevel] = currentScore;
+        scoreKey = "Score" + currentLevel;
+        PlayerPrefs.SetInt(scoreKey, currentScore);
+        PlayerPrefs.SetInt("CurrentLevel", currentLevel);
+        PlayerPrefs.SetInt("HighestLevel", highestLevel);
+        PlayerPrefs.Save();
+    }
+
     public void SaveData(int score, int level)
     {
+        //set the high score for the current level
+        highScores[level] = score;
         scoreKey = "Score" + currentLevel;
         PlayerPrefs.SetInt(scoreKey, score);
         PlayerPrefs.SetInt("CurrentLevel", level);

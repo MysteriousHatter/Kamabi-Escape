@@ -9,7 +9,10 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: b4f015ed5a611cc45b042e91b81e16b7
   - enabled: 1
-    path: Assets/Scenes/Test Level.unity
+    path: Assets/Scenes/TestScenes/Test Level.unity
     guid: c817351aef4d4e74399d86b7a7711d5d
+  - enabled: 1
+    path: Assets/Scenes/TestScenes/Obstacles.unity
+    guid: 7561ce54ed3f0d14080e500d21088de3
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 9cc9549e81481e84ea5db34ae99c581d, type: 2}

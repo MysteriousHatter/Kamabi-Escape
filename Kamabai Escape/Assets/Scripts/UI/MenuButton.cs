@@ -7,8 +7,10 @@ using UnityEngine;
 public class MenuButton : MonoBehaviour
 {
     public MainMenuManager mainMenuManager;
+    public PauseMenu pauseMenu;
     public ButtonType menuButtonType;
     public bool isInMainMenu;
+    public bool isInPauseMenu;
 
     //if this is a level select button which level should it load
     public int levelIndex;
@@ -21,9 +23,13 @@ public class MenuButton : MonoBehaviour
         if(isInMainMenu)
         {
             mainMenuManager = GameObject.FindWithTag("MainMenuManager").GetComponent<MainMenuManager>();
+            levelManager = GameObject.FindWithTag("LevelManager").GetComponent<LevelManager>();
         }
-
-        levelManager = GameObject.FindWithTag("LevelManager").GetComponent<LevelManager>();
+        else if(isInPauseMenu)
+        {
+            pauseMenu = GameObject.FindWithTag("PauseMenu").GetComponent<PauseMenu>();
+            pauseMenu.ResumeGame();
+        }
     }
 
 
@@ -78,7 +84,15 @@ public class MenuButton : MonoBehaviour
     }
     private void TutorialButtonEvent()
     {
-        mainMenuManager.ShowMenuWindow(1);
+        if(isInMainMenu)
+        {
+            mainMenuManager.ShowMenuWindow(1);
+        }
+        else if (isInPauseMenu)
+        {
+            pauseMenu.ShowMenuWindow(0);
+        }
+        
     }
     private void LevelWindowButtonEvent()
     {
@@ -94,7 +108,14 @@ public class MenuButton : MonoBehaviour
     }
     private void SettingsButtonEvent()
     {
-        mainMenuManager.ShowMenuWindow(3);
+        if (isInMainMenu)
+        {
+            mainMenuManager.ShowMenuWindow(3);
+        }
+        else if (isInPauseMenu)
+        {
+            pauseMenu.ShowMenuWindow(1);
+        }
     }
 }
 

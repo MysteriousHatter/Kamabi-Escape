@@ -16,6 +16,7 @@ TagManager:
   - MainMenuManager
   - LevelManager
   - Grab-Platform
+  - PauseMenu
   layers:
   - Default
   - TransparentFX
