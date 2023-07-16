@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 //using Cinemachine;
@@ -12,8 +11,6 @@ public class GameManager : MonoBehaviour
     private GameObject player;
     [SerializeField]
     private float respawnTime;
-    [SerializeField]
-    private GameObject deathUI;
 
     private float respawnTimeStart;
 
@@ -29,21 +26,7 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         CheckRespawn();
-        EnableDeathUI();
     }
-
-    private void EnableDeathUI()
-    {
-        if(!player.active)
-        {
-            deathUI.SetActive(true);
-        }
-        else
-        {
-            deathUI.SetActive(false);
-        }
-    }
-
     public void Respawn()
     {
         respawnTimeStart = Time.time;

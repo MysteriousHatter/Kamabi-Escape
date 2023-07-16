@@ -8,7 +8,6 @@ public class Camera_Controls : MonoBehaviour
 {
     private CinemachineVirtualCamera _virtualCamera => GetComponent<CinemachineVirtualCamera>();
     private PlayerInputHandler _playerInputHandler => FindObjectOfType<PlayerInputHandler>();
-    private Player player => FindAnyObjectByType<Player>();
     [SerializeField] private float zoomSpeed = 10f;
     private bool zoomIn;
     private bool zoomOut;
@@ -26,48 +25,28 @@ public class Camera_Controls : MonoBehaviour
     {
         if( _playerInputHandler != null )
         {
-            
             ZoomInAndOut();
-            //SwingZoomOut();
-        }
-        
-    }
-
-    private void SwingZoomOut()
-    {
-        CinemachineComponentBase componentBase = _virtualCamera.GetCinemachineComponent(CinemachineCore.Stage.Body);
-        if (_playerInputHandler.isSwinging)
-        {
-          
-            componentBase.GetComponent<CinemachineFramingTransposer>().m_CameraDistance = 75;
-        }
-        else
-        {
-            componentBase.GetComponent<CinemachineFramingTransposer>().m_CameraDistance = 60f;
         }
     }
 
     private void ZoomInAndOut()
     {
-        CinemachineComponentBase componentBase = _virtualCamera.GetCinemachineComponent(CinemachineCore.Stage.Body);
-        if (_playerInputHandler.CameraInput)
+        if(_playerInputHandler.CameraInput)
         {
-            Debug.Log("Click for camera input");
-            if ( zoomIn ) 
+            if( zoomIn ) 
             {
-                componentBase.GetComponent<CinemachineFramingTransposer>().m_CameraDistance += zoomSpeed;
+                _virtualCamera.m_Lens.FieldOfView += zoomSpeed;
                 zoomOut = true;
                 zoomIn = false;
                 _playerInputHandler.UseCameraInput();
             }
             else if(zoomOut ) 
             {
-                componentBase.GetComponent<CinemachineFramingTransposer>().m_CameraDistance -= zoomSpeed;
+                _virtualCamera.m_Lens.FieldOfView -= zoomSpeed;
                 zoomOut = false;
                 zoomIn = true;
                 _playerInputHandler.UseCameraInput();
             }
         }
     }
-
 }
