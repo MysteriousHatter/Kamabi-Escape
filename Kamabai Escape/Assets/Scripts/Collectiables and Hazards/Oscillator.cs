@@ -8,6 +8,7 @@ public class Oscillator : MonoBehaviour
     [SerializeField] Vector3 movementVector;
     [SerializeField] [Range(0, 1)] float movementFactor;
     [SerializeField] private float period = 2f;
+    public bool canMove;
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +19,8 @@ public class Oscillator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(!canMove) { return; }
+
         float cycles = Time.time / period;
 
 

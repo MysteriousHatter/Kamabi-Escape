@@ -11,6 +11,7 @@ public class MovingPlatform : MonoBehaviour
 
 
     [SerializeField] public bool canMove = true;
+    [SerializeField] public bool hitByGrapple;
     [SerializeField] int whenToGo = 4;
     public Animator animator;
     // Start is called before the first frame update
@@ -19,17 +20,13 @@ public class MovingPlatform : MonoBehaviour
         waypoints = waveConfig.GetWayPoints();
         transform.position = waypoints[0].transform.position;
         animator = gameObject.GetComponent<Animator>();
+        moveSpeed = waveConfig.GetMoveSpeed();
     }
-
-    public void SetWaveConfig(WaveConfig waveConfig)
-    {
-        this.waveConfig = waveConfig;
-    }
-
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (this.canMove == true) { MOve(); }
+
+        if (this.canMove == true && hitByGrapple) { MOve(); }
     }
 
     private void MOve()
@@ -71,10 +68,19 @@ public class MovingPlatform : MonoBehaviour
 
     void OnCollisionEnter(Collision collisionInfo)
     {
-        collisionInfo.gameObject.transform.parent = gameObject.transform;
+        if (collisionInfo.gameObject.CompareTag("Player"))
+        {
+            // Store the player's current local scale
+            Vector3 playerScale = collisionInfo.gameObject.transform.localScale;
+        }
     }
+
     void OnCollisionExit(Collision collisionInfo)
     {
-        collisionInfo.gameObject.transform.parent = null;
+        if (collisionInfo.gameObject.CompareTag("Player"))
+        {
+            // Unparent the player object from the MovingPlatform
+            collisionInfo.gameObject.transform.parent = null;
+        }
     }
 }
