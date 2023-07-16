@@ -1,6 +1,8 @@
 ﻿using System;
+using UnityEditor.ShaderGraph;
 using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 using UnityEngine.UIElements;
@@ -8,12 +10,13 @@ using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerInputHandler : MonoBehaviour
 {
-    //private PlayerInput playerInput;
+    public PlayerInput playerInput;
     private Player player;
     [SerializeField] private InputActionReference grappleButtonReference;
     [SerializeField] private InputActionReference verticalAction;
     [SerializeField] private InputActionReference grappleDirectionalButtonReferenceH;
     [SerializeField] private InputActionReference grappleDirectionalButtonReferenceV;
+    [SerializeField] private InputActionReference helpButtonReference;
     private Camera cam;
 
     public Vector3 RawMovementInput { get; private set; }
@@ -44,13 +47,13 @@ public class PlayerInputHandler : MonoBehaviour
     public bool isSwinging { get; set; }
 
 
-
     [SerializeField]
     private float inputHoldTime = 0.2f;
     private float jumpInputStartTime;
-
+    public HelpBoard helpBoard;
     [SerializeField] private float holdDuration = 2f;
     [SerializeField] private float tapDuration = 0.1f;
+    private bool readBoard = false;
 
     private void OnEnable()
     {
@@ -67,6 +70,7 @@ public class PlayerInputHandler : MonoBehaviour
         //player.playerInput = GetComponent<PlayerInput>();
         player = GetComponent<Player>();
         grappleButtonReference.action.started += OnGrappleInputPerformed;
+        helpButtonReference.action.started += OnHelpButtonPressed;
         //grappleDirectionalButtonReferenceH.action.performed += OnGrappleDirectionInputHorizontal;
         //grappleDirectionalButtonReferenceH.action.canceled += OnGrappleDirectionInputCanceledHorizontal;
         //grappleDirectionalButtonReferenceV.action.performed += OnGrappleDirectionInputVertical;
@@ -108,6 +112,33 @@ public class PlayerInputHandler : MonoBehaviour
         if (context.canceled)
         {
             JumpInputStop = true;
+        }
+    }
+
+    // Add this function to your class:
+    private void OnHelpButtonPressed(InputAction.CallbackContext context)
+    {
+        // Check if the player is close to the help board
+        if (helpBoard.isPlayerNear)
+        {
+            // If the player is near, open the help UI
+            player.time.StopTimer();
+            helpBoard.OnHelp();
+            readBoard = true;
+
+        }
+    }
+
+    public void OnCloseInput(InputAction.CallbackContext context)
+    {
+        if(context.started) 
+        {
+            if(readBoard)
+            {
+               helpBoard.CloseHelp();
+                player.time.StartTimer();
+                readBoard = false;
+            }
         }
     }
 
@@ -219,9 +250,10 @@ public class PlayerInputHandler : MonoBehaviour
     public void UseTappingGrapple() => isTappingGrappleButton = false;
     public void UseJumpInput() => JumpInput = false;
     public void UseCameraInput() => CameraInput = false;
-    public void SwitchActionMaps() => player.playerInput.SwitchCurrentActionMap("Gameplay");
+    public void SwitchActionToGameplay() => player.playerInput.SwitchCurrentActionMap("Gameplay");
     public void SwitchActionMapToGrapple() => player.playerInput.SwitchCurrentActionMap("Grapple Gameplay");
     public void SwitchActionMapToCaptured() => player.playerInput.SwitchCurrentActionMap("Captured Gameplay");
+    public void SwitchActionMapToHelp() => player.playerInput.SwitchCurrentActionMap("Help Gameplay");
 
     public int getCurrentPressCounter() => pressCounter;
 

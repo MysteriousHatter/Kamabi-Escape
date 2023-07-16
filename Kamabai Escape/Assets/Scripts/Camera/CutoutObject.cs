@@ -32,6 +32,7 @@ public class CutoutObject : MonoBehaviour
 
         if(Physics.Raycast(transform.position, offset, out hit, offset.magnitude, wallMask)) 
         {
+            Debug.Log("First Wave");
             if(hit.collider.gameObject.GetComponent<Renderer>() != null) 
             {
                 Material material = hit.collider.gameObject.GetComponent<Renderer>().material;
@@ -55,6 +56,11 @@ public class CutoutObject : MonoBehaviour
             previousObject.GetComponent<Renderer>().material.SetVector("_Cutout_Position", Vector2.zero);
             previousObject.GetComponent<Renderer>().material.SetFloat("_Cutout_Size", 0f);
             previousObject.GetComponent<Renderer>().material.SetFloat("_Falloff_Size", 0f);
+        }
+        else
+        {
+            Debug.Log("We don't hit anything");
+            
         }
     }
 }

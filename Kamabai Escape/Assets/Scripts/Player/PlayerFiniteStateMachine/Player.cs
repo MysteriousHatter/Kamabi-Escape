@@ -68,6 +68,7 @@ public class Player : MonoBehaviour
     public GameObject changeColorScale;
     public GameObject UICapturedBox;
     public Vector3 offset;
+    public Timer time;
     #endregion
 
     #region Unity Callback Functions
@@ -92,8 +93,9 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        
+        time = FindObjectOfType<Timer>();
         playerInput = GetComponent<PlayerInput>();
+        playerInput.enabled = true;
         InputHandler = GetComponent<PlayerInputHandler>();
         Anim = GetComponent<Animator>();
         RB = GetComponent<Rigidbody>();
@@ -114,6 +116,7 @@ public class Player : MonoBehaviour
         if(capturedEvent == null) { capturedEvent = new UnityEvent(); }
 
         capturedEvent.AddListener(PlayerIsCaptured);
+        if (this.gameObject.active) { time.StartTimer(); }
 
         //line.SetPosition(0, playerHand.transform.position);
         //line.SetPosition(1, playerHand.transform.position);
@@ -121,11 +124,12 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+       
         Core.LogicUpdate();
         StateMachine.CurrentState.LogicUpdate();
         if (UICapturedBox != null) { UICapturedBox.transform.rotation = Quaternion.identity; }
-        Debug.Log("the current state machine " + StateMachine.CurrentState);
-        Debug.Log("The current action map " + playerInput.currentActionMap.name);
+        //Debug.Log("the current state machine " + StateMachine.CurrentState);
+        //Debug.Log("The current action map " + playerInput.currentActionMap.name);
     }
 
     private void LateUpdate()
@@ -170,8 +174,11 @@ public class Player : MonoBehaviour
 
     private IEnumerator DeathAnimation()
     {
+        Anim.SetBool("inAir", false);
         Anim.SetBool("death", true);
-        yield return new WaitForSeconds(3f);
+        playerInput.enabled = false;
+        time.StopTimer();
+        yield return new WaitForSeconds(1f);
         this.gameObject.SetActive(false);
     }
 

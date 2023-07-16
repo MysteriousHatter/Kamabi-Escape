@@ -34,7 +34,7 @@ public class PlayerCapturedState : PlayerAbilityState
             player.InputHandler.resetPressCounter();
             player.UICapturedBox.SetActive(false);
             stateMachine.ChangeState(player.JumpState);
-            player.InputHandler.SwitchActionMaps();
+            player.InputHandler.SwitchActionToGameplay();
             playerData.maxNumberofPresses += playerData.increaseNumberOfPresses;
             if(playerData.maxNumberofPresses >= playerData.maxNumberofPressesLimit)
             {

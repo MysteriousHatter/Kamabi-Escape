@@ -17,13 +17,13 @@ MonoBehaviour:
   amountOfJumps: 1
   coyoteTime: 0.99
   variableJumpHeightMultiplier: 0.5
-  distance: 30
+  distance: 50
   mask:
     serializedVersion: 2
     m_Bits: 136
   grappleSpeed: 2
-  minDistance: 2.7738962
-  maxDistance: 20.264406
+  minDistance: 2.6239471
+  maxDistance: 42.84293
   lengthStep: 0.1
   scrollSensitivity: 1
   animationDuration: 0.1
@@ -31,10 +31,10 @@ MonoBehaviour:
   minimumY: 90
   maximumY: 270
   sensitivityX: 900
-  minimumX: -16
-  maximumX: 80
+  minimumX: 0
+  maximumX: 30
   extendCableSpeed: 4
-  forwardThrustForce: 900
+  forwardThrustForce: 0.9
   SwingThrustForce: 90
   maxRotation: 360
   grappleCooldown: 0.1

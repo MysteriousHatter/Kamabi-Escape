@@ -245,6 +245,7 @@ public class PlayerGrappleState : PlayerAbilityState
         else if (targetObject.CompareTag("Swing-Reel")) { grappleType = GrappleTypes.swingReelInorOut; }
 
         if(targetObject.GetComponent<Oscillator>() != null) { targetObject.GetComponent<Oscillator>().canMove = false; }
+        else if(targetObject.GetComponentInParent<Oscillator>() != null) { targetObject.GetComponentInParent<Oscillator>().canMove = false; }
 
 
 
@@ -318,7 +319,7 @@ public class PlayerGrappleState : PlayerAbilityState
         player.Anim.SetBool(animBoolName, false);
         player.InputHandler.isSwinging = false;
         animBoolName = null;
-        player.InputHandler.SwitchActionMaps();
+        player.InputHandler.SwitchActionToGameplay();
         base.Exit();
     }
 
@@ -326,7 +327,7 @@ public class PlayerGrappleState : PlayerAbilityState
     {
         if(grappleType.Equals(GrappleTypes.swingReelInorOut))
         {
-            if (player.InputHandler.NormInputZ > 0) { player.RB.AddForce(Vector3.forward * playerData.SwingThrustForce * Time.deltaTime); }
+            if (player.InputHandler.NormInputZ > 0) { player.RB.AddForce(Vector3.forward * playerData.SwingThrustForce * Time.deltaTime ); }
             else if (player.InputHandler.NormInputZ < 0) { player.RB.AddForce(-Vector3.forward * playerData.SwingThrustForce * Time.deltaTime); }
             else if (player.InputHandler.NormInputX > 0) { player.RB.AddForce(Vector3.right * playerData.SwingThrustForce * Time.deltaTime); Debug.Log("Swinging Horizontally"); }
             else if (player.InputHandler.NormInputX < 0) { player.RB.AddForce(-Vector3.right * playerData.SwingThrustForce * Time.deltaTime);}
@@ -563,6 +564,7 @@ private Quaternion ClampRotation(Quaternion targetRotation, Quaternion currentRo
             {
                 // Stop grappling if we've reached the grapple point
                 if (player.joint.connectedBody.GetComponent<Oscillator>() != null) { player.joint.connectedBody.GetComponent<Oscillator>().canMove = true; }
+                else if (player.joint.connectedBody.GetComponentInParent<Oscillator>() != null) { player.joint.connectedBody.GetComponentInParent<Oscillator>().canMove = true; }
                 player.joint.connectedBody = null;
                 player.joint.enableCollision = false;
                 player.joint.enablePreprocessing = false;
