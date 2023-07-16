@@ -44,6 +44,7 @@ public class PlayerData : ScriptableObject
     public float maximumAngle = 270f;
     public float holdTimeScale = 0.25f;
     public float releaseForceMagnitude = 10f;
+    public float pullSpeed = 20f;
 
     [Header("Homing Grapple")]
     public float homingRadius = 5f;

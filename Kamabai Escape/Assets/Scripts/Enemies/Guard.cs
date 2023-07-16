@@ -101,6 +101,11 @@ public class Guard : BTAgent
 
     }
 
+    private void Update()
+    {
+        Debug.Log("Distance to target" + distanceToTarget);
+    }
+
     private Node.Status AttackedByAGrapple()
     {
        Node.Status stunned = IsStunned();
@@ -148,7 +153,7 @@ public class Guard : BTAgent
     {
         if (theKid != null)
         {
-            Node.Status criminalStatus = CaneSee(theKid.transform.position, theKid.tag, maxDistance, maxAngle);
+            Node.Status criminalStatus = CaneSee(theKid.transform.localPosition, theKid.tag, maxDistance, maxAngle);
             Debug.Log("Can see the kid " + criminalStatus);
             return criminalStatus;
         }
@@ -158,11 +163,11 @@ public class Guard : BTAgent
     public Node.Status ChaseTheKid()
     {
         GameObject player = theKid.gameObject;
-        Node.Status chaseTheCriminal = Chase(player.transform.position, chasingDistance);
+        Node.Status chaseTheCriminal = Chase(player.transform.localPosition, chasingDistance);
         Debug.Log("Distance to target" + distanceToTarget);
-        if(!isStunned && distanceToTarget < 2)
+        if(!isStunned && distanceToTarget < 1.4f)
         {
-            Debug.Log("We are picking up the kid");
+           
             pickup = player;
             pickup.GetComponent<Player>().enemyPrefab = this.gameObject;
             pickup.transform.SetParent(pickUpPrefab.gameObject.transform);
@@ -172,28 +177,39 @@ public class Guard : BTAgent
             pickup.GetComponent<Collider>().enabled = false;
             pickup.GetComponent<Player>().capturedEvent.Invoke();
         }
+        Debug.Log("We are picking up the kid");
         return chaseTheCriminal;
     }
 
 
     private Node.Status DropTheKid()
     {
-        Node.Status s = GoToLocation(droppingPoint.transform.position);
-        if(s == Node.Status.SUCCESS)
-        {
-            if(pickup != null)
+        Debug.Log("We are dropping off the kid");
+        Node.Status success = Node.Status.FAILURE;
+        if (pickup != null) { 
+            Node.Status s = GoToLocation(droppingPoint.transform.position);
+            if (s == Node.Status.SUCCESS)
             {
-                Vector3 dropPosition = droppingPoint.transform.position + new Vector3(0f, 0f, 10f);
-               pickup.transform.position = dropPosition;
-                // pickup.SetActive(false);
-                theKid.PlayerDeath();
-                pickup.transform.SetParent(null);
-                pickup.GetComponent<Rigidbody>().isKinematic = false;
-                pickup.GetComponent<Collider>().enabled = true;
-                pickup = null;
+                if (pickup != null)
+                {
+                    Debug.Log("We are are dropping the kid");
+                    Vector3 dropPosition = droppingPoint.transform.position + new Vector3(0f, 0f, 10f);
+                    pickup.transform.position = dropPosition;
+                    // pickup.SetActive(false);
+                    theKid.PlayerDeath();
+                    pickup.transform.SetParent(null);
+                    pickup.GetComponent<Rigidbody>().isKinematic = false;
+                    pickup.GetComponent<Collider>().enabled = true;
+                    success = s;
+                    pickup = null;
+                }
             }
         }
-        return s;
+        else
+        {
+            return Node.Status.FAILURE;
+        }
+        return success;
     }
 
 
@@ -205,7 +221,7 @@ public class Guard : BTAgent
         agent.acceleration = 0f;
         //canMove = false;
         //animator.SetBool("Move", canMove);
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(1f);
         //animator.SetBool("Move", canMove);
         //canMove = true;
         agent.speed = 12f;

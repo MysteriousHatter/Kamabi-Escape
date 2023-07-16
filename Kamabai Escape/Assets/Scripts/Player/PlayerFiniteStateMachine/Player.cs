@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     public PlayerIdleState IdleState { get; private set; }
     public PlayerMoveState MoveState { get; private set; }
     public PlayerJumpState JumpState { get; private set; }
+    public Animator Anim { get; private set; }
     public PlayerInAirState InAirState { get; private set; }
     public PlayerLandState LandState { get; private set; }
     public PlayerHomingGrapple HomingState { get; private set; }
@@ -45,6 +46,7 @@ public class Player : MonoBehaviour
     public Rigidbody RB { get; private set; }
     public SpringJoint joint {get;  set;}
     public SpringJoint swingJoint { get; set;}
+    public bool isHolding { get; set; }
 
     public UnityEvent capturedEvent;
     public enum GrappleInputs
@@ -66,6 +68,7 @@ public class Player : MonoBehaviour
     public GameObject changeColorScale;
     public GameObject UICapturedBox;
     public Vector3 offset;
+    public Timer time;
     #endregion
 
     #region Unity Callback Functions
@@ -77,11 +80,11 @@ public class Player : MonoBehaviour
 
         IdleState = new PlayerIdleState(this, StateMachine, playerData, "idle");
         MoveState = new PlayerMoveState(this, StateMachine, playerData, "move");
-        JumpState = new PlayerJumpState(this, StateMachine, playerData, "inAir");
+        JumpState = new PlayerJumpState(this, StateMachine, playerData, "jump");
         InAirState = new PlayerInAirState(this, StateMachine, playerData, "inAir");
         LandState = new PlayerLandState(this, StateMachine, playerData, "land");
         capturedState = new PlayerCapturedState(this, StateMachine, playerData, "captured");
-        GrappleDirectionalState = new PlayerGrappleState(this, StateMachine, playerData, "Grapple");
+        GrappleDirectionalState = new PlayerGrappleState(this, StateMachine, playerData);
         UICapturedBox = GameObject.Find("CapturedUIBox");
         //TODO We will make this it's own method
         playerData.maxNumberofPresses = playerData.maxNumberOfPressesPlaceholder;
@@ -90,8 +93,11 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        time = FindObjectOfType<Timer>();
         playerInput = GetComponent<PlayerInput>();
+        playerInput.enabled = true;
         InputHandler = GetComponent<PlayerInputHandler>();
+        Anim = GetComponent<Animator>();
         RB = GetComponent<Rigidbody>();
         if (UICapturedBox != null) { UICapturedBox.SetActive(false); }
         //joint = GetComponent<ConfigurableJoint>();
@@ -110,6 +116,7 @@ public class Player : MonoBehaviour
         if(capturedEvent == null) { capturedEvent = new UnityEvent(); }
 
         capturedEvent.AddListener(PlayerIsCaptured);
+        if (this.gameObject.active) { time.StartTimer(); }
 
         //line.SetPosition(0, playerHand.transform.position);
         //line.SetPosition(1, playerHand.transform.position);
@@ -117,11 +124,12 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+       
         Core.LogicUpdate();
         StateMachine.CurrentState.LogicUpdate();
         if (UICapturedBox != null) { UICapturedBox.transform.rotation = Quaternion.identity; }
-        Debug.Log("the current state machine " + StateMachine.CurrentState);
-        Debug.Log("The current action map " + playerInput.currentActionMap.name);
+        //Debug.Log("the current state machine " + StateMachine.CurrentState);
+        //Debug.Log("The current action map " + playerInput.currentActionMap.name);
     }
 
     private void LateUpdate()
@@ -159,8 +167,23 @@ public class Player : MonoBehaviour
 
     public void PlayerDeath()
     {
-        UICapturedBox.SetActive(false);
+        // UICapturedBox.SetActive(false);
+        StartCoroutine(DeathAnimation());
+        
+    }
+
+    private IEnumerator DeathAnimation()
+    {
+        Anim.SetBool("inAir", false);
+        Anim.SetBool("death", true);
+        playerInput.enabled = false;
+        time.StopTimer();
+        yield return new WaitForSeconds(1f);
         this.gameObject.SetActive(false);
     }
+
+    private void AnimationTrigger() => StateMachine.CurrentState.AnimationTrigger();
+
+    private void AnimtionFinishTrigger() => StateMachine.CurrentState.AnimationFinishTrigger();
     #endregion
 }
