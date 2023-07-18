@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65ca48738a7a0264884c833183f68271, type: 3}
   m_Name: playerData
   m_EditorClassIdentifier: Assembly-CSharp::PlayerData
-  movementVelocity: 12
+  movementVelocity: 18
   jumpVelocity: 8
   amountOfJumps: 1
   coyoteTime: 0.99
@@ -22,8 +22,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 136
   grappleSpeed: 2
-  minDistance: 2.6239471
-  maxDistance: 42.84293
+  minDistance: 2.623932
+  maxDistance: 17.290035
   lengthStep: 0.1
   scrollSensitivity: 1
   animationDuration: 0.1

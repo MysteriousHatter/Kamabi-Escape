@@ -14,6 +14,11 @@ public class HelpBoard : MonoBehaviour
     public bool isPlayerNear = false;
     private PlayerInputHandler player => FindAnyObjectByType<PlayerInputHandler>();
 
+
+    private void Update()
+    {
+       
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -23,10 +28,12 @@ public class HelpBoard : MonoBehaviour
             if(player.playerInput.currentControlScheme == "Keyboard")
             {
                 promptUI.GetComponentInChildren<Image>().sprite = promptKeyboardSprite;
+                player.currentHelpBoard = this;
             }
-            else
+            else if(player.playerInput.currentControlScheme == "Gamepad")
             {
-                promptUI.GetComponentInChildren<Image>().sprite = promptKeyboardSprite;
+                promptUI.GetComponentInChildren<Image>().sprite = promptControllerSprite;
+                player.currentHelpBoard = this;
             }
             promptUI.SetActive(true);
         }
@@ -38,6 +45,7 @@ public class HelpBoard : MonoBehaviour
         {
             // Set isPlayerNear to false and hide the help and prompt UIs when the player moves away from the board
             isPlayerNear = false;
+            player.currentHelpBoard = null;
             //helpUI.SetActive(false);
             promptUI.SetActive(false);
         }
@@ -54,7 +62,8 @@ public class HelpBoard : MonoBehaviour
             player.SwitchActionMapToHelp();
             
             helpText.text = helpData.description;
-            helpImage.sprite = helpData.artwork;
+            if (helpData.artwork != null) { helpImage.sprite = helpData.artwork; }
+            else { helpImage.enabled = false; }
         }
     }
 

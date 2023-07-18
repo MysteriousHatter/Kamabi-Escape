@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8bb18331aceb3954f8e50027bafb1fa7, type: 3}
-  m_Name: Swing
+  m_Name: Grapple Button
   m_EditorClassIdentifier: 
-  name: Swinging and reeling
-  description: When ever you hit a grapple point with a purple coloring, it means
-    you can swing!! Use the analog stick or WASD keys to swing. You can also use
-    the Q/R or Left/Right shoulder buttons to make the rope longer or shorter
-  artwork: {fileID: 21300000, guid: b779938f7d273c54daa4e29a734a4c92, type: 3}
+  name: Grapple Button
+  description: Press and hold the left mouse click/square button to enter grapple
+    mode, slowing time for easy aim. Glowing objects can be grappled, with unique
+    grapple abilities signified by different colors.
+  artwork: {fileID: 0}

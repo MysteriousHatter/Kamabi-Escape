@@ -17,8 +17,10 @@ public class LevelManager : MonoBehaviour
     
 
     public int[] highScores; //the high score for each level, where the value is the score and the index is the level.
-    //the length of this array should be the number of levels in the game
-    
+                             //the length of this array should be the number of levels in the game
+
+
+    //Whenever you start a level score should be set to zero at the beginning of the level - TODO
 
     private void Awake()
     {
@@ -36,13 +38,14 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        highestLevel = 1;
+        highestLevel = 3;
         currentLevel = 1;
     }
 
     // Update is called once per frame
     void Update()
     {
+       
         
     }
 
@@ -81,7 +84,7 @@ public class LevelManager : MonoBehaviour
             highScores[i] = PlayerPrefs.GetInt(scoreKey);
         }
         currentLevel = PlayerPrefs.GetInt("CurrentLevel", 1);
-        highestLevel = PlayerPrefs.GetInt("HighestLevel", 1);
+        highestLevel = PlayerPrefs.GetInt("HighestLevel", 3);
     }
 
     public bool isLevelUnlocked(int level)
@@ -95,6 +98,7 @@ public class LevelManager : MonoBehaviour
     public void LoadScene(int value)
     {
         //if scene is unlocked, load scene and update current scene int
+        //Everytime you beat a level you need to access level manager and you need to let it know the highest level should equate to that level
         if(isLevelUnlocked(value))
         {
             currentLevel = value;

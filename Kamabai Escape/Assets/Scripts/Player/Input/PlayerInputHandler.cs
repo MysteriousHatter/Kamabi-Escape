@@ -1,8 +1,5 @@
-﻿using System;
-using UnityEditor.ShaderGraph;
-using UnityEditorInternal;
+﻿
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 using UnityEngine.UIElements;
@@ -13,10 +10,8 @@ public class PlayerInputHandler : MonoBehaviour
     public PlayerInput playerInput;
     private Player player;
     [SerializeField] private InputActionReference grappleButtonReference;
-    [SerializeField] private InputActionReference verticalAction;
-    [SerializeField] private InputActionReference grappleDirectionalButtonReferenceH;
-    [SerializeField] private InputActionReference grappleDirectionalButtonReferenceV;
     [SerializeField] private InputActionReference helpButtonReference;
+    [SerializeField] private GameObject pause;
     private Camera cam;
 
     public Vector3 RawMovementInput { get; private set; }
@@ -46,11 +41,13 @@ public class PlayerInputHandler : MonoBehaviour
 
     public bool isSwinging { get; set; }
 
+    public bool isPaused { get; set; }
+
 
     [SerializeField]
     private float inputHoldTime = 0.2f;
     private float jumpInputStartTime;
-    public HelpBoard helpBoard;
+    public HelpBoard currentHelpBoard;
     [SerializeField] private float holdDuration = 2f;
     [SerializeField] private float tapDuration = 0.1f;
     private bool readBoard = false;
@@ -69,8 +66,10 @@ public class PlayerInputHandler : MonoBehaviour
     {
         //player.playerInput = GetComponent<PlayerInput>();
         player = GetComponent<Player>();
+        isPaused = false;
+        //pause.GetComponent<PauseMenu>().isGamePaused = false;
         grappleButtonReference.action.started += OnGrappleInputPerformed;
-        helpButtonReference.action.started += OnHelpButtonPressed;
+        helpButtonReference.action.performed += OnHelpButtonPressed;
         //grappleDirectionalButtonReferenceH.action.performed += OnGrappleDirectionInputHorizontal;
         //grappleDirectionalButtonReferenceH.action.canceled += OnGrappleDirectionInputCanceledHorizontal;
         //grappleDirectionalButtonReferenceV.action.performed += OnGrappleDirectionInputVertical;
@@ -116,16 +115,21 @@ public class PlayerInputHandler : MonoBehaviour
     }
 
     // Add this function to your class:
-    private void OnHelpButtonPressed(InputAction.CallbackContext context)
+    public void OnHelpButtonPressed(InputAction.CallbackContext context)
     {
+        Debug.Log("Were clciking for help");
         // Check if the player is close to the help board
-        if (helpBoard.isPlayerNear)
+        if (currentHelpBoard != null)
         {
-            // If the player is near, open the help UI
-            player.time.StopTimer();
-            helpBoard.OnHelp();
-            readBoard = true;
+            if (currentHelpBoard.isPlayerNear)
+            {
+                // If the player is near, open the help UI
+                Debug.Log("Help");
+                player.time.StopTimer();
+                currentHelpBoard.OnHelp();
+                readBoard = true;
 
+            }
         }
     }
 
@@ -135,7 +139,7 @@ public class PlayerInputHandler : MonoBehaviour
         {
             if(readBoard)
             {
-               helpBoard.CloseHelp();
+               currentHelpBoard.CloseHelp();
                 player.time.StartTimer();
                 readBoard = false;
             }
@@ -152,6 +156,29 @@ public class PlayerInputHandler : MonoBehaviour
         if (context.canceled)
         {
             GrabInput = false;
+        }
+    }
+
+    public void onPauseInput(InputAction.CallbackContext context)
+    {
+        if(context.started)
+        {
+            if(!isPaused) 
+            {
+                Debug.Log("We are paused");
+                 isPaused = true;
+                pause.gameObject.SetActive(isPaused);
+                //pause.GetComponent<PauseMenu>().isGamePaused = true;
+                pause.GetComponent<PauseMenu>().PauseGame();
+            }
+            else
+            {
+                Debug.Log("We are unpaused");
+                //pause.GetComponent<PauseMenu>().isGamePaused = false;
+                isPaused = false;
+                pause.GetComponent<PauseMenu>().ResumeGame();
+                pause.gameObject.SetActive(isPaused);
+            }
         }
     }
 

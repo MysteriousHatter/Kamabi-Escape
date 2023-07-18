@@ -22,7 +22,7 @@ public class PauseMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //TogglePauseGame();
     }
 
     public void ShowMenuWindow(int index)

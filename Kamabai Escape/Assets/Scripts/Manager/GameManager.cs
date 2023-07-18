@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 //using Cinemachine;
 
 public class GameManager : MonoBehaviour
@@ -14,7 +16,8 @@ public class GameManager : MonoBehaviour
     private float respawnTime;
     [SerializeField]
     private GameObject deathUI;
-
+    public LevelManager levelManager;
+    public int currentLevel;
     private float respawnTimeStart;
 
     private bool respawn;
@@ -24,6 +27,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         //CVC = GameObject.Find("Player Camera").GetComponent<CinemachineVirtualCamera>();
+        levelManager = GameObject.FindWithTag("LevelManager").GetComponent<LevelManager>();
     }
 
     private void Update()
@@ -54,9 +58,30 @@ public class GameManager : MonoBehaviour
     {
         if(Time.time >= respawnTimeStart + respawnTime && respawn)
         {
-            var playerTemp = Instantiate(player, respawnPoint);
-           // CVC.m_Follow = playerTemp.transform;
+
+            player.transform.position = respawnPoint.position;
+            player.transform.rotation = respawnPoint.rotation;
+            player.SetActive(true);
+            player.GetComponent<PlayerInput>().enabled = true;
+            player.GetComponent<Player>().time.StartTimer();
+            // CVC.m_Follow = playerTemp.transform;
             respawn = false;
         }
+    }
+
+    public void NextLevelWasLoaded(int level)
+    {
+        Debug.Log("Load Level " +  level);
+        levelManager.LoadScene(level);
+    }
+
+
+    public void GoToMainMenu()
+    {
+        Time.timeScale = 1;
+        if (levelManager.currentLevel < levelManager.highestLevel) { levelManager.currentLevel = currentLevel; }
+        else { levelManager.currentLevel = 1; }
+        levelManager.SaveData();
+        SceneManager.LoadScene(0);
     }
 }

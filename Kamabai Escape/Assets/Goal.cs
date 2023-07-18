@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Goal : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class Goal : MonoBehaviour
         {
             this.gameObject.SetActive(false);
             other.gameObject.GetComponent<Player>().time.StopTimer();
+            other.gameObject.GetComponent<PlayerInput>().enabled = false;
             levelResult.CheckPlayerResult();  // Check the player's result
             resultUI.SetActive(true);  // Activate the UI
         }

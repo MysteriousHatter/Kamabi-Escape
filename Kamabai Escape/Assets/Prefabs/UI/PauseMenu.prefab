@@ -263,7 +263,7 @@ RectTransform:
   m_Children:
   - {fileID: 9164876055490433686}
   - {fileID: 3988327623693452530}
-  - {fileID: 6279694311021433834}
+  - {fileID: 1095050311961802837}
   - {fileID: 1645116585819960478}
   m_Father: {fileID: 5904270722047064860}
   m_RootOrder: -1
@@ -856,6 +856,8 @@ MonoBehaviour:
   menuWindows:
   - {fileID: 268258705704150623}
   - {fileID: 6049792909414128844}
+  currentLevel: 0
+  levelManager: {fileID: 0}
 --- !u!1 &5630062304393631690
 GameObject:
   m_ObjectHideFlags: 0
@@ -1119,7 +1121,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5904270722047064860
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1606,7 +1608,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fd9ef437ef9a1f54490c57da0f704364, type: 3}
---- !u!224 &6279694311021433834 stripped
+--- !u!224 &1095050311961802837 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6347703555646860220, guid: fd9ef437ef9a1f54490c57da0f704364, type: 3}
   m_PrefabInstance: {fileID: 6279694311021433833}

@@ -16,6 +16,7 @@ public class ParticleCollision : MonoBehaviour
         if (other.tag == "Player")
         {
             Debug.Log("Hit Hazard");
+            other.gameObject.GetComponent<Player>().PlayerDeath();
         }
     }
 }
