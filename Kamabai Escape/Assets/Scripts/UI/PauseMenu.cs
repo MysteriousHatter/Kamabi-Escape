@@ -10,11 +10,13 @@ public class PauseMenu : MonoBehaviour
     public GameObject[] menuWindows;
     public int currentLevel;
     public LevelManager levelManager;
+    [SerializeReference] private Timer timer;
 
     // Start is called before the first frame update
     void Start()
     {
         levelManager = GameObject.FindWithTag("LevelManager").GetComponent<LevelManager>();
+        //timer = FindObjectOfType<Timer>().GetComponentInChildren<Timer>();
         isGamePaused = false;
         ResumeGame();
     }
@@ -54,13 +56,16 @@ public class PauseMenu : MonoBehaviour
         isGamePaused = true;
         pauseMenuObject.SetActive(true);
         Time.timeScale = 0;
+        timer.StopTimer();
     }
 
     public void ResumeGame()
     {
         Time.timeScale = 1;
         isGamePaused = false;
+        
         pauseMenuObject.SetActive(false);
+        timer.StartTimer();
     }
 
     public void GoToMainMenu()

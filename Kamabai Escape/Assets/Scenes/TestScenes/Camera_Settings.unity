@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1184,7 +1184,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.2925386, y: -0, z: -0, w: 0.9562537}
-  m_LocalPosition: {x: -21.548758, y: 15.236823, z: -20.771324}
+  m_LocalPosition: {x: -22.099842, y: 15.236823, z: -20.771324}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1242,6 +1242,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   camera: {fileID: 963194227}
+  doneScanning: 0
 --- !u!114 &963194231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1257,7 +1258,7 @@ MonoBehaviour:
   targetObject: {fileID: 1983321854}
   wallMask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 640
 --- !u!1 &1036935843
 GameObject:
   m_ObjectHideFlags: 0
@@ -1579,11 +1580,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7641726e322e6244e9f3c8975354ac13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerInput: {fileID: 0}
   grappleButtonReference: {fileID: 1860004182964417036, guid: 8e5229cc7e4218d48af6db759e653ae4, type: 3}
-  verticalAction: {fileID: 9118772848108474131, guid: 8e5229cc7e4218d48af6db759e653ae4, type: 3}
-  grappleDirectionalButtonReferenceH: {fileID: 2066680221104173581, guid: 8e5229cc7e4218d48af6db759e653ae4, type: 3}
-  grappleDirectionalButtonReferenceV: {fileID: -4732549270315572044, guid: 8e5229cc7e4218d48af6db759e653ae4, type: 3}
+  helpButtonReference: {fileID: 0}
+  pause: {fileID: 0}
   inputHoldTime: 0.2
+  currentHelpBoard: {fileID: 0}
   holdDuration: 2
   tapDuration: 0.1
 --- !u!54 &1036935851
@@ -1635,6 +1637,7 @@ MonoBehaviour:
   changeColorScale: {fileID: 963194225}
   UICapturedBox: {fileID: 0}
   offset: {x: 0, y: 0, z: 0}
+  time: {fileID: 0}
 --- !u!1 &1094410237
 GameObject:
   m_ObjectHideFlags: 0
@@ -2712,7 +2715,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1651515765}
   m_LocalRotation: {x: 0.2925386, y: 0, z: 0, w: 0.9562537}
-  m_LocalPosition: {x: -21.548758, y: 15.236823, z: -20.771324}
+  m_LocalPosition: {x: -22.099842, y: 15.236823, z: -20.771324}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3142,7 +3145,7 @@ Transform:
   m_GameObject: {fileID: 1846078637}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -12.8, y: 0, z: 17.93}
-  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_LocalScale: {x: 7.94, y: 12, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -3236,7 +3239,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ddb59da4179d369458e081e3c838457f, type: 2}
+  - {fileID: 2100000, guid: f79f2ec6a77521047829e0b42e529b98, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3274,8 +3277,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1878588614}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -24.2, y: -0.17, z: 18.06}
-  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_LocalPosition: {x: -26.0258, y: 5.7572, z: 18.06}
+  m_LocalScale: {x: 7.6516, y: 15.8544, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

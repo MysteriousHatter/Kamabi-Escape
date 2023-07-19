@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8bb18331aceb3954f8e50027bafb1fa7, type: 3}
-  m_Name: Swing
+  m_Name: Pull Object
   m_EditorClassIdentifier: 
-  name: Swinging and reeling
-  description: Hit a purple grapple point to swing, using the analog stick or WASD
-    keys. Adjust rope length with Q/R or Left/Right shoulder buttons.
-  artwork: {fileID: 21300000, guid: b779938f7d273c54daa4e29a734a4c92, type: 3}
+  name: Zip-Line
+  description: Hit a light blue grapple point to pull an object. You can press the
+    right click/Or circl;e button to Cancel pulling the entire object
+  artwork: {fileID: 21300000, guid: 8ba1a412f61b24e4582fbbe673b88c45, type: 3}

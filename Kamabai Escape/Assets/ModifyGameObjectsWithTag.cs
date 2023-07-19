@@ -10,6 +10,7 @@ public class ModifyGameObjectsWithTag : MonoBehaviour
     public Material oldMaterial;
     public Material candyMaterial;
     private PlayerInputHandler _playerInputHandler => FindObjectOfType<PlayerInputHandler>();
+    private bool hasChangedBack = false; // this is the new boolean variable
 
     void Start()
     {
@@ -22,15 +23,19 @@ public class ModifyGameObjectsWithTag : MonoBehaviour
         {
             Debug.Log("The current material");
             ChangeMaterials();
+            hasChangedBack = false; // when materials are changed, reset the flag
         }
         else
         {
-           
-            ChangBack();
+            // only call ChangeBack if it hasn't been called yet
+            if (!hasChangedBack)
+            {
+                ChangBack();
+                hasChangedBack = true; // set the flag to true after calling ChangeBack
+            }
         }
     }
-
-    private void ChangBack()
+    public void ChangBack()
     {
         // Find all GameObjects with the layers included in the targetLayer
         GameObject[] gameObjects = FindGameObjectsWithLayerMask(greyScaleLayer);

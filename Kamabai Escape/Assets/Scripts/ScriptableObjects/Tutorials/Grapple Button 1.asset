@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8bb18331aceb3954f8e50027bafb1fa7, type: 3}
-  m_Name: Grapple Button
+  m_Name: Grapple Button 1
   m_EditorClassIdentifier: 
   name: Grapple Button
   description: Press and hold the left mouse click/square button to enter grapple

@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: playerData
   m_EditorClassIdentifier: Assembly-CSharp::PlayerData
   movementVelocity: 18
-  jumpVelocity: 8
+  jumpVelocity: 15
   amountOfJumps: 1
-  coyoteTime: 0.99
-  variableJumpHeightMultiplier: 0.5
+  coyoteTime: -5
+  variableJumpHeightMultiplier: 0.31
   distance: 50
   mask:
     serializedVersion: 2
