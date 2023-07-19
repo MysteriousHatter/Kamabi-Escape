@@ -126,6 +126,8 @@ public class PlayerGrappleState : PlayerAbilityState
                 if (Physics.Raycast(player.GrappleDirectionIndicator.transform.position, -player.GrappleDirectionIndicator.transform.forward, out hit, playerData.distance, playerData.mask))
                 {
                     Debug.Log("Detecting the item");
+                    player.src.clip = player.grappleSFX;
+                    player.src.Play();
                     GameObject targetObject = hit.collider.gameObject;
                     this.player.joint = this.player.gameObject.AddComponent<SpringJoint>();
                     this.player.joint.autoConfigureConnectedAnchor = false;
@@ -555,7 +557,7 @@ private Quaternion ClampRotation(Quaternion targetRotation, Quaternion currentRo
         }
         else if(grappleType.Equals(GrappleTypes.pullingToPoint)) 
         {
-            if(Vector3.Distance(player.playerHand.transform.position, player.joint.connectedBody.transform.position) <= player.joint.connectedAnchor.magnitude + 3 || player.InputHandler.cancelInput || jumpInput)
+            if(Vector3.Distance(player.playerHand.transform.position, player.joint.connectedBody.transform.position) <= player.joint.connectedAnchor.magnitude + 10 || player.InputHandler.cancelInput || jumpInput)
             {
                 // Stop grappling if we've reached the grapple point
                 if (player.joint.connectedBody.GetComponent<Oscillator>() != null) { player.joint.connectedBody.GetComponent<Oscillator>().canMove = true; }

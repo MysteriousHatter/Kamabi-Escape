@@ -69,6 +69,8 @@ public class Player : MonoBehaviour
     public GameObject UICapturedBox;
     public Vector3 offset;
     public Timer time;
+    [SerializeField] public AudioSource src => GetComponent<AudioSource>();
+    [SerializeField] public AudioClip candyCollectedSFX, deathSFX, grappleSFX;
     #endregion
 
     #region Unity Callback Functions
@@ -168,6 +170,8 @@ public class Player : MonoBehaviour
     public void PlayerDeath()
     {
         // UICapturedBox.SetActive(false);
+        src.clip = deathSFX;
+        src.Play();
         StartCoroutine(DeathAnimation());
         
     }

@@ -14,6 +14,9 @@ public class Goal : MonoBehaviour
         {
             this.gameObject.SetActive(false);
             other.gameObject.GetComponent<Player>().time.StopTimer();
+            other.GetComponent<Player>().src.PlayOneShot(other.GetComponent<Player>().candyCollectedSFX);
+            other.GetComponent<Player>().src.clip = other.GetComponent<Player>().candyCollectedSFX;
+            other.GetComponent<Player>().src.Play();
             other.gameObject.GetComponent<PlayerInput>().enabled = false;
             levelResult.CheckPlayerResult();  // Check the player's result
             resultUI.SetActive(true);  // Activate the UI
