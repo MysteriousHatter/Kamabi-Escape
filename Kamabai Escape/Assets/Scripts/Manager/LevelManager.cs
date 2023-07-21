@@ -1,30 +1,39 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 //This script handles navigation between levels and/or scenes
 
 public class LevelManager : MonoBehaviour
 {
-    
+    public DefaultInputActions inputActions;
+
     public static LevelManager Instance { get; private set; }
 
     string scoreKey;
     public int currentLevel;
     public int highestLevel;
     public int currentScore;
+
+
     
 
     public int[] highScores; //the high score for each level, where the value is the score and the index is the level.
                              //the length of this array should be the number of levels in the game
+    public GameObject[] levelButtons; // Assign in inspector
 
 
     //Whenever you start a level score should be set to zero at the beginning of the level - TODO
 
     private void Awake()
     {
-        if(Instance == null)
+
+        if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
@@ -33,6 +42,11 @@ public class LevelManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+
+
+
+
     }
 
     // Start is called before the first frame update
@@ -45,8 +59,17 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
-        
+        DeletePlayerData();
+    }
+
+    private static void DeletePlayerData()
+    {
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            Debug.Log("Deleete data");
+
+            PlayerPrefs.DeleteAll();
+        }
     }
 
     public void ChangeScore(int value)
@@ -62,8 +85,10 @@ public class LevelManager : MonoBehaviour
         PlayerPrefs.SetInt(scoreKey, currentScore);
         PlayerPrefs.SetInt("CurrentLevel", currentLevel);
         PlayerPrefs.SetInt("HighestLevel", highestLevel);
+       // ActivateLevels(PlayerPrefs.GetInt("CurrentLevel", currentLevel));
         PlayerPrefs.Save();
     }
+
 
     public void SaveData(int score, int level)
     {
@@ -95,6 +120,7 @@ public class LevelManager : MonoBehaviour
         return true;
     }
 
+
     public void LoadScene(int value)
     {
         //if scene is unlocked, load scene and update current scene int
@@ -103,6 +129,11 @@ public class LevelManager : MonoBehaviour
         {
             currentLevel = value;
             SceneManager.LoadScene(value);
+
+            if (currentLevel > PlayerPrefs.GetInt("levelAt"))
+            {
+                PlayerPrefs.SetInt("levelAt", currentLevel);
+            }
         }
     }
 
@@ -120,3 +151,4 @@ public class LevelManager : MonoBehaviour
         }
     }
 }
+

@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 //This script handles logic for all menu buttons
 
-public class MenuButton : MonoBehaviour
+public class MenuButton : MonoBehaviour, ISelectHandler
 {
     public MainMenuManager mainMenuManager;
     public PauseMenu pauseMenu;
@@ -36,7 +38,14 @@ public class MenuButton : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+      //  if(this.gameObject.GetComponent<Button>().OnSelect())
+    }
+
+    public void OnSelect(BaseEventData eventData)
+    {
+        if(gameObject.GetComponent<MenuButton>().menuButtonType == ButtonType.LevelSelect) {
+            Debug.Log("Button selected: " + gameObject.name);
+             }
     }
 
     //We use a switch statement driven by enums to choose the correct behavior of our menu buttons

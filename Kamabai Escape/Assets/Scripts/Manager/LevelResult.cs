@@ -17,6 +17,8 @@ public class LevelResult : MonoBehaviour
     // This function checks the player's current time against the level times and scores
 
 
+
+
     public void CheckPlayerResult()
     {
         player = FindObjectOfType<Player>();

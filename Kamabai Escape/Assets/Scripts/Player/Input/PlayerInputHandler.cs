@@ -69,7 +69,7 @@ public class PlayerInputHandler : MonoBehaviour
         isPaused = false;
         //pause.GetComponent<PauseMenu>().isGamePaused = false;
         grappleButtonReference.action.started += OnGrappleInputPerformed;
-        helpButtonReference.action.performed += OnHelpButtonPressed;
+        if (currentHelpBoard != null) { helpButtonReference.action.performed += OnHelpButtonPressed; }
         //grappleDirectionalButtonReferenceH.action.performed += OnGrappleDirectionInputHorizontal;
         //grappleDirectionalButtonReferenceH.action.canceled += OnGrappleDirectionInputCanceledHorizontal;
         //grappleDirectionalButtonReferenceV.action.performed += OnGrappleDirectionInputVertical;
