@@ -137,15 +137,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2509295715409664307, guid: 1021ae2876736104d892d84f77d1a510, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 47.2
+      value: 46.5
       objectReference: {fileID: 0}
     - target: {fileID: 2509295715409664307, guid: 1021ae2876736104d892d84f77d1a510, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 14.6
+      value: 13.4
       objectReference: {fileID: 0}
     - target: {fileID: 2509295715409664307, guid: 1021ae2876736104d892d84f77d1a510, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 83.062874
+      value: 81.8
       objectReference: {fileID: 0}
     - target: {fileID: 2509295715409664307, guid: 1021ae2876736104d892d84f77d1a510, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3042,7 +3042,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 832017860}
   serializedVersion: 4
-  m_Mass: 100
+  m_Mass: 900
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -4224,7 +4224,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1113232499}
   serializedVersion: 4
-  m_Mass: 100
+  m_Mass: 900
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -4724,6 +4724,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1018786069124832268, guid: ed542c3e4469cbf4aacef43120663e02, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 640670427}
+    - target: {fileID: 1018786069124832268, guid: ed542c3e4469cbf4aacef43120663e02, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NextLevelWasLoaded
+      objectReference: {fileID: 0}
+    - target: {fileID: 1018786069124832268, guid: ed542c3e4469cbf4aacef43120663e02, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1249294814100967435, guid: ed542c3e4469cbf4aacef43120663e02, type: 3}
       propertyPath: m_RootOrder
       value: 25
@@ -4794,7 +4806,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4341210402985732435, guid: ed542c3e4469cbf4aacef43120663e02, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4741974276699056935, guid: ed542c3e4469cbf4aacef43120663e02, type: 3}
       propertyPath: m_FirstSelected
@@ -5322,7 +5334,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1340998143}
   serializedVersion: 4
-  m_Mass: 100
+  m_Mass: 900
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -5438,6 +5450,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1358524980559329296, guid: aa88680038976f241893b1fcbdecb2f5, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f79f2ec6a77521047829e0b42e529b98, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6987,6 +7003,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f2c866657ebb6c4b84389e4ab08708a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  arrowDirection: 0
   rotationSpeed: 900
 --- !u!1 &1862009773
 GameObject:
@@ -7100,7 +7117,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1883740342}
   serializedVersion: 4
-  m_Mass: 100
+  m_Mass: 900
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -7218,7 +7235,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1913711353}
   serializedVersion: 4
-  m_Mass: 100
+  m_Mass: 900
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -10676,6 +10693,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f2c866657ebb6c4b84389e4ab08708a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  arrowDirection: 0
   rotationSpeed: 900
 --- !u!114 &5778102985094131539
 MonoBehaviour:

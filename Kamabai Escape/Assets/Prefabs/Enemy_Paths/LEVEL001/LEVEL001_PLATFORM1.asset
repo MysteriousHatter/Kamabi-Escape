@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19c517ccc7c454b4896695f62889c2f9, type: 3}
   m_Name: LEVEL001_PLATFORM1
   m_EditorClassIdentifier: 
-  pathPrefab: {fileID: 6820213237969957839, guid: 62c486a42b7330d48b3e156709cb39d6, type: 3}
+  pathPrefab: {fileID: 1364779698403611117, guid: ffd928de1716fde4c8f8bdb1e16e987e, type: 3}
   timeBetweenSpawns: 0.5
   spawnRandomFactor: 0.3
   numberOfEnemies: 5

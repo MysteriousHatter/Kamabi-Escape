@@ -6,6 +6,7 @@ using UnityEngine.Windows;
 using System;
 using UnityEngine.InputSystem;
 using Cinemachine;
+using Unity.VisualScripting;
 
 public class PlayerGrappleState : PlayerAbilityState
 {
@@ -96,7 +97,7 @@ public class PlayerGrappleState : PlayerAbilityState
         float angle = Vector3.SignedAngle(Vector3.up, grappleDirection, Vector3.up);
 
         player.GrappleDirectionIndicator.localRotation = Quaternion.Euler(0f, angle - playerData.angleOffset, 0f);
-        player.Anim.SetBool(animBoolName, true);
+        player.Anim.SetBool(this.animBoolName, true);
         Debug.Log("The direction of the angle: " + angle);
     }
 
@@ -190,9 +191,8 @@ public class PlayerGrappleState : PlayerAbilityState
             Debug.Log("The current gameObject " + hit.collider.name);
             if (hit.collider.gameObject.layer == 7)
             {
+                hit.collider.gameObject.GetComponent<Renderer>().material.SetFloat("_Emission", 1f);
                 hit.collider.gameObject.GetComponent<Renderer>().material.SetFloat("_Blend", 0f);
-                hit.collider.gameObject.GetComponent<Renderer>().material.SetFloat("_Glossiness", 0f);
-                hit.collider.gameObject.GetComponent<Renderer>().material.SetFloat("_Metallic", 0f);
                 previousObject = hit.collider.gameObject;
                 hittingGrapplePoint = true;
             }
@@ -202,9 +202,9 @@ public class PlayerGrappleState : PlayerAbilityState
         else if(hittingGrapplePoint == true)
         {
             hittingGrapplePoint = false;
+            previousObject.GetComponent<Renderer>().material.SetFloat("_Emission", 0f);
             previousObject.GetComponent<Renderer>().material.SetFloat("_Blend", 1f);
-            previousObject.GetComponent<Renderer>().material.SetFloat("_Glossiness", 0.831f);
-            previousObject.GetComponent<Renderer>().material.SetFloat("_Metallic", 0.543f);
+            //previousObject.GetComponent<Renderer>().material.SetFloat("_Glossines", 0.831f);
         }
     }
 
@@ -312,11 +312,10 @@ public class PlayerGrappleState : PlayerAbilityState
         player.RB.drag = 0f;
         player.line.SetPosition(0, Vector3.zero);
         player.line.SetPosition(1,Vector3.zero);
-        player.OnDestroy();
-        player.Anim.SetBool(animBoolName, false);
+        player.Anim.SetBool(this.animBoolName, false);
         player.InputHandler.isSwinging = false;
         animBoolName = null;
-        player.InputHandler.SwitchActionToGameplay();
+        if (!player.playerDead) { player.InputHandler.SwitchActionToGameplay(); }
         base.Exit();
     }
 
@@ -356,6 +355,7 @@ public class PlayerGrappleState : PlayerAbilityState
                 this.player.joint.damper = 0f;
                 this.player.joint.massScale = 0f;
                 isAbilityDone = true;
+                player.OnDestroyJoint();
                 lastGrappleTime = Time.time;
                 grappleType = GrappleTypes.noGrapple;
             }
@@ -364,9 +364,22 @@ public class PlayerGrappleState : PlayerAbilityState
     }
     private void GrappleRotation()
     {
-        Debug.Log("The current inputY " + rotationX);
-        float inputY = -player.InputHandler.NormInputX;
+        Vector3 forward = Camera.main.transform.forward;
+        Vector3 right = Camera.main.transform.right;
+
+        // Make it flat
+        forward.y = 0;
+        right.y = 0;
+
+        forward.Normalize();
+        right.Normalize();
+
+        Vector3 desiredMoveDirection = forward * player.InputHandler.NormInputZ + right * player.InputHandler.NormInputX;
+        desiredMoveDirection.Normalize();
+
+        float inputY = -desiredMoveDirection.x * core.Movement.arrowDirection;
         float inputX = -player.InputHandler.NormInputZ;
+
         Debug.Log("The current inputY " + inputY);
         Debug.Log("The current inputX " + inputX);
         Debug.Log("The current rotation " + player.GrappleDirectionIndicator.localRotation);
@@ -383,7 +396,6 @@ public class PlayerGrappleState : PlayerAbilityState
             Quaternion grappleRotationX = Quaternion.Euler(rotationX, 0f, 0f);
             Quaternion targetRotation = grappleRotationY * grappleRotationX;
 
-
             Quaternion currentRotation = player.GrappleDirectionIndicator.localRotation;
 
             // Calculate the clamped rotation
@@ -394,7 +406,8 @@ public class PlayerGrappleState : PlayerAbilityState
         }
     }
 
-private Quaternion ClampRotation(Quaternion targetRotation, Quaternion currentRotation, float maxAngle)
+
+    private Quaternion ClampRotation(Quaternion targetRotation, Quaternion currentRotation, float maxAngle)
 {
     // Calculate the angle between the target rotation and current rotation
     Quaternion deltaRotation = Quaternion.Inverse(currentRotation) * targetRotation;
@@ -553,11 +566,12 @@ private Quaternion ClampRotation(Quaternion targetRotation, Quaternion currentRo
             this.player.joint.massScale = 0f;
             isAbilityDone = true;
             lastGrappleTime = Time.time;
+            player.OnDestroyJoint();
             grappleType = GrappleTypes.noGrapple;
         }
         else if(grappleType.Equals(GrappleTypes.pullingToPoint)) 
         {
-            if(Vector3.Distance(player.playerHand.transform.position, player.joint.connectedBody.transform.position) <= player.joint.connectedAnchor.magnitude + 10 || player.InputHandler.cancelInput || jumpInput)
+            if(Vector3.Distance(player.playerHand.transform.position, player.joint.connectedBody.transform.position) <= player.joint.connectedAnchor.magnitude + 6 || player.InputHandler.cancelInput || jumpInput)
             {
                 // Stop grappling if we've reached the grapple point
                 if (player.joint.connectedBody.GetComponent<Oscillator>() != null) { player.joint.connectedBody.GetComponent<Oscillator>().canMove = true; }
@@ -571,6 +585,7 @@ private Quaternion ClampRotation(Quaternion targetRotation, Quaternion currentRo
                 this.player.joint.massScale = 0f;
                 isAbilityDone = true;
                 lastGrappleTime = Time.time;
+                player.OnDestroyJoint();
                 grappleType = GrappleTypes.noGrapple;
             }
         }
@@ -579,7 +594,7 @@ private Quaternion ClampRotation(Quaternion targetRotation, Quaternion currentRo
     private void ZippingToPoint()
     {
         Debug.Log("Pulling to point");
-        player.joint.maxDistance = player.joint.maxDistance - ((Time.deltaTime * 5) * playerData.grappleSpeed);
+        player.joint.maxDistance = player.joint.maxDistance - ((Time.deltaTime * 2) * playerData.grappleSpeed);
 
         Vector3 playerPos = player.playerHand.transform.position;
         Vector3 grapplePos = player.joint.connectedBody.transform.position;
@@ -646,6 +661,7 @@ private Quaternion ClampRotation(Quaternion targetRotation, Quaternion currentRo
             this.player.joint.massScale = 0f;
             isAbilityDone = true;
             lastGrappleTime = Time.time;
+            player.OnDestroyJoint();
             grappleType = GrappleTypes.noGrapple;
         }
     }

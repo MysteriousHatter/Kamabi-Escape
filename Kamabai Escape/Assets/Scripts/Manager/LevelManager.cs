@@ -52,7 +52,7 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        highestLevel = 3;
+        highestLevel = 4;
         currentLevel = 1;
     }
 
@@ -109,7 +109,7 @@ public class LevelManager : MonoBehaviour
             highScores[i] = PlayerPrefs.GetInt(scoreKey);
         }
         currentLevel = PlayerPrefs.GetInt("CurrentLevel", 1);
-        highestLevel = PlayerPrefs.GetInt("HighestLevel", 3);
+        highestLevel = PlayerPrefs.GetInt("HighestLevel", 4);
     }
 
     public bool isLevelUnlocked(int level)

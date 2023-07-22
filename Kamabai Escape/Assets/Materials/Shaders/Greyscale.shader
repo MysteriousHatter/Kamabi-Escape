@@ -48,7 +48,7 @@ Shader "Unlit/Greyscale"
             {
                 // sample the texture
                 fixed4 col = tex2D(_MainTex, i.uv);
-                float intensity = col.r * 0.299 + col.g * 0.587 + col.b * 0.114;
+                float intensity = col.r * 0.279 + col.g * 0.487 + col.b * 0.001;
                 fixed4 bandw = fixed4(intensity, intensity, intensity, col.a);
                 bandw = lerp(col, bandw, col.a);
                 return bandw;

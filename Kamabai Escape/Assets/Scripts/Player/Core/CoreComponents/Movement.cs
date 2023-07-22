@@ -7,6 +7,7 @@ public class Movement : CoreComponent
     public Rigidbody RB { get; private set; }
 
     public Vector3 FacingDirection { get; private set; }
+    [HideInInspector] public int arrowDirection = 0;
 
     public bool CanSetVelocity { get; set; }
 
@@ -61,6 +62,20 @@ public class Movement : CoreComponent
         SetFinalVelocity();
         
     }
+    public bool IsFacingForwards()
+    {
+        // Current facing direction of the player
+        Vector3 facingDirection = this.FacingDirection;
+
+        // Direction of the movement
+        Vector3 movementDirection = this.CurrentVelocity.normalized;
+
+        // Calculate the dot product
+        float dotProduct = Vector3.Dot(facingDirection, movementDirection);
+
+        // If the dot product is greater than 0, the player is facing forwards
+        return dotProduct > 0f;
+    }
 
     public void SetVelocityY(float velocity)
     {
@@ -106,6 +121,50 @@ public class Movement : CoreComponent
     {
         Quaternion toRotation = Quaternion.LookRotation(FacingDirection, Vector3.up);
         RB.transform.rotation = Quaternion.RotateTowards(RB.transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
+        Vector3 movementDirection = core.Movement.FacingDirection;  // Di
+        // Calculate the direction from the player to the current facing direction
+        Vector3 directionToCurrentFacing = core.Movement.FacingDirection;
+
+        // Calculate the direction to each cardinal direction (you can customize these based on your game's orientation)
+        Vector3 forwardDirection = Vector3.forward;
+        Vector3 backwardDirection = Vector3.back;
+        Vector3 leftDirection = Vector3.left;
+        Vector3 rightDirection = Vector3.right;
+
+        // Calculate the angles between the player's current facing direction and each cardinal direction
+        float angleForward = Vector3.Angle(directionToCurrentFacing, forwardDirection);
+        float angleBackward = Vector3.Angle(directionToCurrentFacing, backwardDirection);
+        float angleLeft = Vector3.Angle(directionToCurrentFacing, leftDirection);
+        float angleRight = Vector3.Angle(directionToCurrentFacing, rightDirection);
+
+        // Define a threshold to consider when checking the angles
+        float angleThreshold = 45f;
+
+        // Check the angles to determine the facing direction
+        if (angleForward < angleThreshold)
+        {
+            Debug.Log("Player is facing forwards.");
+            arrowDirection = 1;
+        }
+        else if (angleBackward < angleThreshold)
+        {
+            Debug.Log("Player is facing backwards.");
+            arrowDirection = -1;
+        }
+        else if (angleLeft < angleThreshold)
+        {
+            Debug.Log("Player is facing left.");
+            arrowDirection = 1;
+        }
+        else if (angleRight < angleThreshold)
+        {
+            Debug.Log("Player is facing right.");
+            arrowDirection = 1;
+        }
+        else
+        {
+            Debug.Log("Player is facing some other direction.");
+        }
     }
 
     public void FlipAir()

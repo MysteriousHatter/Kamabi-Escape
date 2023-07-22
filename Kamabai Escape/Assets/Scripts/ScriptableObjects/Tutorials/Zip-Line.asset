@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Zip-Line
   m_EditorClassIdentifier: 
   name: Zip-Line
-  description: Hit a dark blue grapple point to zipline.
+  description: Hit a Colored grapple point to zipline.
   artwork: {fileID: 21300000, guid: 72ceaf71f78e42648824ffbdb7b9a696, type: 3}

@@ -62,14 +62,15 @@ public class PlayerInputHandler : MonoBehaviour
         grappleButtonReference.action.Disable();
     }
 
+
     private void Start()
     {
         //player.playerInput = GetComponent<PlayerInput>();
         player = GetComponent<Player>();
         isPaused = false;
-        //pause.GetComponent<PauseMenu>().isGamePaused = false;
+        pause.GetComponent<PauseMenu>().isGamePaused = false;
         grappleButtonReference.action.started += OnGrappleInputPerformed;
-        if (currentHelpBoard != null) { helpButtonReference.action.performed += OnHelpButtonPressed; }
+        
         //grappleDirectionalButtonReferenceH.action.performed += OnGrappleDirectionInputHorizontal;
         //grappleDirectionalButtonReferenceH.action.canceled += OnGrappleDirectionInputCanceledHorizontal;
         //grappleDirectionalButtonReferenceV.action.performed += OnGrappleDirectionInputVertical;
@@ -84,7 +85,7 @@ public class PlayerInputHandler : MonoBehaviour
     private void Update()
     {
         InputSystem.Update();
-       
+        if (currentHelpBoard != null) { Debug.Log("We pressed the help button "); helpButtonReference.action.performed += OnHelpButtonPressed; }
         Debug.Log("The current input map" + player.playerInput.currentActionMap);
         CheckJumpInputHoldTime();
         

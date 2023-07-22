@@ -62,6 +62,7 @@ public class PlayerGroundedState : PlayerState
         }
         else if(player.GrappleDirectionalState.CheckIfCanGrapple() && HoldingGrappleInput)
         {
+            Debug.Log("I can grapple");
             stateMachine.ChangeState(player.GrappleDirectionalState);
         }
         else if (!isGrounded)

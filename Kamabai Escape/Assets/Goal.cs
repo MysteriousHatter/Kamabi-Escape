@@ -24,7 +24,7 @@ public class Goal : MonoBehaviour
             other.gameObject.GetComponent<Player>().time.StopTimer();
             levelBeat = true;
             levelManager.currentLevel++;
-            int nextLevel = levelManager.currentLevel > 3 ? levelManager.currentLevel = 1 : levelManager.currentLevel + 1;
+            int nextLevel = levelManager.currentLevel > 4 ? levelManager.currentLevel = 2 : levelManager.currentLevel + 1;
             PlayerPrefs.SetInt("levelAt", nextLevel++);
             other.GetComponent<Player>().src.PlayOneShot(other.GetComponent<Player>().candyCollectedSFX);
             other.GetComponent<Player>().src.clip = other.GetComponent<Player>().candyCollectedSFX;

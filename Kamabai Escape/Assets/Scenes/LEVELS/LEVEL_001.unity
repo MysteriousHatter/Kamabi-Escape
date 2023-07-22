@@ -13099,7 +13099,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2509295715409664307, guid: 1021ae2876736104d892d84f77d1a510, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -126
+      value: -76
       objectReference: {fileID: 0}
     - target: {fileID: 2509295715409664307, guid: 1021ae2876736104d892d84f77d1a510, type: 3}
       propertyPath: m_LocalPosition.y
@@ -13107,7 +13107,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2509295715409664307, guid: 1021ae2876736104d892d84f77d1a510, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -303
+      value: 132
       objectReference: {fileID: 0}
     - target: {fileID: 2509295715409664307, guid: 1021ae2876736104d892d84f77d1a510, type: 3}
       propertyPath: m_LocalRotation.w
@@ -38262,6 +38262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f2c866657ebb6c4b84389e4ab08708a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  arrowDirection: 0
   rotationSpeed: 900
 --- !u!4 &1831886676 stripped
 Transform:
@@ -46483,6 +46484,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f2c866657ebb6c4b84389e4ab08708a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  arrowDirection: 0
   rotationSpeed: 900
 --- !u!114 &5778102985299163986
 MonoBehaviour:

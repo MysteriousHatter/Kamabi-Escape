@@ -25,6 +25,8 @@ public class Player : MonoBehaviour
     public PlayerCapturedState capturedState { get; private set; }
     public GameObject enemyPrefab { get; set; }
 
+    public bool playerDead { get;  set; }
+
     public event Action HitKid;
 
 
@@ -89,11 +91,13 @@ public class Player : MonoBehaviour
         UICapturedBox = GameObject.Find("CapturedUIBox");
         //TODO We will make this it's own method
         playerData.maxNumberofPresses = playerData.maxNumberOfPressesPlaceholder;
+        playerDead = false;
 
     }
 
     private void Start()
     {
+        
         time = FindObjectOfType<Timer>();
         playerInput = GetComponent<PlayerInput>();
         playerInput.enabled = true;
@@ -129,6 +133,7 @@ public class Player : MonoBehaviour
         Core.LogicUpdate();
         StateMachine.CurrentState.LogicUpdate();
         if (UICapturedBox != null) { UICapturedBox.transform.rotation = Quaternion.identity; }
+        Debug.Log("Our dot product " + Core.Movement.IsFacingForwards());
         //Debug.Log("the current state machine " + StateMachine.CurrentState);
         //Debug.Log("The current action map " + playerInput.currentActionMap.name);
     }
@@ -155,9 +160,9 @@ public class Player : MonoBehaviour
         transform.localScale = workspace;
     }
 
-    public void OnDestroy()
+    public void OnDestroyJoint()
     {
-        if (joint.IsDestroyed()) { Destroy(joint.GetComponent<SpringJoint>()); }
+        if (!joint.IsDestroyed() && joint.GetComponent<SpringJoint>() != null) { Destroy(joint.GetComponent<SpringJoint>()); }
     }
 
     public void PlayerIsCaptured()
@@ -177,6 +182,7 @@ public class Player : MonoBehaviour
 
     private IEnumerator DeathAnimation()
     {
+        playerDead = true;
         Anim.SetBool("inAir", false);
         Anim.SetBool("death", true);
         playerInput.enabled = false;

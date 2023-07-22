@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: LEVEL_003
   m_EditorClassIdentifier: 
   LevelDataList:
-  - Time: 35
-    Score: 1500
   - Time: 40
-    Score: 1000
-  - Time: 45
-    Score: 950
+    Score: 1500
   - Time: 50
+    Score: 1000
+  - Time: 60
+    Score: 950
+  - Time: 70
     Score: 900
-  - Time: 55
+  - Time: 80
     Score: 850

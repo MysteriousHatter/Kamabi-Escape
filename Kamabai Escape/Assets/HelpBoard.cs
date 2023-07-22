@@ -62,6 +62,7 @@ public class HelpBoard : MonoBehaviour
             player.SwitchActionMapToHelp();
             
             helpText.text = helpData.description;
+            helpImage.enabled = true;
             if (helpData.artwork != null) { helpImage.sprite = helpData.artwork; }
             else { helpImage.enabled = false; }
         }

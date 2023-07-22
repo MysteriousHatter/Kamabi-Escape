@@ -66,6 +66,7 @@ public class GameManager : MonoBehaviour
             player.transform.position = respawnPoint.position;
             player.transform.rotation = respawnPoint.rotation;
             player.SetActive(true);
+            player.GetComponent<Player>().playerDead = false;
             player.GetComponent<PlayerInput>().enabled = true;
             player.GetComponent<Player>().time.StartTimer();
             // CVC.m_Follow = playerTemp.transform;
