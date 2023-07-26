@@ -21,16 +21,16 @@ MonoBehaviour:
   mask:
     serializedVersion: 2
     m_Bits: 136
-  grappleSpeed: 2
-  minDistance: 2.6245856
-  maxDistance: 35.10717
+  grappleSpeed: 8
+  minDistance: 2.623838
+  maxDistance: 18.535046
   lengthStep: 0.1
   scrollSensitivity: 1
   animationDuration: 0.1
-  sensitivityY: 900
+  sensitivityY: 500
   minimumY: 60
   maximumY: 320
-  sensitivityX: 900
+  sensitivityX: 500
   minimumX: -5
   maximumX: 45
   extendCableSpeed: 10
@@ -41,7 +41,7 @@ MonoBehaviour:
   angleOffset: -90
   swingHeight: 6
   rotationSpeed: 10
-  maximumAngle: 270
+  maximumAngle: 590
   holdTimeScale: 0.11
   releaseForceMagnitude: 20
   pullSpeed: 8

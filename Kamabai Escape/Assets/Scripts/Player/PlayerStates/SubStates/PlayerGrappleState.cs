@@ -88,6 +88,7 @@ public class PlayerGrappleState : PlayerAbilityState
         grappleDirection = core.Movement.FacingDirection;
         Time.timeScale = playerData.holdTimeScale;
         startTime = Time.unscaledTime;
+        grappleType = GrappleTypes.noGrapple;
 
         grappleDirection = Quaternion.Euler(0f, core.Movement.FacingDirection.y, 0f) * Vector3.forward;
 
@@ -108,6 +109,16 @@ public class PlayerGrappleState : PlayerAbilityState
         SwingControls();
         jumpInput = player.InputHandler.JumpInput;
 
+        if(player.playerDead) 
+        {
+            Debug.Log("The player is dead");
+            player.GrappleDirectionIndicator.gameObject.SetActive(false);
+            player.line.enabled = false;
+            isAbilityDone = true;
+            lastGrappleTime = Time.time;
+            grappleType = GrappleTypes.noGrapple;
+
+        }
 
         if (isHolding)
         {
@@ -392,17 +403,19 @@ public class PlayerGrappleState : PlayerAbilityState
             rotationY = Mathf.Clamp(rotationY, playerData.minimumY, playerData.maximumY);
             rotationX = Mathf.Clamp(rotationX, playerData.minimumX, playerData.maximumX);
 
-            Quaternion grappleRotationY = Quaternion.Euler(0f, rotationY, 0f);
-            Quaternion grappleRotationX = Quaternion.Euler(rotationX, 0f, 0f);
-            Quaternion targetRotation = grappleRotationY * grappleRotationX;
+            player.GrappleDirectionIndicator.localEulerAngles = new Vector3(rotationX, rotationY, 0);
 
-            Quaternion currentRotation = player.GrappleDirectionIndicator.localRotation;
+            //Quaternion grappleRotationY = Quaternion.Euler(0f, rotationY, 0f);
+            //Quaternion grappleRotationX = Quaternion.Euler(rotationX, 0f, 0f);
+            //Quaternion targetRotation = grappleRotationY * grappleRotationX;
 
-            // Calculate the clamped rotation
-            Quaternion clampedRotation = ClampRotation(targetRotation, currentRotation, playerData.maximumAngle);
+            //Quaternion currentRotation = player.GrappleDirectionIndicator.localRotation;
 
-            Quaternion newRotation = Quaternion.Slerp(currentRotation, clampedRotation, playerData.rotationSpeed * Time.deltaTime);
-            player.GrappleDirectionIndicator.localRotation = newRotation;
+            //// Calculate the clamped rotation
+            //Quaternion clampedRotation = ClampRotation(targetRotation, currentRotation, playerData.maximumAngle);
+
+            //Quaternion newRotation = Quaternion.Slerp(currentRotation, clampedRotation, playerData.rotationSpeed * Time.deltaTime);
+            // player.GrappleDirectionIndicator.localRotation = newRotation;
         }
     }
 
@@ -594,7 +607,7 @@ public class PlayerGrappleState : PlayerAbilityState
     private void ZippingToPoint()
     {
         Debug.Log("Pulling to point");
-        player.joint.maxDistance = player.joint.maxDistance - ((Time.deltaTime * 2) * playerData.grappleSpeed);
+        player.joint.maxDistance = player.joint.maxDistance - ((Time.deltaTime * 0.5f) * playerData.grappleSpeed);
 
         Vector3 playerPos = player.playerHand.transform.position;
         Vector3 grapplePos = player.joint.connectedBody.transform.position;
@@ -612,7 +625,7 @@ public class PlayerGrappleState : PlayerAbilityState
         Vector3 displacement = (targetPos - player.transform.position).normalized * player.joint.maxDistance * playerData.grappleSpeed * Time.deltaTime;
         this.player.transform.position += displacement;
 
-        Vector3.Lerp(this.player.transform.forward, targetPos, 20f);
+        Vector3.Lerp(this.player.transform.forward, targetPos, 10f);
 
     }
 
@@ -645,6 +658,7 @@ public class PlayerGrappleState : PlayerAbilityState
 
         curentEndpointPosition = Vector3.MoveTowards(curentEndpointPosition, player.playerHand.transform.position, Time.deltaTime * 1.2f);
         player.line.SetPosition(0, player.playerHand.transform.position);
+        curentEndpointPosition.y = 5f;
         player.line.SetPosition(1, curentEndpointPosition);
         Debug.Log(Vector3.Distance(player.playerHand.transform.position, player.joint.connectedBody.transform.position));
         if (Vector3.Distance(player.playerHand.transform.position, player.joint.connectedBody.transform.position) <= 4f || player.InputHandler.cancelInput)

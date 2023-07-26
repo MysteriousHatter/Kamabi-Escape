@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using System.Linq; // Include this to use ToList()
 //using Cinemachine;
 
 public class GameManager : MonoBehaviour
@@ -24,6 +23,7 @@ public class GameManager : MonoBehaviour
     private float respawnTimeStart;
     private bool respawn;
     public LevelResult timeResult => FindObjectOfType<LevelResult>();
+    public PlayerStateMachine StateMachine { get; private set; }
 
     //private CinemachineVirtualCamera CVC;
 
@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     {
         //CVC = GameObject.Find("Player Camera").GetComponent<CinemachineVirtualCamera>();
         levelManager = GameObject.FindWithTag("LevelManager").GetComponent<LevelManager>();
+        StateMachine = new PlayerStateMachine();
  
     }
 

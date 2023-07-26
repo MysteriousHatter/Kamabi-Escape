@@ -2733,6 +2733,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: f79f2ec6a77521047829e0b42e529b98, type: 2}
     m_RemovedComponents:
     - {fileID: 8171186929284942854, guid: a11b5d3b7995272448c8a708151488c9, type: 3}
+    - {fileID: 7844457404861454262, guid: a11b5d3b7995272448c8a708151488c9, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7756507192740482762, guid: a11b5d3b7995272448c8a708151488c9, type: 3}
@@ -5077,6 +5078,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: f79f2ec6a77521047829e0b42e529b98, type: 2}
     m_RemovedComponents:
     - {fileID: 8171186929284942854, guid: a11b5d3b7995272448c8a708151488c9, type: 3}
+    - {fileID: 7844457404861454262, guid: a11b5d3b7995272448c8a708151488c9, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7756507192740482762, guid: a11b5d3b7995272448c8a708151488c9, type: 3}
@@ -5179,6 +5181,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: f79f2ec6a77521047829e0b42e529b98, type: 2}
     m_RemovedComponents:
     - {fileID: 8171186929284942854, guid: a11b5d3b7995272448c8a708151488c9, type: 3}
+    - {fileID: 7844457404861454262, guid: a11b5d3b7995272448c8a708151488c9, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7756507192740482762, guid: a11b5d3b7995272448c8a708151488c9, type: 3}
@@ -5827,6 +5830,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: f79f2ec6a77521047829e0b42e529b98, type: 2}
     m_RemovedComponents:
     - {fileID: 8171186929284942854, guid: a11b5d3b7995272448c8a708151488c9, type: 3}
+    - {fileID: 7844457404861454262, guid: a11b5d3b7995272448c8a708151488c9, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7756507192740482762, guid: a11b5d3b7995272448c8a708151488c9, type: 3}
@@ -7473,7 +7477,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -8087,6 +8091,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: f79f2ec6a77521047829e0b42e529b98, type: 2}
     m_RemovedComponents:
     - {fileID: 8171186929284942854, guid: a11b5d3b7995272448c8a708151488c9, type: 3}
+    - {fileID: 7844457404861454262, guid: a11b5d3b7995272448c8a708151488c9, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7756507192740482762, guid: a11b5d3b7995272448c8a708151488c9, type: 3}

@@ -902,7 +902,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vanishThreshold: 5
-  canReset: 0
+  canReset: 1
   resetTime: 9
 --- !u!4 &102508746 stripped
 Transform:
@@ -7164,7 +7164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vanishThreshold: 7
-  canReset: 0
+  canReset: 1
   resetTime: 9
 --- !u!4 &943689730 stripped
 Transform:
@@ -8500,7 +8500,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vanishThreshold: 9
-  canReset: 0
+  canReset: 1
   resetTime: 9
 --- !u!4 &1116864952 stripped
 Transform:
@@ -8634,7 +8634,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vanishThreshold: 7
-  canReset: 0
+  canReset: 1
   resetTime: 9
 --- !u!4 &1136699679 stripped
 Transform:
@@ -8768,7 +8768,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vanishThreshold: 7
-  canReset: 0
+  canReset: 1
   resetTime: 9
 --- !u!4 &1149853823 stripped
 Transform:
@@ -9454,7 +9454,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vanishThreshold: 17
-  canReset: 0
+  canReset: 1
   resetTime: 8
 --- !u!95 &1221067574
 Animator:
@@ -9531,7 +9531,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vanishThreshold: 7
-  canReset: 0
+  canReset: 1
   resetTime: 9
 --- !u!4 &1236313110 stripped
 Transform:
@@ -13213,7 +13213,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vanishThreshold: 5
-  canReset: 0
+  canReset: 1
   resetTime: 9
 --- !u!4 &1811411779 stripped
 Transform:

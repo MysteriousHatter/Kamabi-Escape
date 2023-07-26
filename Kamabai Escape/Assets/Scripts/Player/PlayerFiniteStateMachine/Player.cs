@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Layouts;
-using UnityEngine.Rendering;
-using UnityEngine.SocialPlatforms.Impl;
 
 public class Player : MonoBehaviour
 {
@@ -80,7 +79,7 @@ public class Player : MonoBehaviour
         Core = GetComponentInChildren<Core>();
 
         StateMachine = new PlayerStateMachine();
-
+        playerDead = false;
         IdleState = new PlayerIdleState(this, StateMachine, playerData, "idle");
         MoveState = new PlayerMoveState(this, StateMachine, playerData, "move");
         JumpState = new PlayerJumpState(this, StateMachine, playerData, "jump");
@@ -91,7 +90,8 @@ public class Player : MonoBehaviour
         UICapturedBox = GameObject.Find("CapturedUIBox");
         //TODO We will make this it's own method
         playerData.maxNumberofPresses = playerData.maxNumberOfPressesPlaceholder;
-        playerDead = false;
+
+       
 
     }
 
@@ -134,7 +134,7 @@ public class Player : MonoBehaviour
         StateMachine.CurrentState.LogicUpdate();
         if (UICapturedBox != null) { UICapturedBox.transform.rotation = Quaternion.identity; }
         Debug.Log("Our dot product " + Core.Movement.IsFacingForwards());
-        //Debug.Log("the current state machine " + StateMachine.CurrentState);
+        Debug.Log("the current state machine " + StateMachine.CurrentState);
         //Debug.Log("The current action map " + playerInput.currentActionMap.name);
     }
 
@@ -174,6 +174,8 @@ public class Player : MonoBehaviour
     public void PlayerDeath()
     {
         // UICapturedBox.SetActive(false);
+        StateMachine.ChangeState(InAirState);
+        OnDestroyJoint();
         src.clip = deathSFX;
         src.Play();
         StartCoroutine(DeathAnimation());
